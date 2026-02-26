@@ -1,0 +1,11 @@
+{
+  "name": "circularlocal",
+  "version": "1.0.0",
+  "description": "Conectando cooperativas, recicladores y emprendedores sustentables, para fortalecer circuitos productivos con impacto social y ambiental positivo. ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
