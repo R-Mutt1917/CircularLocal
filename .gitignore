@@ -1,0 +1,17 @@
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+tmp/
+out-tsc/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variables de entorno
+.env
+.env.local
+
+
