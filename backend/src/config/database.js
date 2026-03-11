@@ -1,18 +1,27 @@
 const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
-const sequelize = new Sequelize('circular_local_db', 'circular_local_user', 'circular_local_password', {
-    host: "localhost",
-    port: 3306,
-    dialect: "mysql",
-});
+const sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
+    {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT || 3306,
+        dialect: 'mysql',
+        logging: false // Disable logging for a cleaner console
+    }
+);
 
 const initDB = async () => {
     try {
         await sequelize.authenticate();
-        await sequelize.sync({ force: false});
+        console.log('¡Conexión establecida correctamente!');
+        await sequelize.sync({ force: false });
     } catch (error) {
-        console.error(error)
+        console.error('No se pudo conectar a la base de datos:', error);
     }
 }
 
-module.exports = {sequelize,initDB};
+
+module.exports = { sequelize, initDB };
