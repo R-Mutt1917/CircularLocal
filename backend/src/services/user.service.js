@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
+const { createProfile } = require('./perfil.service');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -9,6 +10,7 @@ const register = async (username, password) => {
 
     const hash = await bcrypt.hash(password, 10);
 
+    // Crea el usuario
     const user = await User.create({
         username,
         password: hash,
@@ -16,6 +18,10 @@ const register = async (username, password) => {
         fecha_registro: new Date(),
         activo: true
     });
+
+    // Crea el perfil vacio
+    await createProfile(user.id);
+
     return user;
 };
 
