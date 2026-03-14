@@ -3,5 +3,6 @@ const perfilController = require('../controllers/perfil.controller');
 const { verifyToken } = require('../middlewares/auth.middleware');
 
 router.get('/:id', verifyToken, perfilController.getPerfil);
+router.put('/:id', verifyToken, perfilController.putPerfil);
 
 module.exports = router;
