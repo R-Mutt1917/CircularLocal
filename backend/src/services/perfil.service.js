@@ -6,6 +6,12 @@ const createProfile = async (userId) => {
   });
 }
 
+const getPerfil = async (perfilId) => {
+  const perfil = await Perfil.findByPk(perfilId);
+  return perfil;
+}
+
 module.exports = {
-    createProfile
+  createProfile,
+  getPerfil,
 };
