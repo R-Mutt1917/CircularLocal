@@ -1,11 +1,16 @@
 // auth.controller.js
 const authService = require('../services/user.service');
+const { toUserCreateDTO } = require('../dto/usuario.dto');
 
 const register = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await authService.register(username, password);
-        res.status(201).json({ message: 'Usuario creado', user });
+        
+        // Mapea Entity -> DTO
+        const userDto = toUserCreateDTO(user);
+        
+        res.status(201).json({ message: 'Usuario creado', userDto });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
