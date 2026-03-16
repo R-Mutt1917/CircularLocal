@@ -68,16 +68,19 @@ exports.finalizarPublicacion = async (req, res) => {
 exports.cancelarPublicacion = async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Buscar la publicación por su ID
     const publicacion = await Publicacion.findByPk(id);
 
     if (!publicacion) {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
+    // Cambiar el estado a 'cancelada' y guardar la fecha de eliminación lógica
     publicacion.cancelar();
     await publicacion.save();
 
-    res.status(200).json(publicacion);
+    res.status(200).json({ mensaje: 'Publicación cancelada exitosamente.', publicacion });
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al cancelar la publicación.' });
