@@ -14,4 +14,7 @@ router.put('/publicaciones/:id/finalizar', publicacionesController.finalizarPubl
 // Ruta para cancelar una publicación (cambiar estado a 'cancelada')
 router.put('/publicaciones/:id/cancelar', publicacionesController.cancelarPublicacion);
 
+// Ruta para editar una publicación existente (actualizar detalles sin cambiar estado)
+router.put('/publicaciones/:id', publicacionesController.editarPublicacion);
+
 module.exports = router;
