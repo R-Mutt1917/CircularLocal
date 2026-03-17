@@ -1,0 +1,19 @@
+<header>
+    <div class="logo">
+        Circular Local
+    </div>
+
+    <div class="buscador">
+        <label for="lista-seleccion"></label>
+        <select name="lista-seleccion" id="lista-seleccion">  
+            <option value="todo">TODO</option>
+            <option value="perfiles">perfiles</option>
+            <option value="publicaciones">materiales</option>
+            <option value="publicaciones">servicios</option>
+            <option value="publicaciones">productos</option>
+        </select>
+        <input type="text" placeholder="Buscador">
+
+        <app-header-menu [menuItems]="menuItems"></app-header-menu>
+    </div>
+</header>

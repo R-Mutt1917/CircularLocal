@@ -1,0 +1,13 @@
+<nav class="menu">
+    @if (menuItems) {
+        <ul>
+            @for (menuItem of menuItems; track menuItem) {
+                <li>
+                    <a [routerLink]="menuItem.route" routerLinkActive="active">
+                        {{ menuItem.text }}
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</nav>
