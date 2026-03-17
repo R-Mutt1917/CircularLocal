@@ -15,6 +15,6 @@ import { RouterLink } from '@angular/router';
 export class Header {
   menuItems: menuItem[] = [
     {text: 'Mi Perfil', route:'/perfil'},
-    {text: 'Registrarse', route:'/registrarse'},
+    {text: 'Registrarse', route:'/register'},
   ]
 }
