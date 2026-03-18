@@ -148,3 +148,22 @@ exports.consultarPublicaciones = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al consultar las publicaciones.' });
   }
 };
+
+// Consultar detalle de una publicación
+exports.consultarDetallePublicacion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar la publicación por su ID
+    const publicacion = await Publicacion.findByPk(id);
+
+    if (!publicacion) {
+      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    }
+
+    res.status(200).json(publicacion);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al consultar el detalle de la publicación.' });
+  }
+};
