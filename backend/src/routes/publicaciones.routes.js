@@ -17,4 +17,7 @@ router.put('/publicaciones/:id/cancelar', publicacionesController.cancelarPublic
 // Ruta para editar una publicación existente (actualizar detalles sin cambiar estado)
 router.put('/publicaciones/:id', publicacionesController.editarPublicacion);
 
+// Ruta para consultar publicaciones con paginación
+router.get('/publicaciones', publicacionesController.consultarPublicaciones);
+
 module.exports = router;
