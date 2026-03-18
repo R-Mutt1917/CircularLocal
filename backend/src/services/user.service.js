@@ -43,20 +43,17 @@ const login = async (username, password) => {
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
-    const t = await sequelize.transaction();
 
     try {
         if (userData.username) {
             const exists = await User.findOne({
                 where: { username: userData.username },
-                transaction: t
             });
             if (exists && exists.id !== userId) {
                 throw new Error('El nombre de usuario ya está en uso');
             }
-            await User.update({ username: userData.username }, {
+            await User.update({ ...userData }, {
                 where: { id: userId },
-                transaction: t
             });
         }
 
@@ -64,13 +61,11 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
             // updateProfile implementacion pendiente en perfil.service.js
         }
 
-        await t.commit();
 
         return await User.findByPk(userId, {
             include: ['perfil']
         });
     } catch (error) {
-        await t.rollback();
         throw error;
     }
 };
