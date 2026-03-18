@@ -7,5 +7,5 @@ const createProfile = async (userId) => {
 }
 
 module.exports = {
-    createProfile
+  createProfile,
 };

@@ -1,0 +1,12 @@
+<section class="presentation">
+  <h1>Iniciar Sesion</h1>
+  <span class="post-title">La contraseña debe contar con al menos 8 caracteres</span>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="subscribe-form">
+    <input formControlName="username" placeholder="Nombre de Usuario" />
+    <input formControlName="password" placeholder="Contraseña" type="password" />
+
+    <button type="submit" class="login-button" [disabled]="loginForm.invalid">Iniciar
+    </button>
+  </form>
+</section>
