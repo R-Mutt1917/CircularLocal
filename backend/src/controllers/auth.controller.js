@@ -6,10 +6,10 @@ const register = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await authService.register(username, password);
-        
+
         // Mapea Entity -> DTO
         const userDto = toUserCreateDTO(user);
-        
+
         res.status(201).json({ message: 'Usuario creado', userDto });
     } catch (error) {
         res.status(400).json({ error: error.message });
