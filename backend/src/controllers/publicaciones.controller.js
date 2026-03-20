@@ -117,3 +117,53 @@ exports.editarPublicacion = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al editar la publicación.' });
   }
 };
+
+// Consultar publicaciones con paginación
+exports.consultarPublicaciones = async (req, res) => {  
+  try {
+    const { page = 1, limit = 10 } = req.query; // Parámetros de paginación
+
+    //Validar que los parametros sean números positivos
+    if (page <= 0 || limit <= 0) {
+      return res.status(400).json({ mensaje: 'Los parámetros de paginación deben ser números positivos.' });
+    }
+
+    // Calcular el offset para la consulta
+    const offset = (page - 1) * limit;
+
+    // Obtener las publicaciones con paginación
+    const { count, rows: publicaciones } = await Publicacion.findAndCountAll({
+      offset,
+      limit: parseInt(limit),
+      order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
+    });
+
+    res.status(200).json({
+      total: publicaciones.count,
+      paginas: Math.ceil(publicaciones.count / limit),
+      publicaciones: publicaciones.rows,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al consultar las publicaciones.' });
+  }
+};
+
+// Consultar detalle de una publicación
+exports.consultarDetallePublicacion = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Buscar la publicación por su ID
+    const publicacion = await Publicacion.findByPk(id);
+
+    if (!publicacion) {
+      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    }
+
+    res.status(200).json(publicacion);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al consultar el detalle de la publicación.' });
+  }
+};
