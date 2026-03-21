@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HeaderMenu } from './header-menu/header-menu';
-import { menuItem } from '../model/menu-item.model';
+import { menuItem } from '../../../shared/models/menu-item.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -14,7 +14,8 @@ import { RouterLink } from '@angular/router';
 })
 export class Header {
   menuItems: menuItem[] = [
-    {text: 'Mi Perfil', route:'/perfil'},
-    {text: 'Registrarse', route:'/register'},
+    { text: 'Publicaciones', route: '/app/publicaciones' },
+    { text: 'Registrarse', route: '/register' },
+    { text: 'Iniciar Sesión', route: '/login' },
   ]
 }

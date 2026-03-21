@@ -1,18 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './core/header/header';
+import { Header } from './layout/public-layout/header/header';
+import { FooterPublic } from './layout/public-layout/footer-public/footer-public';
+import { NavAdmin } from './layout/admin-layout/nav-admin/nav-admin';
+import { AuthServices } from './core/services/auth';
+import { NavUser } from './layout/user-layout/nav-user/nav-user';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     CommonModule,
-    Header
+    NavUser,
+    Header,
+    NavAdmin,
+    FooterPublic,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('frontend');
+  protected readonly title = signal('Circular Local');
+
+  //auth = inject(AuthServices) DESCOMENTARLO AL TERMINAR EL PROYECTO
+  //role = this.auth.role;
+  role = 'ACTOR'
 }

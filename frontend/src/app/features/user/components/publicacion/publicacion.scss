@@ -1,0 +1,138 @@
+.card {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--color-bg);
+    font-family: var(--font-sans);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+    transition: box-shadow var(--transition-speed) ease,
+        transform var(--transition-speed) ease;
+
+    &:hover {
+        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
+        transform: translateY(-2px);
+    }
+
+    // --- Imagen ---
+    &__image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 260px;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    // --- Badges sobre la imagen ---
+    &__badge {
+        position: absolute;
+        font-size: 10px;
+        font-family: var(--font-sans);
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        padding: 5px 10px;
+        text-transform: uppercase;
+
+        &--estado {
+            top: 12px;
+            right: 12px;
+            background: var(--color-bg);
+            color: var(--color-text-primary);
+        }
+
+        &--tipo {
+            bottom: 0;
+            left: 0;
+            background: var(--color-text-secundary);
+            color: var(--color-bg);
+        }
+    }
+
+    // --- Cuerpo ---
+    &__body {
+        padding: 20px 18px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: var(--color-bg);
+    }
+
+    &__tag {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--color-text-secundary);
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        font-family: var(--font-sans);
+    }
+
+    &__titulo {
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        font-family: var(--font-serif);
+        line-height: 1.25;
+        margin: 0;
+    }
+
+    // --- Autor ---
+    &__autor {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--color-text-muted);
+        font-family: var(--font-sans);
+    }
+
+    &__avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background-color: var(--color-accent);
+        color: var(--color-bg);
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-family: var(--font-sans);
+        letter-spacing: 0.02em;
+    }
+
+    // --- Separador ---
+    &__divider {
+        height: 1px;
+        background-color: var(--color-border);
+        margin: 2px 0;
+    }
+
+    // --- Link ---
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--color-text-secundary);
+        text-decoration: none;
+        font-family: var(--font-sans);
+        cursor: pointer;
+        width: fit-content;
+        transition: gap var(--transition-speed) ease;
+
+        &:hover {
+            gap: 14px;
+        }
+    }
+
+    &__arrow {
+        display: inline-block;
+        font-size: 16px;
+    }
+}

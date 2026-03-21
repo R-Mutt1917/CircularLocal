@@ -2,10 +2,10 @@
     <div class="logo">
         Circular Local
     </div>
-
+    <!--buscador de publicaciones para usuario logeado-->
     <div class="buscador">
         <label for="lista-seleccion"></label>
-        <select name="lista-seleccion" id="lista-seleccion">  
+        <select name="lista-seleccion" id="lista-seleccion">
             <option value="todo">TODO</option>
             <option value="perfiles">perfiles</option>
             <option value="publicaciones">materiales</option>
@@ -14,6 +14,7 @@
         </select>
         <input type="text" placeholder="Buscador">
 
+        <!--menu de validacion de usuario no logueado-->
         <app-header-menu [menuItems]="menuItems"></app-header-menu>
     </div>
 </header>

@@ -1,6 +1,24 @@
-<div class="wrapper">
-  <app-header></app-header>
-  <main>
+<div>
+  @switch (role) {
+  @case ('ACTOR') {
+  <app-nav-user></app-nav-user>
+  <main class="main-content-user">
     <router-outlet></router-outlet>
   </main>
+  }
+  @case ('ADMINISTRADOR') {
+  <app-nav-admin></app-nav-admin>
+  <main class="main-content-admin">
+    <router-outlet></router-outlet>
+  </main>
+  }
+  @default {
+  <app-header></app-header>
+  <main class="main-content-public">
+    <router-outlet></router-outlet>
+  </main>
+  }
+  }
+
+  <!-- <app-footer-public></app-footer-public> -->
 </div>

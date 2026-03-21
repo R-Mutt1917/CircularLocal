@@ -1,0 +1,18 @@
+<section class="section">
+    <div class="contenedor_principal">
+        <div class="contenedor_titulo">
+            <span class="titulo titulo_explorar">Explorar</span>
+            <span class="titulo titulo_publicaciones">Publicaciones</span>
+        </div>
+        <div>
+            <app-form (filtradorDeProductos)="filtradorDeProductos($event)"></app-form>
+        </div>
+        <div class="contenedor_productos">
+            @for (publicacion of publicaciones; track publicacion.id ) {
+            <app-publicacion [publicacion]="publicacion"></app-publicacion>
+            }@empty {
+            <p>No hay publicaciones</p>
+            }
+        </div>
+    </div>
+</section>
