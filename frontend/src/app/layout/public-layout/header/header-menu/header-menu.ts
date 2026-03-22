@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { menuItem } from '../../model/menu-item.model';
+import { menuItem } from '../../../../shared/models/menu-item.model';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
