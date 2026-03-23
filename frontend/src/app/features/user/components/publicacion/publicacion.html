@@ -23,7 +23,7 @@
             <span>OBTENER DE PERFIL</span>
         </div>
 
-        <a class="card__link" [routerLink]="['/app/publicacion', publicacion().id]">
+        <a class="card__link" routerLink="/app/publicacion/{{ publicacion().id }}">
             Ver detalle <span class="card__arrow">→</span>
         </a>
     </div>

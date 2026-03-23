@@ -93,20 +93,22 @@ Busco a cambio materiales de ferretería o herramientas de mano en buen estado p
   ];
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    console.log('id de ruta:', id);
+    this.route.paramMap.subscribe(params => {
+      window.scrollTo(0, 0);
+      const id = params.get('id');
+      console.log('id de ruta:', id);
 
-    // this.publicacionesService.consultarPublicacionDetallada(id!).subscribe({
-    //   next: (publicacion) => {
-    //     this.idPublicacion = publicacion;
-    //     console.log(this.idPublicacion);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    // });
+      // this.publicacionesService.consultarPublicacionDetallada(id!).subscribe({
+      //   next: (publicacion) => {
+      //     this.idPublicacion = publicacion;
+      //     console.log(this.idPublicacion);
+      //   },
+      //   error: (err) => {
+      //     console.log(err);
+      //   },
+      // });
 
-
-    //CREAR SERVICE DE OBTENER OTROS PRODUCTOS DEL PERFIL
+      //CREAR SERVICE DE OBTENER OTROS PRODUCTOS DEL PERFIL
+    });
   }
 }
