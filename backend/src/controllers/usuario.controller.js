@@ -14,6 +14,29 @@ const updateUser = async (req, res) => {
     }
 };
 
+const deleteUser = async (req, res) => {
+    // Valida el id recibido
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+        return res.status(400).json({ message: "ID inválido" });
+    }
+
+    try {
+        const user = await userService.deleteUser(id);
+
+        if (!user) {
+            return res.status(404).json({
+                error: "Usuario no encontrado"
+            });
+        }
+
+        return res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 module.exports = {
-    updateUser
+    updateUser,
+    deleteUser,
 };

@@ -1,17 +1,17 @@
 services:
   db:
     image: mysql:8.0
-    container_name: circular_local_db
+    container_name: ${DB_NAME}
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: circular_local_db
-      MYSQL_USER: circular_local_user
-      MYSQL_PASSWORD: circular_local_password
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
     ports:
-      - "3307:3306"
+      - "${DB_PORT}:${DB_PORT_CONTAINER}"
     volumes:
-      - db_data:/var/lib/mysql
+      - ${VOLUME}
 
 volumes:
   db_data:

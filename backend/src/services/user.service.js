@@ -71,3 +71,19 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
 };
 
 module.exports = { register, login, updateUserWithProfile }
+// Baja logica del usuario
+const deleteUser = async (id) => {
+    const user = await User.findByPk(id);
+    if (!user) return null;
+
+    if (!user.activo) {
+        throw new Error("El usuario ya está dado de baja");
+    }
+
+    user.activo = false;
+    await user.save();
+
+    return user;
+}
+
+module.exports = { register, login, updateUserWithProfile, deleteUser }
