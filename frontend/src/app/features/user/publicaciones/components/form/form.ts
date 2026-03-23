@@ -31,6 +31,7 @@ export class Form implements OnInit {
     { label: 'Servicio', value: 'servicio' },
   ];
 
+  //DEFINIR BIEN CON EL EQUIPO CUALES VAN A SER TODOS LOS TAGS
   tags = ['todos', 'Madera Recup.', 'Textiles Orgánicos', 'Cerámica', 'Herramientas', 'Metalurgia'];
 
   seleccionarTipo(value: string): void {

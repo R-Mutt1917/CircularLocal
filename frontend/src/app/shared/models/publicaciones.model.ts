@@ -1,4 +1,4 @@
-export interface Publicaciones {
+export interface PublicacionModel {
     id: number;
     titulo: string; // len: [5, 255]
     descripcion: string;

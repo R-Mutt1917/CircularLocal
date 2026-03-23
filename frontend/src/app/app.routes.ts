@@ -7,6 +7,7 @@ import { AdminGuard } from './core/guards/admin.guard';
 import { AdminDashboard } from './features/admin/dashboard/dashboard';
 import { Publicaciones } from './features/user/publicaciones/publicaciones';
 import { UserDashboard } from './features/user/dashboard/dashboard';
+import { PublicacionDetallada } from './features/user/publicacion-detallada/publicacion-detallada';
 
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: UserDashboard },
             { path: 'publicaciones', component: Publicaciones },
+            { path: 'publicacion/:id', component: PublicacionDetallada }
         ]
     },
     {
