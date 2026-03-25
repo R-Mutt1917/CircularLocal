@@ -1,0 +1,130 @@
+<form class="pub-form" [formGroup]="formPublicacion" (ngSubmit)="onSubmit()">
+    <div class="pub-form__upload">
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+        @if (previewUrl) {
+        <div class="pub-form__preview">
+            <img [src]="previewUrl" alt="Vista previa" class="pub-form__preview-img">
+            <button type="button" class="pub-form__remove-img" (click)="removeImage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        } @else {
+        <div class="pub-form__upload-zone" (click)="fileInput.click()">
+            <div class="pub-form__upload-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+            </div>
+            <p class="pub-form__upload-label">Arrastrá las fotos aquí o seleccioná un archivo</p>
+            <span class="pub-form__upload-hint">JPG, PNG hasta 10MB</span>
+        </div>
+        }
+
+        @if (backendErrors['imagen']) {
+        <p class="pub-form__error">{{ backendErrors['imagen'] }}</p>
+        } @else if (formPublicacion.controls.imagen.invalid && formPublicacion.controls.imagen.touched) {
+        <p class="pub-form__error">La imagen es requerida</p>
+        }
+
+        <div class="pub-form__tip">
+            <span class="pub-form__tip-title">Consejo del Artesano</span>
+            <p class="pub-form__tip-text">
+                Las fotos con luz natural y fondos neutros ayudan a que tu publicación destaque.
+                Mostrá los detalles y cualquier imperfección honesta.
+            </p>
+        </div>
+    </div>
+
+    <div class="pub-form__fields">
+
+        <div class="pub-form__field pub-form__field--full">
+            <label class="pub-form__label">Título de la publicación</label>
+            <input formControlName="titulo" class="pub-form__input" type="text"
+                placeholder="Ej: Madera de roble recuperada" />
+            @if (backendErrors['titulo']) {
+            <p class="pub-form__error">{{ backendErrors['titulo'] }}</p>
+            } @else if (formPublicacion.controls.titulo.invalid && formPublicacion.controls.titulo.touched) {
+            <p class="pub-form__error">El título es requerido</p>
+            }
+        </div>
+
+        <div class="pub-form__row">
+            <div class="pub-form__field">
+                <label class="pub-form__label">Categoría</label>
+                <div class="pub-form__select-wrapper">
+                    <select formControlName="categoria" class="pub-form__select">
+                        <option value="">Seleccioná una categoría</option>
+                        <option value="Madera Recup.">Madera Recup.</option>
+                        <option value="Textiles Orgánicos">Textiles Orgánicos</option>
+                        <option value="Cerámica">Cerámica</option>
+                        <option value="Herramientas">Herramientas</option>
+                        <option value="Metalurgia">Metalurgia</option>
+                    </select>
+                    <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                @if (backendErrors['categoria']) {
+                <p class="pub-form__error">{{ backendErrors['categoria'] }}</p>
+                } @else if (formPublicacion.controls.categoria.invalid && formPublicacion.controls.categoria.touched) {
+                <p class="pub-form__error">La categoría es requerida</p>
+                }
+            </div>
+
+            <div class="pub-form__field">
+                <label class="pub-form__label">Tipo de recurso</label>
+                <div class="pub-form__radio-group">
+                    <label class="pub-form__radio">
+                        <input formControlName="tipo" type="radio" name="tipo" value="material" />
+                        <span>Material</span>
+                    </label>
+                    <label class="pub-form__radio">
+                        <input formControlName="tipo" type="radio" name="tipo" value="producto" />
+                        <span>Producto</span>
+                    </label>
+                    <label class="pub-form__radio">
+                        <input formControlName="tipo" type="radio" name="tipo" value="servicio" />
+                        <span>Servicio</span>
+                    </label>
+                </div>
+                @if (backendErrors['tipo']) {
+                <p class="pub-form__error">{{ backendErrors['tipo'] }}</p>
+                } @else if (formPublicacion.controls.tipo.invalid && formPublicacion.controls.tipo.touched) {
+                <p class="pub-form__error">El tipo de recurso es requerido</p>
+                }
+            </div>
+        </div>
+
+        <div class="pub-form__field pub-form__field--full">
+            <label class="pub-form__label">Descripción detallada</label>
+            <textarea formControlName="descripcion" class="pub-form__textarea"
+                placeholder="Describí el origen, estado y dimensiones..." rows="4"></textarea>
+            @if (backendErrors['descripcion']) {
+            <p class="pub-form__error">{{ backendErrors['descripcion'] }}</p>
+            } @else if (formPublicacion.controls.descripcion.invalid && formPublicacion.controls.descripcion.touched) {
+            <p class="pub-form__error">La descripción es requerida</p>
+            }
+        </div>
+
+        <div class="pub-form__footer">
+            <div class="pub-form__actions">
+                <button type="button" routerLink="/app/publicaciones" class="pub-form__btn pub-form__btn--ghost">
+                    Cancelar
+                </button>
+                <button type="submit" class="pub-form__btn pub-form__btn--primary">
+                    @if (initialData()) {
+                    @if (isLoading()) { Guardando Cambios... } @else { Guardar cambios }
+                    } @else {
+                    @if (isLoading()) { Publicando... } @else { Publicar recurso }
+                    }
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

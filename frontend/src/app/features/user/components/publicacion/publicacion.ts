@@ -1,5 +1,5 @@
 import { Component, input, OnInit } from '@angular/core';
-import { Publicaciones } from '../../../../shared/models/publicaciones.model';
+import { PublicacionModel } from '../../../../shared/models/publicaciones.model';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './publicacion.scss',
 })
 export class Publicacion implements OnInit {
-  publicacion = input.required<Publicaciones>();
+  publicacion = input.required<PublicacionModel>();
 
   ngOnInit(): void {
 
