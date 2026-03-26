@@ -18,8 +18,11 @@ const putPerfil = async (perfilId, perfilRequestDTO) => {
     throw new Error('tipo_actor inválido');
   }
 
-  // Busca el perfil en la BD
-  const perfil = await Perfil.findByPk(perfilId);
+  // Busca el perfil asociado al usuario en la BD
+  const perfil = await Perfil.findOne({
+    where: { user_id: userId }
+  });
+
   if (!perfil) return null;
 
   // Actualiza el perfil
