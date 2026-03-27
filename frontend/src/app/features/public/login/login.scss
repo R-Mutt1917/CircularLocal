@@ -1,0 +1,129 @@
+
+.presentation {
+  min-height: 100vh;
+  background-color: var(--color-bg); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-sanz);
+}
+
+.login-card {
+  background-color: #F6F3EE;
+  width: 100%;
+  max-width: 448px;
+  padding: 48px 40px;
+  border: 1px solid var(--color-surface);
+  
+}
+
+.card-header {
+  margin-bottom: 40px;
+  border-bottom: 1px dotted var(--color-border);
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.brand-name {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--color-brand);
+}
+
+.brand-tagline {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--color-text-secundary);
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 45px;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22.75px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--color-text-grey);
+  margin-bottom: 8px;
+}
+
+.login-form input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  background-color: var(--color-surface);
+  border: none;
+  border-radius: 2px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.login-form input::placeholder {
+  color: var(--color-text-grey);
+}
+
+.login-button {
+  height: 54px;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: var(--color-active-bg);
+  color: var(--color-accent)
+
+}
+
+.form-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.forgot-link {
+  display: block;
+  text-decoration: none;
+  color: var(--color-text-secundary);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+}
+
+.register-link {
+  color: var(--color-text-muted);
+  font-weight: 700;
+  text-decoration: none;
+}
