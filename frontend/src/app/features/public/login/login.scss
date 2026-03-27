@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6-72,400;6-72,500&family=Work+Sans:wght@400;500;600&display=swap');
 
 .presentation {
   min-height: 100vh;
-  background-color: #FCF9F4; 
+  background-color: var(--color-bg); 
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Work Sans', sans-serif;
+  font-family: var(--font-sanz);
 }
 
 .login-card {
@@ -14,38 +13,38 @@
   width: 100%;
   max-width: 448px;
   padding: 48px 40px;
-  border: 1px solid #EBE8E3;
+  border: 1px solid var(--color-surface);
   
 }
 
 .card-header {
   margin-bottom: 40px;
-  border-bottom: 1px dotted #CCC;
+  border-bottom: 1px dotted var(--color-border);
   padding-bottom: 15px;
   text-align: center;
 }
 
 .brand-name {
   display: block;
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-serif);
   font-style: italic;
   font-size: 20px;
-  color: #33450D;
+  color: var(--color-brand);
 }
 
 .brand-tagline {
   font-size: 12px;
   font-weight: 400;
   letter-spacing: 2px;
-  color: #A14009;
+  color: var(--color-text-secundary);
 }
 
 h1 {
-  font-family: 'Newsreader', serif;
+  font-family: var(--font-serif);
   font-size: 36px;
   font-weight: 400;
   line-height: 45px;
-  color: #1C1C19;
+  color: var(--color-text-primary);
   margin-bottom: 12px;
 }
 
@@ -53,7 +52,7 @@ h1 {
   font-size: 14px;
   font-weight: 400;
   line-height: 22.75px;
-  color: #45483C;
+  color: var(--color-text-muted);
   line-height: 1.5;
   margin-bottom: 32px;
 }
@@ -70,7 +69,7 @@ h1 {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #A3A594;
+  color: var(--color-text-grey);
   margin-bottom: 8px;
 }
 
@@ -78,21 +77,21 @@ h1 {
   width: 100%;
   height: 50px;
   padding: 0 16px;
-  background-color: #F3F1EE;
+  background-color: var(--color-surface);
   border: none;
   border-radius: 2px;
-  font-family: 'Work Sans', sans-serif;
+  font-family: var(--font-sans);
   font-size: 14px;
   box-sizing: border-box;
 }
 
 .login-form input::placeholder {
-  color: #BCBEB0;
+  color: var(--color-text-grey);
 }
 
 .login-button {
   height: 54px;
-  background-color: #33450D;
+  background-color: var(--color-accent);
   color: white;
   border: none;
   font-size: 16px;
@@ -103,7 +102,9 @@ h1 {
 }
 
 .login-button:hover {
-  background-color: #26340a;
+  background-color: var(--color-active-bg);
+  color: var(--color-accent)
+
 }
 
 .form-footer {
@@ -115,14 +116,14 @@ h1 {
 .forgot-link {
   display: block;
   text-decoration: none;
-  color: #D67D55;
+  color: var(--color-text-secundary);
   font-weight: 600;
   letter-spacing: 0.5px;
   margin-bottom: 15px;
 }
 
 .register-link {
-  color: #1C1C19;
+  color: var(--color-text-muted);
   font-weight: 700;
   text-decoration: none;
 }
