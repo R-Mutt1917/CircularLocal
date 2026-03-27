@@ -23,4 +23,13 @@ router.get('/publicaciones', publicacionesController.consultarPublicaciones);
 // Ruta para consultar el detalle de una publicación
 router.get('/publicaciones/:id', publicacionesController.consultarDetallePublicacion);
 
+// Ruta para listar todos los tags
+router.get('/tags', publicacionesController.listarTags);
+
+// Ruta para asociar un tag a una publicación 
+router.post('/publicaciones/:id/tags', publicacionesController.asociarTags);
+
+// Ruta para eliminar un tag de una publicación
+router.delete('/publicaciones/:id/tags', publicacionesController.eliminarTag);
+
 module.exports = router;

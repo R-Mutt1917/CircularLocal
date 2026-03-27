@@ -1,20 +1,22 @@
-const Publicacion = require('../models/publicacion.model');
+const { Publicacion, Tag } = require('../models');
+const PublicacionDTO = require('../dto/publicacion.dto');
 
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
   try {
-    const { titulo, descripcion, imagenPrincipal } = req.body;
+    const { titulo, descripcion, tagId } = req.body;
 
-    // Validar campos obligatorios
-    if (!titulo || !descripcion) {
-      return res.status(400).json({ mensaje: 'Todos los campos son obligatorios.' });
+    // Verificar que el tag exista
+    const tag = await Tag.findByPk(tagId);
+    if (!tag) {
+      return res.status(400).json({ mensaje: 'El tipo de material (tag) no existe.' });
     }
 
     // Crear la publicación
     const nuevaPublicacion = await Publicacion.create({
       titulo,
       descripcion,
-      imagenPrincipal,
+      tagId,
     });
 
     res.status(201).json(nuevaPublicacion);
@@ -68,15 +70,15 @@ exports.finalizarPublicacion = async (req, res) => {
 exports.cancelarPublicacion = async (req, res) => {
   try {
     const { id } = req.params;
-    
-    // Buscar la publicación por su ID
+
+    // Buscar la publicación por ID
     const publicacion = await Publicacion.findByPk(id);
 
     if (!publicacion) {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
-    // Cambiar el estado a 'cancelada' y guardar la fecha de eliminación lógica
+    // Cambiar el estado a cancelada y registrar la fecha de eliminación lógica
     publicacion.cancelar();
     await publicacion.save();
 
@@ -93,14 +95,14 @@ exports.editarPublicacion = async (req, res) => {
     const { id } = req.params;
     const { titulo, descripcion, imagenPrincipal, estadoPublicacion } = req.body;
 
-    // Buscar la publicación por su ID
+    // Buscar la publicación por ID
     const publicacion = await Publicacion.findByPk(id);
 
     if (!publicacion) {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
-    // Actualizar los campos de la permitidos
+    // Actualizar los campos permitidos
     if (titulo) publicacion.titulo = titulo;
     if (descripcion) publicacion.descripcion = descripcion;
     if (imagenPrincipal) publicacion.imagenPrincipal = imagenPrincipal;
@@ -108,7 +110,7 @@ exports.editarPublicacion = async (req, res) => {
 
     publicacion.fechaActualizacion = new Date();
 
-    // Guardar los cambios en la base de datos
+    // Guardar los cambios
     await publicacion.save();
 
     res.status(200).json(publicacion);
@@ -119,29 +121,31 @@ exports.editarPublicacion = async (req, res) => {
 };
 
 // Consultar publicaciones con paginación
-exports.consultarPublicaciones = async (req, res) => {  
+exports.consultarPublicaciones = async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query; // Parámetros de paginación
 
-    //Validar que los parametros sean números positivos
+    // Validar que los parámetros sean números positivos
     if (page <= 0 || limit <= 0) {
       return res.status(400).json({ mensaje: 'Los parámetros de paginación deben ser números positivos.' });
     }
 
-    // Calcular el offset para la consulta
+    // Calcular el offset y el límite
     const offset = (page - 1) * limit;
 
     // Obtener las publicaciones con paginación
-    const { count, rows: publicaciones } = await Publicacion.findAndCountAll({
+    const publicaciones = await Publicacion.findAndCountAll({
       offset,
       limit: parseInt(limit),
       order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
     });
 
+    const publicacionesDTO = publicaciones.rows.map((pub) => new PublicacionDTO(pub));
+
     res.status(200).json({
       total: publicaciones.count,
       paginas: Math.ceil(publicaciones.count / limit),
-      publicaciones: publicaciones.rows,
+      publicaciones: publicacionesDTO,
     });
   } catch (error) {
     console.error(error);
@@ -154,7 +158,7 @@ exports.consultarDetallePublicacion = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Buscar la publicación por su ID
+    // Buscar la publicación por ID
     const publicacion = await Publicacion.findByPk(id);
 
     if (!publicacion) {
@@ -165,5 +169,76 @@ exports.consultarDetallePublicacion = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al consultar el detalle de la publicación.' });
+  }
+};
+
+// Obtener todas las publicaciones con tag
+exports.getPublicaciones = async (req, res) => {
+  try {
+    const publicaciones = await Publicacion.findAll({
+      include: [{ model: Tag, as: 'tag' }],
+    });
+
+    const publicacionesDTO = publicaciones.map((pub) => new PublicacionDTO(pub));
+
+    res.status(200).json(publicacionesDTO);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener las publicaciones.' });
+  }
+};
+
+// Listar todos los tags
+exports.listarTags = async (req, res) => {
+  try {
+    const tags = await Tag.findAll();
+    res.status(200).json(tags);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al listar los tags.' });
+  }
+};
+
+// Asociar tags a una publicación
+exports.asociarTags = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tags } = req.body; // Array de IDs de tags
+
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) {
+      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    }
+
+    const tagsAsociados = await Tag.findAll({ where: { id: tags } });
+    await publicacion.addTags(tagsAsociados);
+
+    res.status(200).json({ mensaje: 'Tags asociados correctamente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al asociar tags a la publicación.' });
+  }
+};
+
+// Eliminar un tag de una publicación
+exports.eliminarTag = async (req, res) => {
+  try {
+    const { id, tagId } = req.params;
+
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) {
+      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    }
+
+    const tag = await Tag.findByPk(tagId);
+    if (!tag) {
+      return res.status(404).json({ mensaje: 'Tag no encontrado.' });
+    }
+
+    await publicacion.removeTag(tag);
+    res.status(200).json({ mensaje: 'Tag eliminado correctamente.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al eliminar el tag de la publicación.' });
   }
 };

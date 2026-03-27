@@ -6,3 +6,5 @@ class PublicacionDTO {
         this.createdAt = publicacion.createdAt || undefined;
     }
 }
+
+module.exports = PublicacionDTO;
