@@ -1,13 +1,76 @@
-<section class="presentation">
-  <h1>Crea una cuenta</h1>
-  <span class="post-title">La contraseña debe contar con al menos 6 caracteres</span>
+<div class="register-wrapper">
+  <section class="form-container">
+    <div class="header-content">
+      <span class="brand-name">Circular Local</span>
+      <h1>Creá tu perfil en Circular Local</h1>
+      <p class="subtitle">
+        Unite a la red de artesanos y gestores locales para transformar nuestra economía.
+      </p>
+    </div>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="subscribe-form">
-    <input formControlName="username" placeholder="Nombre de Usuario" />
-    <input formControlName="password" placeholder="Contraseña" type="password" />
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      
+      <div class="form-field">
+        <label>NOMBRE DE USUARIO</label>
+        <input formControlName="username" type="text" placeholder="username">
+        <small class="error-text" *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          El nombre de usuario es obligatorio.
+        </small>
+      </div>
 
-    <button type="submit" class="login-button" [disabled]="registerForm.invalid">
-      Crear cuenta
-    </button>
-  </form>
-</section>
+      <div class="form-field">
+        <label>NOMBRE COMPLETO</label>
+        <input formControlName="nombre_perfil" type="text" placeholder="Ingresá tu nombre y apellido">
+      </div>
+
+      <div class="form-field">
+        <label>EMAIL</label>
+        <input formControlName="email" type="email" placeholder="tu@email.com">
+      </div>
+
+      <div class="row">
+        <div class="form-field half">
+          <label>TIPO DE ACTOR</label>
+          <select formControlName="tipo_actor">
+            <option value="COOPERATIVA">COOPERATIVA</option>
+            <option value="RECICLADOR">RECICLADOR</option>
+            <option value="EMPRENDEDOR">EMPRENDEDOR</option>
+          </select>
+        </div>
+
+        <div class="form-field half">
+          <label>UBICACIÓN</label>
+          <input formControlName="direccion" type="text" placeholder="Ciudad, Prov.">
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>TELÉFONO</label>
+        <input formControlName="telefono" type="text" placeholder="+54 11 ...">
+      </div>
+
+      <div class="form-field">
+        <label>CONTRASEÑA</label>
+        <input formControlName="password" type="password" placeholder="********">
+        <small class="info-text">Mínimo 8 caracteres.</small>
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="registerForm.invalid">
+        Registrarme
+      </button>
+
+      <p class="login-redirect">
+        ¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a>
+      </p>
+    </form>
+  </section>
+
+  <section class="image-container">
+    <div class="overlay-card">
+      <p class="quote">
+        "La verdadera economía circular nace de las manos que cuidan su territorio."
+      </p>
+      <span class="author">— MANIFIESTO LOCAL</span>
+    </div>
+  </section>
+</div>
