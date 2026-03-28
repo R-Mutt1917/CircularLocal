@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, SearchFilters } from './components/form/form';
 import { Publicacion } from '../components/publicacion/publicacion';
+import { PublicacionModel } from '../../../shared/models/publicaciones.model';
 // import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
 
 @Component({
@@ -11,34 +12,10 @@ import { Publicacion } from '../components/publicacion/publicacion';
 })
 export class Publicaciones implements OnInit {
 
+
   // private publicacionesService = inject(PublicacionesService);
 
-  publicaciones: any[] = [];
-
-  ngOnInit() {
-    // TODO: descomentar cuando el servicio esté listo
-    // this.publicacionesService.consultarPublicaciones().subscribe({
-    //   next: (publicaciones) => {
-    //     this.publicaciones = publicaciones;
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    // });
-
-    this.publicaciones = [...this.publicacionesOriginales];
-  }
-
-  filtradorDeProductos(filters: SearchFilters) {
-    this.publicaciones = this.publicacionesOriginales.filter((publicacion) => {
-      const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
-        || publicacion.descripcion.toLowerCase().includes(filters.searchQuery.toLowerCase());
-      const matchTag = filters.tagSeleccionado === ''
-        || publicacion.tag.toLowerCase() === filters.tagSeleccionado.toLowerCase();
-
-      return matchQuery && matchTag;
-    });
-  }
+  publicaciones: PublicacionModel[] = [];
 
   private readonly publicacionesOriginales = [
     {
@@ -117,6 +94,33 @@ export class Publicaciones implements OnInit {
       reportada: true
     }
   ];
+
+  ngOnInit() {
+    // TODO: descomentar cuando el servicio esté listo
+    // this.publicacionesService.consultarPublicaciones().subscribe({
+    //   next: (publicaciones) => {
+    //     this.publicaciones = publicaciones;
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //   },
+    // });
+
+    this.publicaciones = [...this.publicacionesOriginales];
+  }
+
+  filtradorDeProductos(filters: SearchFilters) {
+    this.publicaciones = this.publicacionesOriginales.filter((publicacion) => {
+      const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
+        || publicacion.descripcion.toLowerCase().includes(filters.searchQuery.toLowerCase());
+      const matchTag = filters.tagSeleccionado === ''
+        || publicacion.tag.toLowerCase() === filters.tagSeleccionado.toLowerCase();
+
+      return matchQuery && matchTag;
+    });
+  }
+
+
 
 
 }
