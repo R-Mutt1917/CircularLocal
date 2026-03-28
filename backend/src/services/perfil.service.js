@@ -11,7 +11,7 @@ const getPerfil = async (perfilId) => {
   return perfil;
 }
 
-const putPerfil = async (perfilId, perfilRequestDTO) => {
+const putPerfil = async (userId, perfilRequestDTO) => {
   // Valida el campo tipo_actor
   const tiposValidos = ['COOPERATIVA', 'RECICLADOR', 'EMPRENDEDOR'];
   if (perfilRequestDTO.tipo_actor && !tiposValidos.includes(perfilRequestDTO.tipo_actor)) {
