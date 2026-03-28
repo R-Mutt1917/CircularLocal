@@ -1,4 +1,4 @@
-export interface Publicaciones {
+export interface PublicacionModel {
     id: number;
     titulo: string; // len: [5, 255]
     descripcion: string;
@@ -12,4 +12,12 @@ export interface Publicaciones {
     imagenPrincipal: string;
     verificada: boolean;
     reportada: boolean;
+}
+
+export interface CrearPublicacionModel {
+    titulo: string;
+    descripcion: string;
+    categoria: string;
+    tipo: string;
+    imagen: File | null;
 }
