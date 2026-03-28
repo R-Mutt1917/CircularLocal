@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { PublicacionModel } from '../../../shared/models/publicaciones.model';
+import { CrearPublicacionModel, PublicacionModel } from '../../../shared/models/publicaciones.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -34,10 +35,22 @@ export class PublicacionesService {
     return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`)
   }
 
+  crearPublicacion(publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
+    return this.http.post<PublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
+  }
+
+
+  //TRAER TODOS LOS ATRIBUTOS DE PUBLICACION + PERFIL DE USUARIO
+  //SE USA PARA MOSTRAR LA PUBLICACION EN LA SECCION DE user/publicacion-detallada
+  consultarPublicacionDetallada(id: string): Observable<PublicacionModel> {
+    return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`)
+  }
+
 
 }
 
 // POST /publicaciones: Crear una nueva publicación.
 // PUT /publicaciones/:id/publicar: Publicar una publicación.
 // PUT /publicaciones/:id/finalizar: Finalizar una publicación.
+// PUT /publicaciones/:id/cancelar: Cancelar una publicación.
 // PUT /publicaciones/:id/cancelar: Cancelar una publicación.

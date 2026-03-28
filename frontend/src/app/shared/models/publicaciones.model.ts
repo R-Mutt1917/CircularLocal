@@ -13,3 +13,11 @@ export interface PublicacionModel {
     verificada: boolean;
     reportada: boolean;
 }
+
+export interface CrearPublicacionModel {
+    titulo: string;
+    descripcion: string;
+    categoria: string;
+    tipo: string;
+    imagen: File | null;
+}
