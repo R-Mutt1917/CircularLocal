@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
 const { User } = require('../models');
-const { createProfile, updateProfile } = require('./perfil.service');
+const { createProfile, putPerfil } = require('./perfil.service');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -43,34 +43,38 @@ const login = async (username, password) => {
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
-
+    const transaction = await sequelize.transaction();
     try {
         if (userData.username) {
             const exists = await User.findOne({
                 where: { username: userData.username },
+                transaction
             });
             if (exists && exists.id !== userId) {
                 throw new Error('El nombre de usuario ya está en uso');
             }
             await User.update({ ...userData }, {
                 where: { id: userId },
+                transaction
             });
         }
 
         if (profileData) {
             // updateProfile implementacion pendiente en perfil.service.js
+            await putPerfil(userId,profileData,transaction)
         }
-
+        await transaction.commit();
 
         return await User.findByPk(userId, {
             include: ['perfil']
         });
     } catch (error) {
+        await transaction.rollback();
         throw error;
+
     }
 };
 
-module.exports = { register, login, updateUserWithProfile }
 // Baja logica del usuario
 const deleteUser = async (id) => {
     const user = await User.findByPk(id);
