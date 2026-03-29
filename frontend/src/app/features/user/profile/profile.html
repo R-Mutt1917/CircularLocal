@@ -1,0 +1,53 @@
+<div class="profile-container">
+
+  <h1>Perfil de Usuario</h1>
+
+  @if (!isEditMode) {
+
+    <div class="profile-view">
+
+      <p><b>Usuario:</b> {{ form.get('username')?.value }}</p>
+      <p><b>Nombre:</b> {{ form.get('nombre_perfil')?.value }}</p>
+      <p><b>Email:</b> {{ form.get('email')?.value }}</p>
+      <p><b>Teléfono:</b> {{ form.get('telefono')?.value }}</p>
+      <p><b>Dirección:</b> {{ form.get('direccion')?.value }}</p>
+
+      <button (click)="enableEdit()">
+        Editar
+      </button>
+
+    </div>
+
+  }
+
+  @if (isEditMode) {
+
+    <form [formGroup]="form" (ngSubmit)="save()">
+
+      <input formControlName="username" placeholder="Usuario">
+
+      <input formControlName="nombre_perfil" placeholder="Nombre">
+
+      <input formControlName="email" placeholder="Email">
+
+      <input formControlName="telefono" placeholder="Teléfono">
+
+      <input formControlName="direccion" placeholder="Dirección">
+
+      <input formControlName="tipo_actor" placeholder="Tipo actor">
+
+      <textarea formControlName="descripcion"></textarea>
+
+      <button type="submit" [disabled]="form.invalid || loading">
+        Guardar
+      </button>
+
+      <button type="button" (click)="cancelEdit()">
+        Cancelar
+      </button>
+
+    </form>
+
+  }
+
+</div>

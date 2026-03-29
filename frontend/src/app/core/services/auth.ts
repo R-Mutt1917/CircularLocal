@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -45,6 +45,15 @@ export class AuthServices {
 
   register(username: string, password: string): Observable<any> {
     return this.httpClient.post<any>(`${this.apiUrl}/auth/register`, { username, password });
+  }
+
+  getUser(): Observable<any>{
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.httpClient.get<any>(`${this.apiUrl}/auth/profile`,{headers});
   }
 
 }

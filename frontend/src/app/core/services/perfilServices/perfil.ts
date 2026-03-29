@@ -11,8 +11,18 @@ export class Perfil {
   
   constructor(private httpClient: HttpClient ) {}
 
+  getProfile(id: number): Observable<any>{
+    const token = localStorage.getItem('token');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.httpClient.get<any>(`${this.apiUrl}/perfil/${id}`,{headers});
+  }
+
   updateUser(id: number, data: any): Observable<any> {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`

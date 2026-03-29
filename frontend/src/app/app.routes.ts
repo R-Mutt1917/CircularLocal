@@ -9,19 +9,21 @@ import { Publicaciones } from './features/user/publicaciones/publicaciones';
 import { UserDashboard } from './features/user/dashboard/dashboard';
 import { PublicacionDetallada } from './features/user/publicacion-detallada/publicacion-detallada';
 import { SubirPublicacion } from './features/user/subir-publicacion/subir-publicacion';
+import { Profile } from './features/user/profile/profile';
 
 
 export const routes: Routes = [
     { path: '', component: Landing, pathMatch: 'full' },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
+    { path: 'profile', component: Profile},
     {
         path: 'app',
         //canActivate: [AuthGuard], COMENTAR EN PRODUCCION
         children: [
             { path: '', component: UserDashboard },
             { path: 'publicaciones', component: Publicaciones },
-            { path: 'publicacion/:id', component: PublicacionDetallada }
+            { path: 'publicacion/:id', component: PublicacionDetallada },
             { path: 'subir', component: SubirPublicacion },
         ]
     },
