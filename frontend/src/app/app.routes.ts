@@ -21,7 +21,7 @@ export const routes: Routes = [
         children: [
             { path: '', component: UserDashboard },
             { path: 'publicaciones', component: Publicaciones },
-            { path: 'publicacion/:id', component: PublicacionDetallada }
+            { path: 'publicacion/:id', component: PublicacionDetallada },
             { path: 'subir', component: SubirPublicacion },
         ]
     },
