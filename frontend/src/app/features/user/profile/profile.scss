@@ -1,0 +1,191 @@
+.profile-container {
+  max-width: 850px;
+  margin: 40px auto;
+  padding: 0 40px;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+
+  /* --- HEADER (Basado en el estilo de títulos del registro) --- */
+  .profile-header {
+    margin-bottom: 48px;
+    
+    .user-display-name {
+      font-family: var(--font-serif);
+      font-size: 36px; // Igual al h1 del registro
+      font-weight: 400;
+      line-height: 45px;
+      color: var(--color-text-primary);
+      margin: 0 0 12px 0;
+    }
+
+    .user-tagline {
+      font-family: var(--font-sans);
+      font-size: 16px;
+      color: var(--color-text-muted);
+      max-width: 600px;
+      line-height: 1.4;
+    }
+  }
+
+  .divider {
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin-bottom: 48px;
+    opacity: 0.3;
+  }
+
+  /* --- BLOQUE DE DETALLES --- */
+  .details-block {
+    // Quitamos el background surface para que se vea limpio como el registro
+    padding: 0; 
+
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .block-title {
+      font-family: var(--font-serif);
+      font-size: 22px; // Basado en el overlay-card quote
+      color: var(--color-text-primary);
+    }
+  }
+
+  /* --- MODO LECTURA --- */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+
+      b {
+        font-family: var(--font-sans);
+        font-size: 12px;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        color: var(--color-text-secundary);
+        margin-bottom: 4px;
+      }
+    }
+  }
+
+  /* --- MODO EDICIÓN (Inputs idénticos al Registro) --- */
+  .field {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--color-text-secundary);
+      margin-bottom: 8px;
+    }
+
+    input, select, textarea {
+      background-color: rgba(0,0,0,0.03); // Fondo sutil del registro
+      border: none;
+      padding: 13px 16px;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      color: var(--color-text-primary);
+      outline: none;
+      width: 100%;
+
+      &:focus {
+        background-color: rgba(0,0,0,0.05);
+      }
+    }
+
+    textarea {
+      height: 120px;
+      resize: vertical;
+    }
+  }
+
+  .form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    
+    .field { 
+      flex: 1; 
+      min-width: calc(50% - 16px);
+    }
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  /* --- BOTONES (Lógica de hover y estilos del registro) --- */
+  .form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .btn-save {
+    flex: 1;
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-active-bg);
+      color: var(--color-accent);
+    }
+  }
+
+  .btn-cancel {
+    flex: 1;
+    background-color: #4a0e0e; // Mantenemos el rojo oscuro para "Cancelar"
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f8d7da; // Fondo claro (tipo alerta/cancelar)
+      color: #4a0e0e;           // Texto vuelve al color granate original
+    }
+  }
+
+  .btn-edit-link {
+    background: transparent;
+    border: none;
+    color: var(--color-text-secundary);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    padding: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

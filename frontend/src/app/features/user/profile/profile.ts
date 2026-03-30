@@ -55,6 +55,7 @@ export class Profile implements OnInit {
           nombre_perfil: perfil.nombre_perfil,
           descripcion: perfil.descripcion,
           direccion: perfil.direccion,
+          email: perfil.email,
           telefono: perfil.telefono,
           tipo_actor: perfil.tipo_actor
         });

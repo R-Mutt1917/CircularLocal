@@ -22,6 +22,6 @@ export class UserServices {
       ...profileData
     }
 
-    return this.httpClient.put<any>(`${this.apiUrl}/usuario/${userID}`, body, { headers });    
+    return this.httpClient.put<any>(`${this.apiUrl}/usuarios/perfil/${userID}`, body, { headers });    
   }
 }
