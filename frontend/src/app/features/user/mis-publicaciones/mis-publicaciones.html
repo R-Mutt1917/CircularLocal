@@ -1,0 +1,20 @@
+<section class="section">
+    <div class="contenedor_principal">
+        <div class="contenedor_titulo">
+            <span class="titulo titulo_mis_publicaciones">Mis Publicaciones</span>
+            <span class="titulo titulo_parrafo_mis_publicaciones">Gestiona tus artículos, artesanías y recursos
+                compartidos en la comunidad local.</span>
+        </div>
+        <div class="contenedor_publicaciones">
+            @for (publicacion of publicaciones; track publicacion.id ) {
+            <app-publicacion-perfil [publicacion]="publicacion" (editar)="onEditarPublicacion($event)"
+                (toggleEstado)="onToggleEstadoPublicacion($event)" (eliminar)="onEliminarPublicacion($event)">
+            </app-publicacion-perfil>
+            }@empty {
+            <p>Aun no subiste ninguna publicacion.</p>
+            <button routerLink="/subir">Crear publicacion</button>
+            }
+        </div>
+    </div>
+
+</section>

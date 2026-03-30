@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-header',
   imports: [
     HeaderMenu,
-    RouterLink,
+    //RouterLink,
   ],
   templateUrl: './header.html',
   styleUrl: './header.scss',

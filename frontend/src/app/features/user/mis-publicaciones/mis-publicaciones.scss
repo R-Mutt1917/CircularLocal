@@ -12,41 +12,33 @@
     width: 100%;
     height: auto;
     margin: 4rem 6rem 0 6rem;
-    background-color: #fff;
 }
 
 .contenedor_titulo {
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: #fff;
-
-    background-image:
-        linear-gradient(to right, #f87d362f .6px, transparent .6px),
-        linear-gradient(to bottom, #f87d362f .6px, transparent .6px);
-
-    background-size: 10px 10px;
     height: 8rem;
+    gap: 1rem;
 }
 
 .titulo {
     line-height: 1;
+}
+
+.titulo_mis_publicaciones {
+    color: var(--color-brand);
+    font-size: 4rem;
     font-family: var(--font-serif);
 }
 
-.titulo_explorar {
-    color: var(--color-brand);
-    font-size: 4rem;
-
+.titulo_parrafo_mis_publicaciones {
+    font-size: 1;
+    color: var(--color-text-muted);
 }
 
-.titulo_publicaciones {
-    color: var(--color-text-secundary);
-    font-size: 3.5rem;
-    font-style: italic;
-}
 
-.contenedor_productos {
+.contenedor_publicaciones {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
@@ -54,7 +46,11 @@
 }
 
 @media (max-width: 958px) {
-    .contenedor_productos {
+    .contenedor_publicaciones {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .titulo_mis_publicaciones {
+        font-size: 3rem;
     }
 }

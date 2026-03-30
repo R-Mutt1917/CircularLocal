@@ -15,7 +15,7 @@ import { NavUser } from './layout/user-layout/nav-user/nav-user';
     NavUser,
     Header,
     NavAdmin,
-    FooterPublic,
+    //FooterPublic,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'

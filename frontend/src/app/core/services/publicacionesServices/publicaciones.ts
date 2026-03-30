@@ -12,8 +12,11 @@ export class PublicacionesService {
 
   private http = inject(HttpClient);
 
-  //Se necesita endpoint que traiga publicaciones por id de usuario
-
+  //publicaciones por id de usuario con limit opcional
+  consultarPublicacionesPorUsuario(id: string, limit?: number): Observable<PublicacionModel[]> {
+    const query = limit ? `?limit=${limit}` : '';
+    return this.http.get<PublicacionModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
+  }
 
 
   //Se necesita endpoint de una previsualizacion de publicacion + perfil de usuario con los siguientes atribututos:
@@ -45,5 +48,4 @@ export class PublicacionesService {
 // POST /publicaciones: Crear una nueva publicación.
 // PUT /publicaciones/:id/publicar: Publicar una publicación.
 // PUT /publicaciones/:id/finalizar: Finalizar una publicación.
-// PUT /publicaciones/:id/cancelar: Cancelar una publicación.
 // PUT /publicaciones/:id/cancelar: Cancelar una publicación.

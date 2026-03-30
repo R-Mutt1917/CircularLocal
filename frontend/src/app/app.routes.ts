@@ -9,6 +9,7 @@ import { Publicaciones } from './features/user/publicaciones/publicaciones';
 import { UserDashboard } from './features/user/dashboard/dashboard';
 import { PublicacionDetallada } from './features/user/publicacion-detallada/publicacion-detallada';
 import { SubirPublicacion } from './features/user/subir-publicacion/subir-publicacion';
+import { MisPublicaciones } from './features/user/mis-publicaciones/mis-publicaciones';
 
 
 export const routes: Routes = [
@@ -23,6 +24,7 @@ export const routes: Routes = [
             { path: 'publicaciones', component: Publicaciones },
             { path: 'publicacion/:id', component: PublicacionDetallada },
             { path: 'subir', component: SubirPublicacion },
+            { path: 'mis-publicaciones', component: MisPublicaciones },
         ]
     },
     {
