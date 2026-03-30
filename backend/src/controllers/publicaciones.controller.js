@@ -247,12 +247,13 @@ exports.eliminarTag = async (req, res) => {
 
 exports.getPublicacionesByUser = async (req, res) => {
   try {
-    const publicaciones = await getByUser(req.params.id)
+    const { id } = req.params;
+    const { limit } = req.query;
+    const publicaciones = await getByUser(id, limit)
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones);
     res.status(200).json(publicacionesDTO);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al obtener las publicaciones del usuario.' });
+    res.status(500).json({ mensaje: 'Error al obtener las publicaciones del usuario.', error });
   }
 }
