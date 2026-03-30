@@ -5,7 +5,7 @@ const { getByUser } = require('../services/publicacion.service');
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
   try {
-    const { titulo, descripcion, tagId } = req.body;
+    const { titulo, descripcion, tagId, user_id } = req.body;
 
     // Verificar que el tag exista
     const tag = await Tag.findByPk(tagId);
@@ -18,6 +18,7 @@ exports.crearPublicacion = async (req, res) => {
       titulo,
       descripcion,
       tagId,
+      user_id,
     });
 
     res.status(201).json(nuevaPublicacion);
