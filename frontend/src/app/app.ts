@@ -5,6 +5,7 @@ import { FooterPublic } from './layout/public-layout/footer-public/footer-public
 import { NavAdmin } from './layout/admin-layout/nav-admin/nav-admin';
 import { AuthServices } from './core/services/auth';
 import { NavUser } from './layout/user-layout/nav-user/nav-user';
+import { NavPublic } from './layout/public-layout/nav-public/nav-public';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { NavUser } from './layout/user-layout/nav-user/nav-user';
     RouterOutlet,
     CommonModule,
     NavUser,
+    NavPublic,
     NavAdmin,
     FooterPublic,
   ],

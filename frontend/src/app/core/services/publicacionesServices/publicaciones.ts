@@ -31,12 +31,6 @@ export class PublicacionesService {
   }
 
 
-  //TRAER TODOS LOS ATRIBUTOS DE PUBLICACION + PERFIL DE USUARIO
-  //SE USA PARA MOSTRAR LA PUBLICACION EN LA SECCION DE user/publicacion-detallada
-  consultarPublicacionDetallada(id: string): Observable<PublicacionModel> {
-    return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`)
-  }
-
   crearPublicacion(publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
     return this.http.post<PublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
   }
