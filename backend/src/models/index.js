@@ -14,7 +14,18 @@ Perfil.belongsTo(User, {
     as: 'user'
 });
 
-module.exports = { 
+// Relacion User - Publicacion
+User.hasMany(Publicacion, {
+    foreignKey: 'user_id',
+    as: 'publicaciones'
+});
+
+Publicacion.belongsTo(User, {
+    foreignKey: 'user_id',
+    as: 'user'
+});
+
+module.exports = {
     User,
     Perfil,
     Publicacion,

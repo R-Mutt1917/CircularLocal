@@ -8,6 +8,10 @@ const Publicacion = sequelize.define('Publicacion', {
     autoIncrement: true,
     primaryKey: true,
   },
+  user_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   titulo: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -19,7 +23,7 @@ const Publicacion = sequelize.define('Publicacion', {
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
-  },
+  }
 }, {
   timestamps: true,
   updatedAt: false,

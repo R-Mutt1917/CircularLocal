@@ -1,10 +1,11 @@
 const { Publicacion, Tag } = require('../models');
-const PublicacionDTO = require('../dto/publicacion.dto');
+const { toPublicacionDTO, toPublicacionListDTO } = require('../dto/publicacion.dto');
+const { getByUser } = require('../services/publicacion.service');
 
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
   try {
-    const { titulo, descripcion, tagId } = req.body;
+    const { titulo, descripcion, tagId, user_id } = req.body;
 
     // Verificar que el tag exista
     const tag = await Tag.findByPk(tagId);
@@ -17,6 +18,7 @@ exports.crearPublicacion = async (req, res) => {
       titulo,
       descripcion,
       tagId,
+      user_id,
     });
 
     res.status(201).json(nuevaPublicacion);
@@ -140,7 +142,7 @@ exports.consultarPublicaciones = async (req, res) => {
       order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
     });
 
-    const publicacionesDTO = publicaciones.rows.map((pub) => new PublicacionDTO(pub));
+    const publicacionesDTO = toPublicacionListDTO(publicaciones.rows);
 
     res.status(200).json({
       total: publicaciones.count,
@@ -179,7 +181,7 @@ exports.getPublicaciones = async (req, res) => {
       include: [{ model: Tag, as: 'tag' }],
     });
 
-    const publicacionesDTO = publicaciones.map((pub) => new PublicacionDTO(pub));
+    const publicacionesDTO = toPublicacionListDTO(publicaciones);
 
     res.status(200).json(publicacionesDTO);
   } catch (error) {
@@ -242,3 +244,17 @@ exports.eliminarTag = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al eliminar el tag de la publicación.' });
   }
 };
+
+
+exports.getPublicacionesByUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { limit } = req.query;
+    const publicaciones = await getByUser(id, limit)
+
+    const publicacionesDTO = toPublicacionListDTO(publicaciones);
+    res.status(200).json(publicacionesDTO);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener las publicaciones del usuario.', error });
+  }
+}
