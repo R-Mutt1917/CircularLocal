@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Header } from './layout/public-layout/header/header';
 import { FooterPublic } from './layout/public-layout/footer-public/footer-public';
 import { NavAdmin } from './layout/admin-layout/nav-admin/nav-admin';
 import { AuthServices } from './core/services/auth';
@@ -13,9 +12,8 @@ import { NavUser } from './layout/user-layout/nav-user/nav-user';
     RouterOutlet,
     CommonModule,
     NavUser,
-    Header,
     NavAdmin,
-    //FooterPublic,
+    FooterPublic,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss'
