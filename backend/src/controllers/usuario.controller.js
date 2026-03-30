@@ -36,7 +36,36 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const updateUserWithProfile = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { username, ...profileData } = req.body;
+
+    const userData = username ? { username } : {};
+
+    const result = await userService.updateUserWithProfile(
+      userId,
+      userData,
+      profileData
+    );
+
+    if (!result) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    res.json({
+      message: 'Usuario y perfil actualizados',
+      user: result
+    });
+
+  } catch (error) {
+    console.error("ERROR UPDATE:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
     updateUser,
     deleteUser,
+    updateUserWithProfile
 };
