@@ -160,7 +160,9 @@ exports.consultarDetallePublicacion = async (req, res) => {
     const { id } = req.params;
 
     // Buscar la publicación por ID
-    const publicacion = await Publicacion.findByPk(id);
+    const publicacion = await Publicacion.findByPk(id, {
+      include: [ Material, Producto, Servicio ]
+    });
 
     if (!publicacion) {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
