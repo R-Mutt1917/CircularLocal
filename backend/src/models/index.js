@@ -3,6 +3,7 @@ const Perfil = require('./perfil.model');
 const Publicacion = require('./publicacion.model');
 const Tag = require('./tags.model');
 const Material = require('./material.model');
+const Producto = require('./producto.model');
 
 // Relacion User - Perfil
 User.hasOne(Perfil, {
@@ -32,6 +33,18 @@ Publicacion.hasOne(Material, {
 });
 
 Material.belongsTo(Publicacion, {
+    foreignKey: {
+        name: 'publicacionId',
+        allowNull: false
+    },
+    unique: true
+});
+
+Publicacion.hasOne(Producto, {
+    foreignKey: 'publicacionId',
+});
+
+Producto.belongsTo(Publicacion, {
     foreignKey: {
         name: 'publicacionId',
         allowNull: false

@@ -14,6 +14,14 @@ function toPublicacionDTO(publicacion) {
         };
     }
 
+    if (publicacion.Producto) {
+        detalle = {
+            nombreProducto: publicacion.Producto.nombreProducto,
+            cantidad: publicacion.Producto.cantidad,
+            unidad: publicacion.Producto.unidad,
+        };
+    }
+
     return {
         id: publicacion.id,
         titulo: publicacion.titulo,
