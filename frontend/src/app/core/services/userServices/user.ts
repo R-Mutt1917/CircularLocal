@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AuthServices } from '../auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserServices {
-  apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl;
+  private httpClient = inject(HttpClient);
+  private authService = inject(AuthServices);
 
-  constructor(private httpClient: HttpClient) {}
 
   updateUserProfile(userID: number, userData: any, profileData: any){
-    const token = localStorage.getItem('token');
+    const token = this.authService.getToken();
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
