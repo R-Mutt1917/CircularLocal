@@ -49,6 +49,7 @@ const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
         where: { user_id: userId },
         ...(limit && { limit: parseInt(limit) }),
+        include: [ Material, Producto, Servicio ]
     });
 
     if (publicaciones.length === 0) {
