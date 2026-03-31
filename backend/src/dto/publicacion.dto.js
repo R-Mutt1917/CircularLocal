@@ -3,6 +3,17 @@
 
 function toPublicacionDTO(publicacion) {
     if (!publicacion) return null;
+
+    let detalle = null;
+
+    if (publicacion.Material) {
+        detalle = {
+            nombreMaterial: publicacion.Material.nombreMaterial,
+            cantidad: publicacion.Material.cantidad,
+            unidad: publicacion.Material.unidad,
+        };
+    }
+
     return {
         id: publicacion.id,
         titulo: publicacion.titulo,
@@ -10,6 +21,8 @@ function toPublicacionDTO(publicacion) {
         tag: publicacion.tag ? publicacion.tag.name : (publicacion.tagId || null),
         user_id: publicacion.user_id,
         createdAt: publicacion.createdAt || undefined,
+        tipo: publicacion.tipo,
+        detalle
     };
 }
 

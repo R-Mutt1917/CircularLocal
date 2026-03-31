@@ -23,6 +23,10 @@ const Publicacion = sequelize.define('Publicacion', {
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
+  },
+  tipo: {
+    type: DataTypes.ENUM('MATERIAL', 'PRODUCTO', 'SERVICIO'),
+    allowNull: false,
   }
 }, {
   timestamps: true,

@@ -1,11 +1,11 @@
 const { Publicacion, Tag } = require('../models');
 const { toPublicacionDTO, toPublicacionListDTO } = require('../dto/publicacion.dto');
-const { getByUser } = require('../services/publicacion.service');
+const publicacionService = require('../services/publicacion.service');
 
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
   try {
-    const { titulo, descripcion, tagId, user_id } = req.body;
+    const { tagId, ...pubData } = req.body
 
     // Verificar que el tag exista
     const tag = await Tag.findByPk(tagId);
@@ -14,14 +14,9 @@ exports.crearPublicacion = async (req, res) => {
     }
 
     // Crear la publicación
-    const nuevaPublicacion = await Publicacion.create({
-      titulo,
-      descripcion,
-      tagId,
-      user_id,
-    });
+    const nuevaPublicacion = await publicacionService.crearPublicacion(req.body);
 
-    res.status(201).json(nuevaPublicacion);
+    res.status(201).json(toPublicacionDTO(nuevaPublicacion));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al crear la publicación.' });
@@ -250,7 +245,7 @@ exports.getPublicacionesByUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { limit } = req.query;
-    const publicaciones = await getByUser(id, limit)
+    const publicaciones = await publicacionService.getByUser(id, limit)
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones);
     res.status(200).json(publicacionesDTO);

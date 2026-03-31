@@ -1,4 +1,37 @@
 const { Publicacion } = require('../models');
+const Material = require('../models/material.model');
+
+const crearPublicacion = async (data) => {
+    const { tipo, detalle, ...pubData } = data;
+
+    const t = await Publicacion.sequelize.transaction();
+
+    try {
+        // 1. Crear publicación base
+        const publicacion = await Publicacion.create(
+            { ...pubData, tipo },
+            { transaction: t }
+        );
+
+        // 2. Crear subtipo
+        if (tipo === 'MATERIAL') {
+            await Material.create({
+                ...detalle,
+                publicacionId: publicacion.id
+            }, { transaction: t });
+        }
+
+        await t.commit();
+
+        return await Publicacion.findByPk(publicacion.id, {
+            include: [Material]
+        });
+
+    } catch (error) {
+        await t.rollback();
+        throw error;
+    }
+}
 
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
@@ -13,4 +46,4 @@ const getByUser = async (userId, limit) => {
     return publicaciones
 }
 
-module.exports = { getByUser }
+module.exports = { getByUser, crearPublicacion }
