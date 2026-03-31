@@ -4,16 +4,18 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PublicacionModel } from '../../../shared/models/publicaciones.model';
 import { CommonModule } from '@angular/common';
 import { Publicacion } from '../components/publicacion/publicacion';
+import { SolicitarIntercambioModalComponent } from '../solicitar-intercambio-modal/solicitar-intercambio-modal';
 
 @Component({
   selector: 'app-publicacion-detallada',
-  imports: [CommonModule, Publicacion, RouterLink],
+  imports: [CommonModule, Publicacion, RouterLink, SolicitarIntercambioModalComponent],
   templateUrl: './publicacion-detallada.html',
   styleUrl: './publicacion-detallada.scss',
 })
 export class PublicacionDetallada {
   private route = inject(ActivatedRoute);
   // private publicacionesService = inject(PublicacionesService);
+  mostrarModal = false;
 
   // ── Perfil estático
   perfil = {
@@ -111,4 +113,13 @@ Busco a cambio materiales de ferretería o herramientas de mano en buen estado p
       //CREAR SERVICE DE OBTENER OTROS PRODUCTOS DEL PERFIL
     });
   }
+
+  abrirModal(): void {
+    this.mostrarModal = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
 }
