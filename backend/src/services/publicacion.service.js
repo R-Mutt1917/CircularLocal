@@ -1,6 +1,7 @@
 const { Publicacion } = require('../models');
 const Material = require('../models/material.model');
 const Producto = require('../models/producto.model');
+const Servicio = require('../models/servicio.model');
 
 const crearPublicacion = async (data) => {
     const { tipo, detalle, ...pubData } = data;
@@ -25,12 +26,17 @@ const crearPublicacion = async (data) => {
                 ...detalle,
                 publicacionId: publicacion.id
             }, { transaction: t });
+        } else if (tipo === 'SERVICIO') {
+            await Servicio.create({
+                ...detalle,
+                publicacionId: publicacion.id
+            }, { transaction: t });
         }
 
         await t.commit();
 
         return await Publicacion.findByPk(publicacion.id, {
-            include: [ Material, Producto ]
+            include: [ Material, Producto, Servicio ]
         });
 
     } catch (error) {

@@ -22,6 +22,14 @@ function toPublicacionDTO(publicacion) {
         };
     }
 
+    if (publicacion.Servicio) {
+        detalle = {
+            modalidad: publicacion.Servicio.modalidad,
+            disponibilidadHoraria: publicacion.Servicio.disponibilidadHoraria,
+            zonaCobertura: publicacion.Servicio.zonaCobertura
+        };
+    }
+
     return {
         id: publicacion.id,
         titulo: publicacion.titulo,
