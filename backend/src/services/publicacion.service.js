@@ -45,6 +45,58 @@ const crearPublicacion = async (data) => {
     }
 }
 
+const editarPublicacion = async (id, data) => {
+    const { detalle, tipo, ...pubData } = data;
+
+    const t = await Publicacion.sequelize.transaction();
+
+    try {
+        const publicacion = await Publicacion.findByPk(id, {
+            include: [Material, Producto, Servicio],
+            transaction: t
+        });
+
+        if (!publicacion) {
+            await t.rollback();
+            return null;
+        }
+
+        // Actualiza la base
+        await publicacion.update(
+            {
+                ...pubData,
+                //fechaActualizacion: new Date()
+            },
+            { transaction: t }
+        );
+
+        // Actualiza el tipo especifico
+        if (detalle) {
+            if (publicacion.tipo === 'MATERIAL' && publicacion.Material) {
+                await publicacion.Material.update(detalle, { transaction: t });
+            }
+
+            if (publicacion.tipo === 'PRODUCTO' && publicacion.Producto) {
+                await publicacion.Producto.update(detalle, { transaction: t });
+            }
+
+            if (publicacion.tipo === 'SERVICIO' && publicacion.Servicio) {
+                await publicacion.Servicio.update(detalle, { transaction: t });
+            }            
+        }
+
+        await t.commit();
+
+        return await Publicacion.findByPk(publicacion.id, {
+            include: [ Material, Producto, Servicio ]
+        });
+
+    } catch (error) {
+        await t.rollback();
+        throw error;
+    }
+};
+
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
         where: { user_id: userId },
@@ -59,4 +111,8 @@ const getByUser = async (userId, limit) => {
     return publicaciones
 }
 
-module.exports = { getByUser, crearPublicacion }
+module.exports = {
+    getByUser,
+    crearPublicacion,
+    editarPublicacion,
+};

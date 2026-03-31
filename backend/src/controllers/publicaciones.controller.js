@@ -93,6 +93,30 @@ exports.cancelarPublicacion = async (req, res) => {
 exports.editarPublicacion = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const publicacionActualizada = await publicacionService.editarPublicacion(
+      id,
+      req.body
+    );
+
+    if (!publicacionActualizada) {
+      return res.status(404).json({
+        mensaje: 'Publicación no encontrada.'
+      });
+    }
+
+    res.status(200).json(toPublicacionDTO(publicacionActualizada));
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      mensaje: 'Error al editar la publicación.'
+    });
+  }
+};
+  /*
+  try {
+    const { id } = req.params;
     const { titulo, descripcion, imagenPrincipal, estadoPublicacion } = req.body;
 
     // Buscar la publicación por ID
@@ -113,12 +137,13 @@ exports.editarPublicacion = async (req, res) => {
     // Guardar los cambios
     await publicacion.save();
 
-    res.status(200).json(publicacion);
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al editar la publicación.' });
   }
 };
+*/
 
 // Consultar publicaciones con paginación
 exports.consultarPublicaciones = async (req, res) => {
@@ -168,7 +193,7 @@ exports.consultarDetallePublicacion = async (req, res) => {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
-    res.status(200).json(publicacion);
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al consultar el detalle de la publicación.' });
