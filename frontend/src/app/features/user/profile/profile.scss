@@ -2,16 +2,16 @@
   max-width: 850px;
   margin: 40px auto;
   padding: 0 40px;
+  padding-bottom: 40px;
   background-color: var(--color-bg);
   color: var(--color-text-primary);
 
-  /* --- HEADER (Basado en el estilo de títulos del registro) --- */
   .profile-header {
     margin-bottom: 48px;
     
     .user-display-name {
       font-family: var(--font-serif);
-      font-size: 36px; // Igual al h1 del registro
+      font-size: 36px; 
       font-weight: 400;
       line-height: 45px;
       color: var(--color-text-primary);
@@ -34,9 +34,7 @@
     opacity: 0.3;
   }
 
-  /* --- BLOQUE DE DETALLES --- */
   .details-block {
-    // Quitamos el background surface para que se vea limpio como el registro
     padding: 0; 
 
     .block-header {
@@ -48,12 +46,10 @@
 
     .block-title {
       font-family: var(--font-serif);
-      font-size: 22px; // Basado en el overlay-card quote
+      font-size: 22px;
       color: var(--color-text-primary);
     }
   }
-
-  /* --- MODO LECTURA --- */
   .info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -76,7 +72,6 @@
     }
   }
 
-  /* --- MODO EDICIÓN (Inputs idénticos al Registro) --- */
   .field {
     margin-bottom: 24px;
     display: flex;
@@ -93,7 +88,7 @@
     }
 
     input, select, textarea {
-      background-color: rgba(0,0,0,0.03); // Fondo sutil del registro
+      background-color: rgba(0,0,0,0.03); 
       border: none;
       padding: 13px 16px;
       font-family: var(--font-sans);
@@ -128,7 +123,6 @@
     width: 100%;
   }
 
-  /* --- BOTONES (Lógica de hover y estilos del registro) --- */
   .form-actions {
     display: flex;
     gap: 16px;
@@ -159,7 +153,7 @@
 
   .btn-cancel {
     flex: 1;
-    background-color: #4a0e0e; // Mantenemos el rojo oscuro para "Cancelar"
+    background-color: #4a0e0e; 
     color: #fff;
     border: none;
     padding: 16px;
@@ -168,8 +162,8 @@
     cursor: pointer;
 
     &:hover {
-      background-color: #f8d7da; // Fondo claro (tipo alerta/cancelar)
-      color: #4a0e0e;           // Texto vuelve al color granate original
+      background-color: #f8d7da;
+      color: #4a0e0e;
     }
   }
 
@@ -188,4 +182,89 @@
       text-decoration: underline;
     }
   }
+
+  .danger-zone {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .danger-info {
+
+    h3 {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: #8b1e1e;
+    }
+
+    p {
+      font-family: var(--font-sans);
+      margin: 0;
+      color: var(--color-text-primary);
+    }
+
+    span {
+      font-size: 14px;
+      color: var(--color-text-muted);
+    }
+  }
+
+  .btn-delete {
+    flex: 1;
+    background-color: #4a0e0e; 
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f8d7da;
+      color: #4a0e0e;
+    }
+  }
+
+
+  .danger-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .btn-cancel-delete {
+    flex: 1;
+    background-color: #4a0e0e; 
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f8d7da;
+      color: #4a0e0e;
+    }
+  }
+
+  .btn-confirm-delete {
+    flex: 1;
+    background-color: #4a0e0e; 
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f8d7da;
+      color: #4a0e0e;
+    }
+  }
+
 }

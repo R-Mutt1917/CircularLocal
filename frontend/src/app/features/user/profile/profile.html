@@ -79,5 +79,34 @@
         </div>
       </form>
     }
+    
+    <div class="danger-zone">
+    
+      <div class="danger-info">
+        <h3>Eliminar cuenta</h3>
+        <p>¿Estás seguro de que deseas eliminar tu cuenta?</p>
+        <span>Esta acción no se puede deshacer.</span>
+      </div>
+    
+      @if (!showDeleteConfirm) {
+        <button class="btn-delete" (click)="showDeleteConfirm = true">
+          Eliminar Usuario
+        </button>
+      }
+    
+      @if (showDeleteConfirm) {
+        <div class="danger-actions">
+          <button class="btn-cancel-delete" (click)="showDeleteConfirm = false">
+            Cancelar
+          </button>
+        
+          <button class="btn-confirm-delete" (click)="confirmDelete()">
+            Sí, eliminar
+          </button>
+        </div>
+      }
+    
+    </div>
+
   </section>
 </div>

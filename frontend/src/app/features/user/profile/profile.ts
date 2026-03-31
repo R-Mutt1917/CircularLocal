@@ -16,6 +16,7 @@ export class Profile implements OnInit {
   form!: FormGroup;
   isEditMode = false;
   loading = false;
+  showDeleteConfirm = false;
 
   constructor(private fb: FormBuilder, private perfilService: Perfil , private authServices: AuthServices, private userServices: UserServices){}
 
@@ -38,6 +39,19 @@ export class Profile implements OnInit {
       telefono: [''],
       email: ['', [Validators.required, Validators.email]],
       tipo_actor: ['', Validators.required],
+    });
+  }
+
+  confirmDelete(){
+    this.showDeleteConfirm = false;
+  
+    this.userServices.deleteUser(this.user.id).subscribe({
+      next: () => {
+        alert('Usuario eliminado correctamente');
+        localStorage.removeItem('token');
+        location.href = '/login';
+      },
+      error: () => alert('Error al eliminar usuario')
     });
   }
 

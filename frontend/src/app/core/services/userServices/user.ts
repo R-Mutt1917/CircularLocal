@@ -26,4 +26,14 @@ export class UserServices {
 
     return this.httpClient.put<any>(`${this.apiUrl}/usuarios/perfil/${userID}`, body, { headers });    
   }
+
+  deleteUser(userID: number){
+    const token =this.authService.getToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.httpClient.delete<any>(`${this.apiUrl}/usuarios/${userID}`, { headers });
+  }
 }
