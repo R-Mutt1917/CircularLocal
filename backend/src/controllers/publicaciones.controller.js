@@ -1,6 +1,9 @@
 const { Publicacion, Tag } = require('../models');
 const { toPublicacionDTO, toPublicacionListDTO } = require('../dto/publicacion.dto');
 const publicacionService = require('../services/publicacion.service');
+const Material = require('../models/material.model');
+const Producto = require('../models/producto.model');
+const Servicio = require('../models/servicio.model');
 
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
@@ -135,6 +138,7 @@ exports.consultarPublicaciones = async (req, res) => {
       offset,
       limit: parseInt(limit),
       order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
+      include: [ Material, Producto, Servicio ]
     });
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones.rows);
