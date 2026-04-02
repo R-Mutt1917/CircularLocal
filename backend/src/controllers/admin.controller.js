@@ -1,13 +1,14 @@
 const adminService = require('../services/admin.service');
 
 const banearUsuario = async (req, res) => {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
+    const userId = parseInt(req.params.id);
+    if (isNaN(userId)) {
         return res.status(400).json({ message: "ID inválido" });
     }
 
     try {
-        const user = await adminService.banUser(id);
+        const adminId = req.user.id
+        const user = await adminService.banUser(userId, adminId);
 
         if (!user) {
             return res.status(404).json({

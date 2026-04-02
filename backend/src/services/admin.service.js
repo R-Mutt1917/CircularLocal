@@ -1,7 +1,11 @@
 const { User } = require('../models');
 
-const banUser = async (id) => {
-    const user = await User.findByPk(id);
+const banUser = async (userId, adminId) => {
+    if (adminId === userId) {
+        throw new Error("No puedes banearte a ti mismo");
+    }
+
+    const user = await User.findByPk(userId);
     if (!user) return null;
 
     if (!user.activo) {
