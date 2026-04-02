@@ -34,4 +34,5 @@ router.delete('/:id/tags', publicacionesController.eliminarTag);
 
 router.get('/user/:id', publicacionesController.getPublicacionesByUser)
 
+
 module.exports = router;

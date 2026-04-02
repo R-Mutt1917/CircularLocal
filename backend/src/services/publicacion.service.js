@@ -1,4 +1,4 @@
-const { Publicacion } = require('../models');
+const { Publicacion, User, Perfil } = require('../models');
 
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
@@ -12,5 +12,7 @@ const getByUser = async (userId, limit) => {
 
     return publicaciones
 }
+
+
 
 module.exports = { getByUser }
