@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Form, SearchFilters } from './components/form/form';
 import { Publicacion } from '../components/publicacion/publicacion';
-import { PublicacionModel } from '../../../shared/models/publicaciones.model';
+import { PublicacionPreviewModel } from '../../../shared/models/publicaciones.model';
 // import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
 
 @Component({
@@ -15,89 +15,119 @@ export class Publicaciones implements OnInit {
 
   // private publicacionesService = inject(PublicacionesService);
 
-  publicaciones: PublicacionModel[] = [];
+  publicaciones: PublicacionPreviewModel[] = [];
 
   private readonly publicacionesOriginales = [
     {
       id: 1,
       titulo: "Sillas de madera para restaurante",
-      descripcion: "Vendo lote de 20 sillas de madera en buen estado, ideales para restaurante o bar. Poco uso, sin roturas.",
-      tipo: "material",
-      tag: "Metalurgia",
-      fechaCreacion: "2026-01-10T09:00:00.000Z",
-      fechaActualizacion: "2026-01-15T14:30:00.000Z",
-      fechaFinalizacion: "2026-03-10T09:00:00.000Z",
-      fechaEliminacion: null,
-      estado: "publicada",
       imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
-      verificada: true,
-      reportada: false
+      estado: "publicada",
+      tipo: "material",
+      tagId: 1,
+      user_id: 101,
+      createdAt: "2026-01-10T09:00:00.000Z",
+      tag: {
+        id: 1,
+        nombre: "Metalurgia",
+      },
+      user: {
+        id: 101,
+        perfil: {
+          nombre_perfil: "Juan Maderas",
+          imagen: "https://i.pravatar.cc/150?img=1",
+        },
+      },
     },
     {
       id: 2,
       titulo: "Desarrollo de sitio web a medida",
-      descripcion: "Ofrezco servicio de desarrollo web full-stack con React y Node.js. Entrega en 4 semanas, incluye diseño responsive y panel de administración.",
-      tipo: "servicio",
-      tag: "Madera Recup.",
-      fechaCreacion: "2026-02-01T11:00:00.000Z",
-      fechaActualizacion: "2026-02-01T11:00:00.000Z",
-      fechaFinalizacion: "2026-05-01T11:00:00.000Z",
-      fechaEliminacion: null,
+      imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
       estado: "publicada",
-      imagenPrincipal: "https://picsum.photos/seed/webdev/800/600",
-      verificada: true,
-      reportada: false
+      tipo: "producto",
+      tagId: 2,
+      user_id: 102,
+      createdAt: "2026-02-01T11:00:00.000Z",
+      tag: {
+        id: 2,
+        nombre: "Madera Recup.",
+      },
+      user: {
+        id: 102,
+        perfil: {
+          nombre_perfil: "Dev Solutions",
+          imagen: "https://i.pravatar.cc/150?img=2",
+        },
+      },
     },
     {
       id: 3,
       titulo: "Notebook Lenovo ThinkPad E14",
-      descripcion: "ThinkPad E14 Gen 3, Ryzen 5 5600U, 16GB RAM, 512GB SSD. Comprada en 2023, batería al 91%. Incluye cargador original.",
-      tipo: "producto",
-      tag: "Cerámica",
-      fechaCreacion: "2025-11-20T08:45:00.000Z",
-      fechaActualizacion: "2026-03-01T10:00:00.000Z",
-      fechaFinalizacion: "2025-12-31T23:59:59.000Z",
-      fechaEliminacion: null,
-      estado: "finalizada",
-      imagenPrincipal: "https://picsum.photos/seed/thinkpad/800/600",
-      verificada: false,
-      reportada: false
+      imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
+      estado: "publicada",
+      tipo: "servicio",
+      tagId: 3,
+      user_id: 103,
+      createdAt: "2025-11-20T08:45:00.000Z",
+      tag: {
+        id: 3,
+        nombre: "Cerámica",
+      },
+      user: {
+        id: 103,
+        perfil: {
+          nombre_perfil: "Tech Store",
+          imagen: "https://i.pravatar.cc/150?img=3",
+        },
+      },
     },
     {
       id: 4,
       titulo: "Clases de inglés para empresas",
-      descripcion: "Dictado de clases grupales e individuales orientadas al inglés de negocios. Certificación disponible. Modalidad online o presencial en Córdoba capital.",
-      tipo: "servicio",
-      tag: "Madera Recup.",
-      fechaCreacion: "2026-03-05T16:20:00.000Z",
-      fechaActualizacion: "2026-03-05T16:20:00.000Z",
-      fechaFinalizacion: null,
-      fechaEliminacion: null,
-      estado: "borrador",
-      imagenPrincipal: "https://picsum.photos/seed/ingles/800/600",
-      verificada: false,
-      reportada: false
+      imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
+      estado: "publicada",
+      tipo: "material",
+      tagId: 2,
+      user_id: 104,
+      createdAt: "2026-03-05T16:20:00.000Z",
+      tag: {
+        id: 2,
+        nombre: "Madera Recup.",
+      },
+      user: {
+        id: 104,
+        perfil: {
+          nombre_perfil: "English Pro",
+          imagen: "https://i.pravatar.cc/150?img=4",
+        },
+      },
     },
     {
       id: 5,
       titulo: "Cemento Portland a granel por bolsa",
-      descripcion: "Venta de cemento Portland normal en bolsas de 50kg. Stock disponible: 200 bolsas. Retiro en depósito zona industrial de Córdoba.",
-      tipo: "material",
-      tag: "Cerámica",
-      fechaCreacion: "2025-09-15T07:30:00.000Z",
-      fechaActualizacion: "2025-10-01T09:00:00.000Z",
-      fechaFinalizacion: "2025-10-15T07:30:00.000Z",
-      fechaEliminacion: "2025-10-20T12:00:00.000Z",
-      estado: "cancelada",
-      imagenPrincipal: "https://picsum.photos/seed/cemento/800/600",
-      verificada: true,
-      reportada: true
-    }
+      imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
+      estado: "publicada",
+      tipo: "producto",
+      tagId: 3,
+      user_id: 105,
+      createdAt: "2025-09-15T07:30:00.000Z",
+      tag: {
+        id: 3,
+        nombre: "Cerámica",
+      },
+      user: {
+        id: 105,
+        perfil: {
+          nombre_perfil: "Materiales Córdoba",
+          imagen: "https://i.pravatar.cc/150?img=5",
+        },
+      },
+    },
   ];
 
   ngOnInit() {
     // TODO: descomentar cuando el servicio esté listo
-    // this.publicacionesService.consultarPublicaciones().subscribe({
+    // this.publicacionesService.consultarPublicacionesPreview().subscribe({
     //   next: (publicaciones) => {
     //   PREGUNTAR SI HAY QUE HACER ESTA FILTRACION POR FRONT O BACK
     //     this.publicaciones = publicaciones.filter((publicacion) => publicacion.estado === 'publicada');
@@ -113,11 +143,12 @@ export class Publicaciones implements OnInit {
   filtradorDeProductos(filters: SearchFilters) {
     this.publicaciones = this.publicacionesOriginales.filter((publicacion) => {
       const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
-        || publicacion.descripcion.toLowerCase().includes(filters.searchQuery.toLowerCase());
+
       const matchTag = filters.tagSeleccionado === ''
         || publicacion.tag.toLowerCase() === filters.tagSeleccionado.toLowerCase();
       const matchType = filters.tipoSeleccionado === ''
         || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
+        || publicacion.tag.nombre === filters.tagSeleccionado;
 
       return matchQuery && matchTag && matchType;
     });

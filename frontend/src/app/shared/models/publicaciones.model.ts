@@ -43,3 +43,56 @@ export interface CrearPublicacionModel {
     imagen: File | string | null;
     detalle: DetalleMaterial | DetalleProducto | DetalleServicio;
 }
+
+export interface PublicacionPreviewModel {
+    id: number;
+    titulo: string;
+    imagenPrincipal: string;
+    estado: string;
+    tipo: string;
+    tagId: number;
+    user_id: number;
+    createdAt: string;
+    tag: {
+        id: number;
+        nombre: string;
+    };
+    user: {
+        id: number;
+        perfil: {
+            nombre_perfil: string;
+            imagen: string;
+        };
+    };
+}
+
+export interface PublicacionDetalleModel {
+    id: number;
+    titulo: string; // len: [5, 255]
+    descripcion: string;
+    tipo: string; // 'material', 'producto', 'servicio'
+    fechaCreacion: string;
+    fechaActualizacion: string;
+    fechaFinalizacion: string | null;
+    fechaEliminacion: string | null;
+    estado: string; // 'borrador', 'publicada', 'finalizada', 'cancelada'
+    imagenPrincipal: string;
+    verificada: boolean;
+    reportada: boolean;
+    tag: {
+        id: number;
+        nombre: string;
+    };
+    user: {
+        id: number;
+        perfil: {
+            nombre_perfil: string;
+            imagen: string;
+            descripcion: string;
+            direccion: string;
+            telefono: string;
+            email: string;
+            tipo_actor: string;
+        };
+    };
+}
