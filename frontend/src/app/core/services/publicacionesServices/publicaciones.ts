@@ -12,12 +12,12 @@ export class PublicacionesService {
 
   private http = inject(HttpClient);
 
-  consultarPublicacionesPorUsuario(id: string, limit?: number): Observable<PublicacionModel[]> {
+  consultarPublicacionesPorUsuario(id: number, limit?: number): Observable<PublicacionPreviewModel[]> {
     const query = limit ? `?limit=${limit}` : '';
-    return this.http.get<PublicacionModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
+    return this.http.get<PublicacionPreviewModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
   }
 
-  consultarPublicacionDetalle(id: string): Observable<PublicacionDetalleModel> {
+  consultarPublicacionDetalle(id: number): Observable<PublicacionDetalleModel> {
     return this.http.get<PublicacionDetalleModel>(`${this.apiUrl}/publicaciones/perfil/${id}`);
   }
 
