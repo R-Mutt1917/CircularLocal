@@ -3,7 +3,7 @@ const { Publicacion, User, Perfil, Tag } = require('../models');
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
         where: { user_id: userId },
-        include: [{ model: Tag, as: 'tag' }],
+        include: [{ model: Tag, as: 'tag' }, Material, Producto, Servicio],
         ...(limit && { limit: parseInt(limit) }),
     });
 
