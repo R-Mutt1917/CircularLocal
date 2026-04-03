@@ -35,7 +35,13 @@ export class PublicacionesService {
     return this.http.post<PublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
   }
 
+  obtenerPublicacion(id: number): Observable<PublicacionModel> {
+    return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`);
+  }
 
+  actualizarPublicacion(id: number, publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
+    return this.http.put<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`, publicacion);
+  }
 
 }
 

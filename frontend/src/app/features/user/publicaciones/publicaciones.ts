@@ -99,7 +99,8 @@ export class Publicaciones implements OnInit {
     // TODO: descomentar cuando el servicio esté listo
     // this.publicacionesService.consultarPublicaciones().subscribe({
     //   next: (publicaciones) => {
-    //     this.publicaciones = publicaciones;
+    //   PREGUNTAR SI HAY QUE HACER ESTA FILTRACION POR FRONT O BACK
+    //     this.publicaciones = publicaciones.filter((publicacion) => publicacion.estado === 'publicada');
     //   },
     //   error: (err) => {
     //     console.log(err);
@@ -115,8 +116,10 @@ export class Publicaciones implements OnInit {
         || publicacion.descripcion.toLowerCase().includes(filters.searchQuery.toLowerCase());
       const matchTag = filters.tagSeleccionado === ''
         || publicacion.tag.toLowerCase() === filters.tagSeleccionado.toLowerCase();
+      const matchType = filters.tipoSeleccionado === ''
+        || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
 
-      return matchQuery && matchTag;
+      return matchQuery && matchTag && matchType;
     });
   }
 

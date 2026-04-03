@@ -10,6 +10,7 @@ import { UserDashboard } from './features/user/dashboard/dashboard';
 import { PublicacionDetallada } from './features/user/publicacion-detallada/publicacion-detallada';
 import { SubirPublicacion } from './features/user/subir-publicacion/subir-publicacion';
 import { MisPublicaciones } from './features/user/mis-publicaciones/mis-publicaciones';
+import { EditarPublicacion } from './features/user/editar-publicacion/editar-publicacion';
 
 
 export const routes: Routes = [
@@ -25,6 +26,7 @@ export const routes: Routes = [
             { path: 'publicacion/:id', component: PublicacionDetallada },
             { path: 'subir', component: SubirPublicacion },
             { path: 'mis-publicaciones', component: MisPublicaciones },
+            { path: 'editar-publicacion/:id', component: EditarPublicacion },
         ]
     },
     {
