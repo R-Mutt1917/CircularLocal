@@ -1,0 +1,18 @@
+<div class="modal-backdrop">
+    <div class="modal">
+        <h2>Solicitar intercambio</h2>
+
+        <textarea [(ngModel)]="mensajeInicial" placeholder="Escribí un mensaje inicial para el dueño de la publicación">
+    </textarea>
+
+        <div class="acciones">
+            <button class="btn-cancelar" (click)="cerrar.emit()">
+                Cancelar
+            </button>
+
+            <button class="btn btn--primary" (click)="enviarSolicitud()">
+                Enviar solicitud
+            </button>
+        </div>
+    </div>
+</div>

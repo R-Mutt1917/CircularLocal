@@ -1,11 +1,15 @@
 const { Publicacion, Tag } = require('../models');
 const { toPublicacionDTO, toPublicacionListDTO, toPublicacionDetalleDTO, toPublicacionPreviewDTO, toPublicacionPreviewListDTO } = require('../dto/publicacion.dto');
 const { getByUser, getPublicacionDetalle, getPreviewPublicaciones } = require('../services/publicacion.service');
+const publicacionService = require('../services/publicacion.service');
+const Material = require('../models/material.model');
+const Producto = require('../models/producto.model');
+const Servicio = require('../models/servicio.model');
 
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
   try {
-    const { titulo, descripcion, tagId, user_id } = req.body;
+    const { tagId, ...pubData } = req.body
 
     // Verificar que el tag exista
     const tag = await Tag.findByPk(tagId);
@@ -14,14 +18,9 @@ exports.crearPublicacion = async (req, res) => {
     }
 
     // Crear la publicación
-    const nuevaPublicacion = await Publicacion.create({
-      titulo,
-      descripcion,
-      tagId,
-      user_id,
-    });
+    const nuevaPublicacion = await publicacionService.crearPublicacion(req.body);
 
-    res.status(201).json(nuevaPublicacion);
+    res.status(201).json(toPublicacionDTO(nuevaPublicacion));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al crear la publicación.' });
@@ -95,6 +94,30 @@ exports.cancelarPublicacion = async (req, res) => {
 exports.editarPublicacion = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const publicacionActualizada = await publicacionService.editarPublicacion(
+      id,
+      req.body
+    );
+
+    if (!publicacionActualizada) {
+      return res.status(404).json({
+        mensaje: 'Publicación no encontrada.'
+      });
+    }
+
+    res.status(200).json(toPublicacionDTO(publicacionActualizada));
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      mensaje: 'Error al editar la publicación.'
+    });
+  }
+};
+  /*
+  try {
+    const { id } = req.params;
     const { titulo, descripcion, imagenPrincipal, estadoPublicacion } = req.body;
 
     // Buscar la publicación por ID
@@ -115,12 +138,13 @@ exports.editarPublicacion = async (req, res) => {
     // Guardar los cambios
     await publicacion.save();
 
-    res.status(200).json(publicacion);
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al editar la publicación.' });
   }
 };
+*/
 
 // Consultar publicaciones con paginación
 exports.consultarPublicaciones = async (req, res) => {
@@ -140,6 +164,7 @@ exports.consultarPublicaciones = async (req, res) => {
       offset,
       limit: parseInt(limit),
       order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
+      include: [ Material, Producto, Servicio ]
     });
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones.rows);
@@ -161,13 +186,15 @@ exports.consultarDetallePublicacion = async (req, res) => {
     const { id } = req.params;
 
     // Buscar la publicación por ID
-    const publicacion = await Publicacion.findByPk(id);
+    const publicacion = await Publicacion.findByPk(id, {
+      include: [ Material, Producto, Servicio ]
+    });
 
     if (!publicacion) {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
-    res.status(200).json(publicacion);
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al consultar el detalle de la publicación.' });
@@ -250,7 +277,7 @@ exports.getPublicacionesByUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { limit } = req.query;
-    const publicaciones = await getByUser(id, limit)
+    const publicaciones = await publicacionService.getByUser(id, limit)
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones);
     res.status(200).json(publicacionesDTO);

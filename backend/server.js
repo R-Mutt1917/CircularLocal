@@ -2,6 +2,7 @@
 const app = require('./src/app');
 const { initDB } = require('./src/config/database');
 const { seedTags } = require('./src/seeds/tag.seed');
+const { seedAdmin } = require('./src/seeds/admin.seed');
 
 const PORT = process.env.PORT || 3000;
 
@@ -10,6 +11,7 @@ async function startServer() {
         await initDB();
 
         await seedTags();
+        await seedAdmin();
 
         app.listen(PORT, () => {
             console.log(`Servidor corriendo en el puerto ${PORT}`);
