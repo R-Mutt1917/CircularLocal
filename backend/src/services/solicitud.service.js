@@ -1,4 +1,4 @@
-const { Solicitud, Publicacion } = require('../models');
+const { Solicitud, Publicacion, User } = require('../models');
 
 const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
@@ -20,6 +20,26 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
     return solicitud;
 }
 
+const obtenerSolicitudesPendientes = async (userId) => {
+    return await Solicitud.findAll({
+        where: { estadoSolicitud: 'PENDIENTE' },
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion',
+                where: { user_id: userId },
+                attributes: ['id', 'titulo'] // Agregar imagenPrincipal
+            },
+            {
+                model: User,
+                as: 'solicitante',
+                attributes: ['id', 'username']
+            }
+        ]
+    });
+};
+
 module.exports = {
     crearSolicitud,
+    obtenerSolicitudesPendientes,
 }
