@@ -6,6 +6,7 @@ const Solicitud = require('./solicitud.model');
 const Material = require('./material.model');
 const Producto = require('./producto.model');
 const Servicio = require('./servicio.model');
+const Intercambio = require('./intercambio.model');
 
 // Relacion User - Perfil
 User.hasOne(Perfil, {
@@ -87,10 +88,21 @@ Servicio.belongsTo(Publicacion, {
     unique: true
 });
 
+// Relacion Intercambio - Solicitud
+Intercambio.hasOne(Solicitud, {
+    foreignKey: 'solicitudId',
+    unique: true
+})
+
+Solicitud.belongsTo(Intercambio, {
+    foreignKey: 'solicitudId'
+})
+
 module.exports = {
     User,
     Perfil,
     Publicacion,
     Tag,
     Solicitud,
+    Intercambio,
 };
