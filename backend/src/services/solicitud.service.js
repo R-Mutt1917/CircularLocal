@@ -1,4 +1,5 @@
 const { Solicitud, Publicacion } = require('../models');
+const intercambioService = require('./intercambio.service');
 
 const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
@@ -56,7 +57,11 @@ const aceptarSolicitud = async (solicitudId) => {
         throw new Error("No se puede aceptar esta solicitud");
     }
 
+    // Actualiza es estado de la Solicitud
     solicitud.update({ estadoSolicitud: 'ACEPTADA' });
+
+    // Crea el Intercambio
+    intercambioService.crearIntercambio(solicitudId);
 
     return solicitud;
 }
