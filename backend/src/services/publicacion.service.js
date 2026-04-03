@@ -1,4 +1,4 @@
-const { Publicacion, User, Perfil } = require('../models');
+const { Publicacion, User, Perfil, Tag } = require('../models');
 
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
@@ -35,7 +35,7 @@ const getPublicacionDetalle = async (publicacionId) => {
 
 const getPreviewPublicaciones = async () => {
     const publicaciones = await Publicacion.findAll({
-        attributes: ['id', 'titulo', 'tagId', 'user_id', 'createdAt'],
+        attributes: ['id', 'titulo', 'tipo', 'tagId', 'user_id', 'createdAt'],
         include: [
             { model: Tag, as: 'tag' },
             {
