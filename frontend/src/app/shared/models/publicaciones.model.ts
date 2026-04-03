@@ -21,3 +21,46 @@ export interface CrearPublicacionModel {
     tipo: string;
     imagen: File | null;
 }
+
+export interface PublicacionPreviewModel {
+    id: number;
+    titulo: string;
+    tagId: number;
+    user_id: number;
+    createdAt: string;
+    tag: {
+        id: number;
+        nombre: string;
+    };
+    user: {
+        id: number;
+        perfil: {
+            nombre_perfil: string;
+            imagen: string;
+        };
+    };
+}
+
+export interface PublicacionDetalleModel {
+    id: number;
+    titulo: string;
+    tipo: string;
+    tagId: number;
+    user_id: number;
+    createdAt: string;
+    tag: {
+        id: number;
+        nombre: string;
+    };
+    user: {
+        id: number;
+        perfil: {
+            nombre_perfil: string;
+            descripcion: string;
+            direccion: string;
+            telefono: string;
+            email: string;
+            tipo_actor: string;
+        };
+    };
+}

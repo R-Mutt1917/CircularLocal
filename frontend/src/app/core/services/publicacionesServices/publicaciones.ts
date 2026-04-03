@@ -24,6 +24,7 @@ export class PublicacionesService {
   //PERFIL: id, nombre, foto de perfil
 
 
+
   //CUANDO SE CREE NUEVO ENDOPOINT DE PREVISUALIZACION NO USAR MAS ESTE ENDPOINT
   //SE USA PARA MOSTRAR TODAS LAS PUBLICACIONES EN LA SECCION DE user/publicaciones
   consultarPublicaciones(): Observable<PublicacionModel[]> {
@@ -39,7 +40,3 @@ export class PublicacionesService {
 
 }
 
-// POST /publicaciones: Crear una nueva publicación.
-// PUT /publicaciones/:id/publicar: Publicar una publicación.
-// PUT /publicaciones/:id/finalizar: Finalizar una publicación.
-// PUT /publicaciones/:id/cancelar: Cancelar una publicación.
