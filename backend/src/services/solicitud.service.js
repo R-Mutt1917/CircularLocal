@@ -35,7 +35,8 @@ const obtenerSolicitudesPendientes = async (userId) => {
                 as: 'solicitante',
                 attributes: ['id', 'username']
             }
-        ]
+        ],
+        order: [['createdAt', 'DESC']]
     });
 };
 
