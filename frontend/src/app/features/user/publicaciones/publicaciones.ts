@@ -145,10 +145,9 @@ export class Publicaciones implements OnInit {
       const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
 
       const matchTag = filters.tagSeleccionado === ''
-        || publicacion.tag.toLowerCase() === filters.tagSeleccionado.toLowerCase();
+        || publicacion.tag.nombre === filters.tagSeleccionado;
       const matchType = filters.tipoSeleccionado === ''
         || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
-        || publicacion.tag.nombre === filters.tagSeleccionado;
 
       return matchQuery && matchTag && matchType;
     });
