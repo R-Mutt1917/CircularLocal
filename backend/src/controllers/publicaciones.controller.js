@@ -1,5 +1,6 @@
 const { Publicacion, Tag } = require('../models');
-const { toPublicacionDTO, toPublicacionListDTO } = require('../dto/publicacion.dto');
+const { toPublicacionDTO, toPublicacionListDTO, toPublicacionDetalleDTO, toPublicacionPreviewDTO, toPublicacionPreviewListDTO } = require('../dto/publicacion.dto');
+const { getByUser, getPublicacionDetalle, getPreviewPublicaciones } = require('../services/publicacion.service');
 const publicacionService = require('../services/publicacion.service');
 const Material = require('../models/material.model');
 const Producto = require('../models/producto.model');
@@ -282,5 +283,28 @@ exports.getPublicacionesByUser = async (req, res) => {
     res.status(200).json(publicacionesDTO);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al obtener las publicaciones del usuario.', error });
+  }
+}
+
+
+exports.getPublicacionDetalle = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const publicacion = await getPublicacionDetalle(id);
+    const publicacionDTO = toPublicacionDetalleDTO(publicacion);
+    res.status(200).json(publicacionDTO);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener la publicación.', error });
+
+  }
+}
+
+exports.getPreviewPublicaciones = async (req, res) => {
+  try {
+    const publicaciones = await getPreviewPublicaciones();
+    const publicacionesDTO = toPublicacionPreviewListDTO(publicaciones);
+    res.status(200).json(publicacionesDTO);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al obtener las publicaciones.', error });
   }
 }

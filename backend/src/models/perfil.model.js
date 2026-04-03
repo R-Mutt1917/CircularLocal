@@ -16,7 +16,9 @@ const Perfil = sequelize.define('Perfil', {
     nombre_perfil: {
         type: DataTypes.STRING
     },
-
+    imagen: {
+        type: DataTypes.STRING
+    },
     descripcion: {
         type: DataTypes.STRING
     },

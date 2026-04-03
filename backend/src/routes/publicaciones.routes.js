@@ -34,4 +34,11 @@ router.delete('/:id/tags', publicacionesController.eliminarTag);
 
 router.get('/user/:id', publicacionesController.getPublicacionesByUser)
 
+//RUTA PRA OBTENER PUBLICACION CON PERFIL
+router.get('/perfil/:id', publicacionesController.getPublicacionDetalle)
+
+//RUTA PARA OBTENER PREVISUALIZACION DE PUBLICACIONES
+router.get('/preview', publicacionesController.getPreviewPublicaciones)
+
+
 module.exports = router;

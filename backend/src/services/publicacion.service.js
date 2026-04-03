@@ -1,4 +1,4 @@
-const { Publicacion } = require('../models');
+const { Publicacion, User, Perfil, Tag } = require('../models');
 const Material = require('../models/material.model');
 const Producto = require('../models/producto.model');
 const Servicio = require('../models/servicio.model');
@@ -100,19 +100,82 @@ const editarPublicacion = async (id, data) => {
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
         where: { user_id: userId },
+        include: [{ model: Tag, as: 'tag' }, Material, Producto, Servicio],
         ...(limit && { limit: parseInt(limit) }),
         include: [ Material, Producto, Servicio ]
     });
 
-    if (publicaciones.length === 0) {
-        throw new Error('No se encontraron publicaciones para el usuario');
+    return publicaciones || [];
+}
+
+const getPublicacionDetalle = async (publicacionId) => {
+    const publicacion = await Publicacion.findByPk(publicacionId, {
+include: [
+            { model: Tag, as: 'tag' },
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    { model: Perfil, as: 'perfil' }
+                ]
+            },
+            Material,
+            Producto,
+            Servicio
+        ]
+            { model: Tag, as: 'tag' },
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    { model: Perfil, as: 'perfil' }
+                ]
+            }
+        ]
+    });
+
+    if (!publicacion) {
+        throw new Error('Publicacion no encontrada');
     }
 
-    return publicaciones
+    return publicacion;
+};
+
+
+const getPreviewPublicaciones = async () => {
+    const publicaciones = await Publicacion.findAll({
+        attributes: ['id', 'titulo', 'tipo', 'tagId', 'user_id', 'createdAt'],
+        include: [
+            { model: Tag, as: 'tag' },
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    {
+                        model: Perfil,
+                        as: 'perfil',
+                        attributes: ['nombre_perfil', 'imagen']
+},
+Material,
+Producto,
+Servicio
+
+                ]
+            }
+        ]
+    });
+
+    return publicaciones || [];
 }
+
 
 module.exports = {
     getByUser,
     crearPublicacion,
     editarPublicacion,
+    getPublicacionDetalle,
+    getPreviewPublicaciones
 };

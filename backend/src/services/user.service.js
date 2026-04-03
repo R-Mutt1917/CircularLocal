@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
-const { User } = require('../models');
+const { User, Perfil } = require('../models');
 const { createProfile, updateProfile } = require('./perfil.service');
 
 const register = async (username, password) => {
@@ -43,34 +43,27 @@ const login = async (username, password) => {
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
-
-    try {
-        if (userData.username) {
-            const exists = await User.findOne({
-                where: { username: userData.username },
-            });
-            if (exists && exists.id !== userId) {
-                throw new Error('El nombre de usuario ya está en uso');
-            }
-            await User.update({ ...userData }, {
-                where: { id: userId },
-            });
-        }
-
-        if (profileData) {
-            // updateProfile implementacion pendiente en perfil.service.js
-        }
-
-
-        return await User.findByPk(userId, {
-            include: ['perfil']
+    if (userData.username) {
+        const exists = await User.findOne({
+            where: { username: userData.username },
         });
-    } catch (error) {
-        throw error;
+        if (exists && exists.id !== userId) {
+            throw new Error('El nombre de usuario ya está en uso');
+        }
+        await User.update({ ...userData }, {
+            where: { id: userId },
+        });
     }
+
+    if (profileData) {
+        // updateProfile implementacion pendiente en perfil.service.js
+    }
+
+    return await User.findByPk(userId, {
+        include: [{ model: Perfil, as: 'perfil' }]
+    });
 };
 
-module.exports = { register, login, updateUserWithProfile }
 // Baja logica del usuario
 const deleteUser = async (id) => {
     const user = await User.findByPk(id);
@@ -85,5 +78,8 @@ const deleteUser = async (id) => {
 
     return user;
 }
+
+
+
 
 module.exports = { register, login, updateUserWithProfile, deleteUser }
