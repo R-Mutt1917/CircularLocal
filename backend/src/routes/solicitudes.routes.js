@@ -9,4 +9,7 @@ router.post('/', verifyToken, solicitudesController.crearSolicitud);
 // Ruta para rechazar una solicitud
 router.patch('/:id/rechazar', verifyToken, solicitudesController.rechazarSolicitud);
 
+// Ruta para cancelar solicitud
+router.patch('/:id/cancelar', verifyToken, solicitudesController.cancelarSolicitud);
+
 module.exports = router;

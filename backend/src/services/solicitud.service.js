@@ -34,7 +34,21 @@ const rechazarSolicitud = async (solicitudId) => {
     return solicitud;
 }
 
+const cancelarSolicitud = async (solicitudId) => {
+    const solicitud = await Solicitud.findByPk(solicitudId);
+    if (!solicitud) return null;
+
+    if (solicitud.estadoSolicitud === 'CANCELADA') {
+        throw new Error("Esta solicitud ya esta Cancelada");
+    }
+
+    solicitud.update({ estadoSolicitud: 'CANCELADA' });
+
+    return solicitud;
+}
+
 module.exports = {
     crearSolicitud,
     rechazarSolicitud,
+    cancelarSolicitud,
 }
