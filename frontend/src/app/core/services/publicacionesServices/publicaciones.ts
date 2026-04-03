@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { CrearPublicacionModel, PublicacionModel } from '../../../shared/models/publicaciones.model';
+import { CrearPublicacionModel, PublicacionDetalleModel, PublicacionModel, PublicacionPreviewModel } from '../../../shared/models/publicaciones.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,22 +12,18 @@ export class PublicacionesService {
 
   private http = inject(HttpClient);
 
-  //publicaciones por id de usuario con limit opcional
   consultarPublicacionesPorUsuario(id: string, limit?: number): Observable<PublicacionModel[]> {
     const query = limit ? `?limit=${limit}` : '';
     return this.http.get<PublicacionModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
   }
 
+  consultarPublicacionDetalle(id: string): Observable<PublicacionDetalleModel> {
+    return this.http.get<PublicacionDetalleModel>(`${this.apiUrl}/publicaciones/perfil/${id}`);
+  }
 
-  //Se necesita endpoint de una previsualizacion de publicacion + perfil de usuario con los siguientes atribututos:
-  //PUBLICACION: id, imagenPrincipal, titulo, tag, estado, tipo
-  //PERFIL: id, nombre, foto de perfil
 
-
-  //CUANDO SE CREE NUEVO ENDOPOINT DE PREVISUALIZACION NO USAR MAS ESTE ENDPOINT
-  //SE USA PARA MOSTRAR TODAS LAS PUBLICACIONES EN LA SECCION DE user/publicaciones
-  consultarPublicaciones(): Observable<PublicacionModel[]> {
-    return this.http.get<PublicacionModel[]>(`${this.apiUrl}/publicaciones`);
+  consultarPublicacionesPreview(): Observable<PublicacionPreviewModel[]> {
+    return this.http.get<PublicacionPreviewModel[]>(`${this.apiUrl}/publicaciones/preview`);
   }
 
 
@@ -39,7 +35,3 @@ export class PublicacionesService {
 
 }
 
-// POST /publicaciones: Crear una nueva publicación.
-// PUT /publicaciones/:id/publicar: Publicar una publicación.
-// PUT /publicaciones/:id/finalizar: Finalizar una publicación.
-// PUT /publicaciones/:id/cancelar: Cancelar una publicación.
