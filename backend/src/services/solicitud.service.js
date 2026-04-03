@@ -20,6 +20,21 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
     return solicitud;
 }
 
+const rechazarSolicitud = async (solicitudId) => {
+    const solicitud = await Solicitud.findByPk(solicitudId);
+    if (!solicitud) return null;
+
+    // Solo las solicitudes Pendientes se puede rechazar
+    if (solicitud.estadoSolicitud !== 'PENDIENTE') {
+        throw new Error("No se puede rechazar esta solicitud");
+    }
+
+    solicitud.update({ estadoSolicitud: 'RECHAZADA' });
+
+    return solicitud;
+}
+
 module.exports = {
     crearSolicitud,
+    rechazarSolicitud,
 }

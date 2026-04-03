@@ -6,4 +6,7 @@ const { verifyToken } = require('../middlewares/auth.middleware');
 // Ruta para crear una solicitud
 router.post('/', verifyToken, solicitudesController.crearSolicitud);
 
+// Ruta para rechazar una solicitud
+router.patch('/:id/rechazar', verifyToken, solicitudesController.rechazarSolicitud);
+
 module.exports = router;
