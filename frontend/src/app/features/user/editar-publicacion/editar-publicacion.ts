@@ -28,13 +28,14 @@ export class EditarPublicacion {
     });
   }
 
+
   cargarPublicacion() {
     this.publicacion = {
       id: 1,
       titulo: 'Material de Construcción',
       descripcion: 'Vendo restos de material de construcción',
       tipo: 'MATERIAL',
-      tag: 'Construcción',
+      tag: 'Metalurgia',
       user_id: 1,
       createdAt: '2022-01-01',
       detalle: {
