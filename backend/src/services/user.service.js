@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
-const { User, Perfil, Publicacion } = require('../models');
+const { User, Perfil } = require('../models');
 const { createProfile, updateProfile } = require('./perfil.service');
 
 const register = async (username, password) => {
@@ -79,20 +79,7 @@ const deleteUser = async (id) => {
     return user;
 }
 
-const getPublicacionPerfil = async (userId) => {
-    const user = await User.findByPk(userId, {
-        include: [
-            { model: Publicacion, as: 'publicaciones' },
-            { model: Perfil, as: 'perfil' }
-        ]
-    });
-
-    if (!user) {
-        throw new Error('Usuario no encontrado');
-    }
-
-    return user;
-}
 
 
-module.exports = { register, login, updateUserWithProfile, deleteUser, getPublicacionPerfil }
+
+module.exports = { register, login, updateUserWithProfile, deleteUser }

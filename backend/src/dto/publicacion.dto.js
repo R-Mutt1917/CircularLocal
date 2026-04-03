@@ -18,9 +18,60 @@ function toPublicacionListDTO(publicaciones) {
     return publicaciones.map(toPublicacionDTO);
 }
 
+function toPublicacionDetalleDTO(publicacion) {
+    if (!publicacion) return null;
+    return {
+        id: publicacion.id,
+        titulo: publicacion.titulo,
+        descripcion: publicacion.descripcion,
+        tag: publicacion.tag ? publicacion.tag.name : (publicacion.tagId || null),
+        user_id: publicacion.user_id,
+        createdAt: publicacion.createdAt || undefined,
+        user: publicacion.user ? {
+            id: publicacion.user.id,
+            perfil: publicacion.user.perfil ? {
+                nombre_perfil: publicacion.user.perfil.nombre_perfil,
+                imagen: publicacion.user.perfil.imagen,
+                descripcion: publicacion.user.perfil.descripcion,
+                direccion: publicacion.user.perfil.direccion,
+                telefono: publicacion.user.perfil.telefono,
+                email: publicacion.user.perfil.email,
+                tipo_actor: publicacion.user.perfil.tipo_actor,
+            } : null
+        } : null
+    };
+}
+
+function toPublicacionPreviewDTO(publicacion) {
+    if (!publicacion) return null;
+    return {
+        id: publicacion.id,
+        titulo: publicacion.titulo,
+        tag: publicacion.tag ? publicacion.tag.name : (publicacion.tagId || null),
+        user_id: publicacion.user_id,
+        createdAt: publicacion.createdAt || undefined,
+        user: publicacion.user ? {
+            id: publicacion.user.id,
+            perfil: publicacion.user.perfil ? {
+                nombre_perfil: publicacion.user.perfil.nombre_perfil,
+                imagen: publicacion.user.perfil.imagen,
+            } : null
+        } : null
+    };
+}
+
+function toPublicacionPreviewListDTO(publicaciones) {
+    if (!Array.isArray(publicaciones)) return [];
+    return publicaciones.map(toPublicacionPreviewDTO);
+}
+
+
 module.exports = {
     toPublicacionDTO,
-    toPublicacionListDTO
+    toPublicacionListDTO,
+    toPublicacionDetalleDTO,
+    toPublicacionPreviewDTO,
+    toPublicacionPreviewListDTO
 };
 //class PublicacionDTO {
 //        this.titulo = publicacion.titulo;

@@ -3,16 +3,60 @@ const { Publicacion, User, Perfil } = require('../models');
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
         where: { user_id: userId },
+        include: [{ model: Tag, as: 'tag' }],
         ...(limit && { limit: parseInt(limit) }),
     });
 
-    if (publicaciones.length === 0) {
-        throw new Error('No se encontraron publicaciones para el usuario');
+    return publicaciones || [];
+}
+
+const getPublicacionDetalle = async (publicacionId) => {
+    const publicacion = await Publicacion.findByPk(publicacionId, {
+        include: [
+            { model: Tag, as: 'tag' },
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    { model: Perfil, as: 'perfil' }
+                ]
+            }
+        ]
+    });
+
+    if (!publicacion) {
+        throw new Error('Publicacion no encontrada');
     }
 
-    return publicaciones
+    return publicacion;
+};
+
+
+const getPreviewPublicaciones = async () => {
+    const publicaciones = await Publicacion.findAll({
+        attributes: ['id', 'titulo', 'tagId', 'user_id', 'createdAt'],
+        include: [
+            { model: Tag, as: 'tag' },
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    {
+                        model: Perfil,
+                        as: 'perfil',
+                        attributes: ['nombre_perfil', 'imagen']
+                    }
+
+                ]
+            }
+        ]
+    });
+
+    return publicaciones || [];
 }
 
 
+module.exports = { getByUser, getPublicacionDetalle, getPreviewPublicaciones }
 
-module.exports = { getByUser }
