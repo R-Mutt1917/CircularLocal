@@ -12,4 +12,7 @@ router.patch('/:id/rechazar', verifyToken, solicitudesController.rechazarSolicit
 // Ruta para cancelar solicitud
 router.patch('/:id/cancelar', verifyToken, solicitudesController.cancelarSolicitud);
 
+// Ruta para aceptar solicitud
+router.patch('/:id/aceptar', verifyToken, solicitudesController.aceptarSolicitud);
+
 module.exports = router;

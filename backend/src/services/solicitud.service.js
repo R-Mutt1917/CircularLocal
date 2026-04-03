@@ -47,8 +47,23 @@ const cancelarSolicitud = async (solicitudId) => {
     return solicitud;
 }
 
+const aceptarSolicitud = async (solicitudId) => {
+    const solicitud = await Solicitud.findByPk(solicitudId);
+    if (!solicitud) return null;
+
+    // Solo las solicitudes Pendientes se puede aceptar
+    if (solicitud.estadoSolicitud !== 'PENDIENTE') {
+        throw new Error("No se puede aceptar esta solicitud");
+    }
+
+    solicitud.update({ estadoSolicitud: 'ACEPTADA' });
+
+    return solicitud;
+}
+
 module.exports = {
     crearSolicitud,
     rechazarSolicitud,
     cancelarSolicitud,
+    aceptarSolicitud,
 }
