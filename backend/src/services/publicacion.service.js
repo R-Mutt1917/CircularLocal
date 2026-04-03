@@ -12,7 +12,20 @@ const getByUser = async (userId, limit) => {
 
 const getPublicacionDetalle = async (publicacionId) => {
     const publicacion = await Publicacion.findByPk(publicacionId, {
-        include: [
+include: [
+            { model: Tag, as: 'tag' },
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    { model: Perfil, as: 'perfil' }
+                ]
+            },
+            Material,
+            Producto,
+            Servicio
+        ]
             { model: Tag, as: 'tag' },
             {
                 model: User,
@@ -47,7 +60,10 @@ const getPreviewPublicaciones = async () => {
                         model: Perfil,
                         as: 'perfil',
                         attributes: ['nombre_perfil', 'imagen']
-                    }
+},
+Material,
+Producto,
+Servicio
 
                 ]
             }
