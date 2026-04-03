@@ -2,6 +2,7 @@ const User = require('./usuario.model');
 const Perfil = require('./perfil.model');
 const Publicacion = require('./publicacion.model');
 const Tag = require('./tags.model');
+const Solicitud = require('./solicitud.model');
 const Material = require('./material.model');
 const Producto = require('./producto.model');
 const Servicio = require('./servicio.model');
@@ -28,6 +29,27 @@ Publicacion.belongsTo(User, {
     as: 'user'
 });
 
+// Relacion Publicacion - Solicitud
+Publicacion.hasMany(Solicitud, {
+    foreignKey: 'publicacionId',
+    as: 'solicitudes'
+})
+
+Solicitud.belongsTo(Publicacion, {
+    foreignKey: 'publicacionId',
+    as: 'publicacion'
+})
+
+// Relacion User - Solicitud
+User.hasMany(Solicitud, {
+    foreignKey: 'solicitanteId',
+    as: 'solicitudes'
+})
+
+Solicitud.belongsTo(User, {
+    foreignKey: 'solicitanteId',
+    as: 'solicitante'
+})
 // Relacion Publicacion - Tipo Recursos
 Publicacion.hasOne(Material, {
     foreignKey: 'publicacionId',
@@ -70,4 +92,5 @@ module.exports = {
     Perfil,
     Publicacion,
     Tag,
+    Solicitud,
 };
