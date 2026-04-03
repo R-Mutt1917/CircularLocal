@@ -25,6 +25,9 @@ export interface CrearPublicacionModel {
 export interface PublicacionPreviewModel {
     id: number;
     titulo: string;
+    imagenPrincipal: string;
+    estado: string;
+    tipo: string;
     tagId: number;
     user_id: number;
     createdAt: string;
@@ -43,11 +46,17 @@ export interface PublicacionPreviewModel {
 
 export interface PublicacionDetalleModel {
     id: number;
-    titulo: string;
-    tipo: string;
-    tagId: number;
-    user_id: number;
-    createdAt: string;
+    titulo: string; // len: [5, 255]
+    descripcion: string;
+    tipo: string; // 'material', 'producto', 'servicio'
+    fechaCreacion: string;
+    fechaActualizacion: string;
+    fechaFinalizacion: string | null;
+    fechaEliminacion: string | null;
+    estado: string; // 'borrador', 'publicada', 'finalizada', 'cancelada'
+    imagenPrincipal: string;
+    verificada: boolean;
+    reportada: boolean;
     tag: {
         id: number;
         nombre: string;
@@ -56,6 +65,7 @@ export interface PublicacionDetalleModel {
         id: number;
         perfil: {
             nombre_perfil: string;
+            imagen: string;
             descripcion: string;
             direccion: string;
             telefono: string;

@@ -21,9 +21,11 @@
 
             <div class="detalle-tags">
                 <span class="tag tag--tipo">{{ idPublicacion.tipo | titlecase }}</span>
-                <span class="tag tag--categoria">{{ idPublicacion.tag }}</span>
+                <span class="tag tag--categoria">{{ idPublicacion.tag.nombre }}</span>
                 @if(idPublicacion.verificada){
                 <span class="tag tag--verificada">Verificada</span>
+                }@else{
+                <span class="tag tag--no-verificada">No verificada</span>
                 }
             </div>
 
@@ -53,23 +55,23 @@
             <div class="perfil-card">
                 <div class="perfil-card__header">
                     <div class="perfil-card__avatar">
-                        <span>{{ perfil.nombre_perfil.charAt(0) }}</span>
+                        <img class="perfil-card__avatar__img" [src]="idPublicacion.user.perfil.imagen" alt="">
                     </div>
                     <div class="perfil-card__info">
-                        <h3 class="perfil-card__nombre">{{ perfil.nombre_perfil }}</h3>
-                        <span class="perfil-card__rol">{{ perfil.tipo_actor }}</span>
+                        <h3 class="perfil-card__nombre">{{ idPublicacion.user.perfil.nombre_perfil }}</h3>
+                        <span class="perfil-card__rol">{{ idPublicacion.user.perfil.tipo_actor }}</span>
                     </div>
                 </div>
 
                 <ul class="perfil-card__stats">
                     <li>
                         <span class="perfil-card__stats-icon">📍</span>
-                        <span>{{ perfil.direccion }}</span>
+                        <span>{{ idPublicacion.user.perfil.direccion }}</span>
                     </li>
                 </ul>
 
                 <blockquote class="perfil-card__bio">
-                    "{{ perfil.descripcion }}"
+                    "{{ idPublicacion.user.perfil.descripcion }}"
                 </blockquote>
 
                 <button class="btn btn--primary">Solicitar intercambio</button>
@@ -87,7 +89,8 @@
     </div>
 
     <section class="otras-publicaciones">
-        <h2 class="otras-publicaciones__titulo">Otras publicaciones de {{ perfil.nombre_perfil }}</h2>
+        <h2 class="otras-publicaciones__titulo">Otras publicaciones de {{ idPublicacion.user.perfil.nombre_perfil }}
+        </h2>
         <div class="otras-publicaciones__grid">
             @for(publicacion of otrasPublicaciones; track publicacion.id){
             <app-publicacion [publicacion]="publicacion"></app-publicacion>
