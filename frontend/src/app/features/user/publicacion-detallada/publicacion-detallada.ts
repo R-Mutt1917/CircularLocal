@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 // import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
-import { PublicacionModel } from '../../../shared/models/publicaciones.model';
+import { PublicacionDetalleModel, PublicacionModel, PublicacionPreviewModel } from '../../../shared/models/publicaciones.model';
 import { CommonModule } from '@angular/common';
 import { Publicacion } from '../components/publicacion/publicacion';
 import { SolicitarIntercambioModalComponent } from '../solicitar-intercambio-modal/solicitar-intercambio-modal';
@@ -17,80 +17,103 @@ export class PublicacionDetallada {
   // private publicacionesService = inject(PublicacionesService);
   mostrarModal = false;
 
-  // ── Perfil estático
-  perfil = {
-    nombre_perfil: 'Mateo',
-    tipo_actor: 'RECICLADOR' as 'COOPERATIVA' | 'RECICLADOR' | 'EMPRENDEDOR',
-    descripcion: 'Me especializo en el rescate de maderas nobles de demoliciones patrimoniales. Circularidad es mi filosofía.',
-    direccion: 'Córdoba Capital, Alberdi',
-  };
-
   // ── Publicación detallada estática 
-  idPublicacion: PublicacionModel = {
+  idPublicacion: PublicacionDetalleModel = {
     id: 1,
-    titulo: 'Tablones de Cedro Recuperado (S. XIX)',
-    descripcion: `Este lote incluye tablones de cedro macizo con dimensiones variables entre 2 y 3 metros.
-Han sido limpiados de clavos y tratados preventivamente contra xilófagos de manera orgánica.
-Son ideales para revestimientos de interior o fabricación de mobiliario de autor.
-Busco a cambio materiales de ferretería o herramientas de mano en buen estado para mi taller de restauración.`,
-    tipo: 'material',
-    tag: 'Madera Recup.',
-    fechaCreacion: '2024-03-01',
-    fechaActualizacion: '2024-03-15',
+    titulo: "Sillas de madera para restaurante",
+    descripcion: "Venta de mobiliario gastronómico usado en buen estado",
+    tipo: "material",
+    fechaCreacion: "2026-04-03T10:30:00.000Z",
+    fechaActualizacion: "2026-04-03T10:30:00.000Z",
     fechaFinalizacion: null,
     fechaEliminacion: null,
-    estado: 'publicada',
-    imagenPrincipal: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800',
+    estado: "publicada",
+    imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
     verificada: true,
     reportada: false,
-  };
+    tag: {
+      id: 1,
+      nombre: "Muebles"
+    },
+    user: {
+      id: 1,
+      perfil: {
+        nombre_perfil: "Juan Pablo Medina",
+        imagen: "https://i.pravatar.cc/150?img=1",
+        descripcion: "Venta de mobiliario gastronómico usado en buen estado",
+        direccion: "Córdoba Capital, Argentina",
+        telefono: "+54 351 1234567",
+        email: "[EMAIL_ADDRESS]",
+        tipo_actor: "vendedor"
+      }
+    }
+  }
+
 
   // ── Otras publicaciones del usuario estáticas
-  otrasPublicaciones: PublicacionModel[] = [
+  otrasPublicaciones: PublicacionPreviewModel[] = [
+    {
+      id: 1,
+      titulo: "Sillas de madera para restaurante",
+      imagenPrincipal: "https://i.pravatar.cc/150?img=1",
+      estado: "publicada",
+      tipo: "material",
+      tagId: 1,
+      user_id: 101,
+      createdAt: "2026-01-10T09:00:00.000Z",
+      tag: {
+        id: 1,
+        nombre: "Metalurgia",
+      },
+      user: {
+        id: 101,
+        perfil: {
+          nombre_perfil: "Juan Maderas",
+          imagen: "https://i.pravatar.cc/150?img=1",
+        },
+      },
+    },
     {
       id: 2,
-      titulo: 'Vigas de hierro doble T',
-      descripcion: 'Vigas estructurales recuperadas de demolición industrial.',
-      tipo: 'material',
-      tag: 'Metalurgia',
-      fechaCreacion: '2024-02-10',
-      fechaActualizacion: '2024-02-20',
-      fechaFinalizacion: null,
-      fechaEliminacion: null,
-      estado: 'publicada',
-      imagenPrincipal: 'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400',
-      verificada: false,
-      reportada: false,
+      titulo: "Desarrollo de sitio web a medida",
+      imagenPrincipal: "https://i.pravatar.cc/150?img=2",
+      estado: "publicada",
+      tipo: "producto",
+      tagId: 2,
+      user_id: 102,
+      createdAt: "2026-02-01T11:00:00.000Z",
+      tag: {
+        id: 2,
+        nombre: "Madera Recup.",
+      },
+      user: {
+        id: 102,
+        perfil: {
+          nombre_perfil: "Dev Solutions",
+          imagen: "https://i.pravatar.cc/150?img=2",
+        },
+      },
     },
     {
       id: 3,
-      titulo: 'Ladrillos Vistos (Lote 500)',
-      descripcion: 'Ladrillos artesanales de principios de siglo recuperados.',
-      tipo: 'material',
-      tag: 'Cerámica',
-      fechaCreacion: '2024-01-05',
-      fechaActualizacion: '2024-01-18',
-      fechaFinalizacion: null,
-      fechaEliminacion: null,
-      estado: 'publicada',
-      imagenPrincipal: 'https://images.unsplash.com/photo-1586717799252-bd134ad00e26?w=400',
-      verificada: true,
-      reportada: false,
-    },
-    {
-      id: 4,
-      titulo: 'Garlopa Manual Carpintero',
-      descripcion: 'Herramienta de carpintería vintage en buen estado.',
-      tipo: 'producto',
-      tag: 'Herramientas',
-      fechaCreacion: '2024-03-20',
-      fechaActualizacion: '2024-03-20',
-      fechaFinalizacion: null,
-      fechaEliminacion: null,
-      estado: 'publicada',
-      imagenPrincipal: 'https://images.unsplash.com/photo-1572981779307-38b8cabb2407?w=400',
-      verificada: false,
-      reportada: false,
+      titulo: "Notebook Lenovo ThinkPad E14",
+      imagenPrincipal: "https://i.pravatar.cc/150?img=3",
+      estado: "publicada",
+      tipo: "servicio",
+      tagId: 3,
+      user_id: 103,
+      createdAt: "2025-11-20T08:45:00.000Z",
+      tag: {
+        id: 3,
+        nombre: "Cerámica",
+      },
+      user: {
+        id: 103,
+        perfil: {
+          nombre_perfil: "Tech Store",
+          imagen: "https://i.pravatar.cc/150?img=3",
+        },
+      },
     },
   ];
 
@@ -100,7 +123,7 @@ Busco a cambio materiales de ferretería o herramientas de mano en buen estado p
       const id = params.get('id');
       console.log('id de ruta:', id);
 
-      // this.publicacionesService.consultarPublicacionDetallada(id!).subscribe({
+      // this.publicacionesService.consultarPublicacionDetalle(id).subscribe({
       //   next: (publicacion) => {
       //     this.idPublicacion = publicacion;
       //     console.log(this.idPublicacion);
@@ -110,7 +133,17 @@ Busco a cambio materiales de ferretería o herramientas de mano en buen estado p
       //   },
       // });
 
-      //CREAR SERVICE DE OBTENER OTROS PRODUCTOS DEL PERFIL
+
+      //this.publicacionesService.consultarPublicacionesPorUsuario(id, 3).subscribe({
+      //  next: (publicaciones) => {
+      //    this.otrasPublicaciones = publicaciones;
+      //    console.log(this.otrasPublicaciones);
+      //  },
+      //  error: (err) => {
+      //    console.log(err);
+      //  },
+      //});
+
     });
   }
 

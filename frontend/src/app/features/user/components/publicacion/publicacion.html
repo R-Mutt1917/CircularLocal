@@ -2,25 +2,22 @@
     <div class="card__image-wrapper">
         <img [src]="publicacion().imagenPrincipal" alt="{{ publicacion().titulo }}" class="card__image" />
 
-        <span class="card__badge card__badge--estado">
-            {{ publicacion().estado}}
-        </span>
-
         <span class="card__badge card__badge--tipo">
             {{ publicacion().tipo}}
         </span>
     </div>
 
     <div class="card__body">
-        <span class="card__tag">{{ publicacion().tag }}</span>
+        <span class="card__tag">{{ publicacion().tag.nombre }}</span>
         <h2 class="card__titulo">{{ publicacion().titulo }}</h2>
 
 
         <div class="card__autor">
             <div class="card__avatar">
-                OBTENER DE PERFIL
+                <img [src]="publicacion().user.perfil.imagen" alt="{{ publicacion().user.perfil.nombre_perfil }}"
+                    class="card__avatar" />
             </div>
-            <span>OBTENER DE PERFIL</span>
+            <span>{{ publicacion().user.perfil.nombre_perfil }}</span>
         </div>
 
         <a class="card__link" routerLink="/app/publicacion/{{ publicacion().id }}">

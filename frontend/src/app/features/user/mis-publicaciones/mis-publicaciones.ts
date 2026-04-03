@@ -3,10 +3,11 @@ import { Component, inject, OnInit } from '@angular/core';
 //import { AuthServices } from '../../../core/services/auth';
 import { PublicacionModel } from '../../../shared/models/publicaciones.model';
 import { PublicacionPerfil } from './components/publicacion-perfil/publicacion-perfil';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-publicaciones',
-  imports: [PublicacionPerfil],
+  imports: [PublicacionPerfil,],
   templateUrl: './mis-publicaciones.html',
   styleUrl: './mis-publicaciones.scss',
 })
@@ -91,6 +92,7 @@ export class MisPublicaciones implements OnInit {
 
   //private publicacionesService = inject(PublicacionesService);
   //private authService = inject(AuthServices);
+  private router = inject(Router);
 
   publicaciones: PublicacionModel[] = [];
 
@@ -106,9 +108,7 @@ export class MisPublicaciones implements OnInit {
 
 
   onEditarPublicacion(publicacion: PublicacionModel) {
-    console.log('Editar:', publicacion);
-    // TODO: Navegar a la página de edición
-    // this.router.navigate(['/editar', publicacion.id]);
+    this.router.navigate(['/app/editar-publicacion', publicacion.id]);
   }
 
   onToggleEstadoPublicacion(publicacion: PublicacionModel) {

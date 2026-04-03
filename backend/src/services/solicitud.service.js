@@ -1,4 +1,5 @@
 const { Solicitud, Publicacion, User } = require('../models');
+const intercambioService = require('./intercambio.service');
 
 const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
@@ -40,7 +41,55 @@ const obtenerSolicitudesPendientes = async (userId) => {
     });
 };
 
+const rechazarSolicitud = async (solicitudId) => {
+    const solicitud = await Solicitud.findByPk(solicitudId);
+    if (!solicitud) return null;
+
+    // Solo las solicitudes Pendientes se puede rechazar
+    if (solicitud.estadoSolicitud !== 'PENDIENTE') {
+        throw new Error("No se puede rechazar esta solicitud");
+    }
+
+    solicitud.update({ estadoSolicitud: 'RECHAZADA' });
+
+    return solicitud;
+}
+
+const cancelarSolicitud = async (solicitudId) => {
+    const solicitud = await Solicitud.findByPk(solicitudId);
+    if (!solicitud) return null;
+
+    if (solicitud.estadoSolicitud === 'CANCELADA') {
+        throw new Error("Esta solicitud ya esta Cancelada");
+    }
+
+    solicitud.update({ estadoSolicitud: 'CANCELADA' });
+
+    return solicitud;
+}
+
+const aceptarSolicitud = async (solicitudId) => {
+    const solicitud = await Solicitud.findByPk(solicitudId);
+    if (!solicitud) return null;
+
+    // Solo las solicitudes Pendientes se puede aceptar
+    if (solicitud.estadoSolicitud !== 'PENDIENTE') {
+        throw new Error("No se puede aceptar esta solicitud");
+    }
+
+    // Actualiza es estado de la Solicitud
+    solicitud.update({ estadoSolicitud: 'ACEPTADA' });
+
+    // Crea el Intercambio
+    intercambioService.crearIntercambio(solicitudId);
+
+    return solicitud;
+}
+
 module.exports = {
     crearSolicitud,
+    rechazarSolicitud,
+    cancelarSolicitud,
+    aceptarSolicitud,
     obtenerSolicitudesPendientes,
 }
