@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const { Perfil } = require('../models');
 
 const createProfile = async (userId) => {
@@ -6,12 +7,14 @@ const createProfile = async (userId) => {
   });
 }
 
-const getPerfil = async (perfilId) => {
-  const perfil = await Perfil.findByPk(perfilId);
+const getPerfil = async (userId) => {
+  const perfil = await Perfil.findOne({
+    where: {user_id: userId}
+  });
   return perfil;
 }
 
-const putPerfil = async (userId, perfilRequestDTO) => {
+const putPerfil = async (userId, perfilRequestDTO, transaction) => {
   // Valida el campo tipo_actor
   const tiposValidos = ['COOPERATIVA', 'RECICLADOR', 'EMPRENDEDOR'];
   if (perfilRequestDTO.tipo_actor && !tiposValidos.includes(perfilRequestDTO.tipo_actor)) {
@@ -20,13 +23,14 @@ const putPerfil = async (userId, perfilRequestDTO) => {
 
   // Busca el perfil asociado al usuario en la BD
   const perfil = await Perfil.findOne({
-    where: { user_id: userId }
+    where: { user_id: userId },
+    transaction
   });
 
   if (!perfil) return null;
 
   // Actualiza el perfil
-  await perfil.update(perfilRequestDTO);
+  await perfil.update(perfilRequestDTO,{ transaction });
 
   return perfil;
 }

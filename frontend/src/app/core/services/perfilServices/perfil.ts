@@ -17,6 +17,7 @@ export class Perfil {
 
   updateUser(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/perfil/${id}`, data);
+
   }
   
 }

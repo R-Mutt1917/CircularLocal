@@ -1,0 +1,112 @@
+<div class="profile-container">
+  
+  <header class="profile-header">
+    <div class="header-content">
+      <h1 class="user-display-name">
+        {{ form.get('nombre_perfil')?.value || 'Cargando...' }}
+      </h1>
+      <p class="user-tagline">
+        {{ form.get('descripcion')?.value || 'Sin descripción de perfil' }}
+      </p>
+    </div>
+  </header>
+
+  <hr class="divider">
+
+  <section class="details-block">
+    <div class="block-header">
+      <h2 class="block-title">Información del Perfil</h2>
+      @if (!isEditMode) {
+        <button class="btn-edit-link" (click)="enableEdit()">Editar información</button>
+      }
+    </div>
+
+    @if (!isEditMode) {
+      <div class="profile-view">
+        <div class="info-grid">
+          <div class="info-item"><b>Usuario:</b> {{ form.get('username')?.value }}</div>
+          <div class="info-item"><b>Email:</b> {{ form.get('email')?.value }}</div>
+          <div class="info-item"><b>Teléfono:</b> {{ form.get('telefono')?.value }}</div>
+          <div class="info-item"><b>Dirección:</b> {{ form.get('direccion')?.value }}</div>
+          <div class="info-item"><b>Tipo de Actor:</b> {{ form.get('tipo_actor')?.value }}</div>
+        </div>
+      </div>
+    }
+
+    @if (isEditMode) {
+      <form [formGroup]="form" (ngSubmit)="save()" class="profile-form">
+        <div class="form-grid">
+          <div class="field">
+            <label>Usuario</label>
+            <input formControlName="username">
+          </div>
+          <div class="field">
+            <label>Nombre de Perfil</label>
+            <input formControlName="nombre_perfil">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input formControlName="email">
+          </div>
+          <div class="field">
+            <label>Teléfono</label>
+            <input formControlName="telefono">
+          </div>
+          <div class="field">
+            <label>Dirección</label>
+            <input formControlName="direccion">
+          </div>
+          <div class="field">
+            <label>TIPO DE ACTOR</label>
+            <select formControlName="tipo_actor">
+            <option value="COOPERATIVA">COOPERATIVA</option>
+            <option value="RECICLADOR">RECICLADOR</option>
+            <option value="EMPRENDEDOR">EMPRENDEDOR</option>
+          </select>
+          </div>
+        </div>
+        
+        <div class="field full-width">
+          <label>Descripción de actividad</label>
+          <textarea formControlName="descripcion"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" (click)="cancelEdit()">CANCELAR</button>
+          <button type="submit" class="btn-save" [disabled]="form.invalid || loading">
+            {{ loading ? 'GUARDANDO...' : 'GUARDAR CAMBIOS' }}
+          </button>
+        </div>
+      </form>
+    }
+    
+    <div class="danger-zone">
+    
+      <div class="danger-info">
+        <h3>Eliminar cuenta</h3>
+        <p>¿Estás seguro de que deseas eliminar tu cuenta?</p>
+        <span>Esta acción no se puede deshacer.</span>
+      </div>
+    
+      @if (!showDeleteConfirm) {
+        <button class="btn-delete" (click)="showDeleteConfirm = true">
+          Eliminar Usuario
+        </button>
+      }
+    
+      @if (showDeleteConfirm) {
+        <div class="danger-actions">
+          <button class="btn-cancel-delete" (click)="showDeleteConfirm = false">
+            Cancelar
+          </button>
+        
+          <button class="btn-confirm-delete" (click)="confirmDelete()">
+            Sí, eliminar
+          </button>
+        </div>
+      }
+    
+    </div>
+
+  </section>
+</div>
