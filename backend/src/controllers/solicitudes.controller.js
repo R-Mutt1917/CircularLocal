@@ -21,6 +21,11 @@ const obtenerSolicitudesPendientes = async (req, res) => {
         const solicitudes = await solicitudService.obtenerSolicitudesPendientes(userId);
 
         res.status(200).json(toListSolicitudesPendientesDTO(solicitudes));
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+}
+
 const rechazarSolicitud = async (req, res) => {
     const solicitudId = parseInt(req.params.id);
     if (isNaN(solicitudId)) {
