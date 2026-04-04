@@ -1,0 +1,29 @@
+<section class="section">
+    <div class="contenedor_principal">
+        <div class="contenedor_titulo">
+            <span class="titulo titulo_mis_publicaciones">Mis Publicaciones</span>
+            <span class="titulo titulo_parrafo_mis_publicaciones">Gestiona tus artículos, artesanías y recursos
+                compartidos en la comunidad local.</span>
+        </div>
+        
+        @if(errorMessage) {
+            <div class="mensaje-error" style="color: red; padding: 1rem; border: 1px solid red; margin-bottom: 1rem; border-radius: 4px;">
+                {{ errorMessage }}
+            </div>
+        }
+
+        <div class="contenedor_publicaciones">
+            @for (publicacion of publicaciones; track publicacion.id ) {
+            <app-publicacion-perfil [publicacion]="publicacion" (editar)="onEditarPublicacion($event)"
+                (toggleEstado)="onToggleEstadoPublicacion($event)" (eliminar)="onEliminarPublicacion($event)">
+            </app-publicacion-perfil>
+            }@empty {
+                <div class="contenedor_empty">
+                    <p>Aun no subiste ninguna publicacion.</p>
+                    <button class="boton_crear_publicacion" routerLink="/app/subir">Crear publicacion</button>
+                </div>
+            }
+        </div>
+    </div>
+
+</section>

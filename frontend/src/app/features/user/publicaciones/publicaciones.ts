@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Form, SearchFilters } from './components/form/form';
 import { Publicacion } from '../components/publicacion/publicacion';
-// import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
+import { PublicacionPreviewModel } from '../../../shared/models/publicaciones.model';
+import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
 
 @Component({
   selector: 'app-publicaciones',
@@ -10,113 +11,35 @@ import { Publicacion } from '../components/publicacion/publicacion';
   styleUrl: './publicaciones.scss',
 })
 export class Publicaciones implements OnInit {
+  private publicacionesService = inject(PublicacionesService);
 
-  // private publicacionesService = inject(PublicacionesService);
-
-  publicaciones: any[] = [];
+  publicaciones: PublicacionPreviewModel[] = [];
 
   ngOnInit() {
-    // TODO: descomentar cuando el servicio esté listo
-    // this.publicacionesService.consultarPublicaciones().subscribe({
-    //   next: (publicaciones) => {
-    //     this.publicaciones = publicaciones;
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //   },
-    // });
+    this.publicacionesService.consultarPublicacionesPreview().subscribe({
+      next: (publicaciones) => {
+        this.publicaciones = publicaciones;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
 
-    this.publicaciones = [...this.publicacionesOriginales];
   }
 
   filtradorDeProductos(filters: SearchFilters) {
-    this.publicaciones = this.publicacionesOriginales.filter((publicacion) => {
+    this.publicaciones = this.publicaciones.filter((publicacion) => {
       const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
-        || publicacion.descripcion.toLowerCase().includes(filters.searchQuery.toLowerCase());
       const matchTag = filters.tagSeleccionado === ''
-        || publicacion.tag.toLowerCase() === filters.tagSeleccionado.toLowerCase();
+        || publicacion.tag === filters.tagSeleccionado;
+      const matchType = filters.tipoSeleccionado === ''
+        || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
 
-      return matchQuery && matchTag;
+      return matchQuery && matchTag && matchType;
     });
   }
 
-  private readonly publicacionesOriginales = [
-    {
-      id: 1,
-      titulo: "Sillas de madera para restaurante",
-      descripcion: "Vendo lote de 20 sillas de madera en buen estado, ideales para restaurante o bar. Poco uso, sin roturas.",
-      tipo: "material",
-      tag: "Metalurgia",
-      fechaCreacion: "2026-01-10T09:00:00.000Z",
-      fechaActualizacion: "2026-01-15T14:30:00.000Z",
-      fechaFinalizacion: "2026-03-10T09:00:00.000Z",
-      fechaEliminacion: null,
-      estado: "publicada",
-      imagenPrincipal: "https://picsum.photos/seed/sillas/800/600",
-      verificada: true,
-      reportada: false
-    },
-    {
-      id: 2,
-      titulo: "Desarrollo de sitio web a medida",
-      descripcion: "Ofrezco servicio de desarrollo web full-stack con React y Node.js. Entrega en 4 semanas, incluye diseño responsive y panel de administración.",
-      tipo: "servicio",
-      tag: "Madera Recup.",
-      fechaCreacion: "2026-02-01T11:00:00.000Z",
-      fechaActualizacion: "2026-02-01T11:00:00.000Z",
-      fechaFinalizacion: "2026-05-01T11:00:00.000Z",
-      fechaEliminacion: null,
-      estado: "publicada",
-      imagenPrincipal: "https://picsum.photos/seed/webdev/800/600",
-      verificada: true,
-      reportada: false
-    },
-    {
-      id: 3,
-      titulo: "Notebook Lenovo ThinkPad E14",
-      descripcion: "ThinkPad E14 Gen 3, Ryzen 5 5600U, 16GB RAM, 512GB SSD. Comprada en 2023, batería al 91%. Incluye cargador original.",
-      tipo: "producto",
-      tag: "Cerámica",
-      fechaCreacion: "2025-11-20T08:45:00.000Z",
-      fechaActualizacion: "2026-03-01T10:00:00.000Z",
-      fechaFinalizacion: "2025-12-31T23:59:59.000Z",
-      fechaEliminacion: null,
-      estado: "finalizada",
-      imagenPrincipal: "https://picsum.photos/seed/thinkpad/800/600",
-      verificada: false,
-      reportada: false
-    },
-    {
-      id: 4,
-      titulo: "Clases de inglés para empresas",
-      descripcion: "Dictado de clases grupales e individuales orientadas al inglés de negocios. Certificación disponible. Modalidad online o presencial en Córdoba capital.",
-      tipo: "servicio",
-      tag: "Madera Recup.",
-      fechaCreacion: "2026-03-05T16:20:00.000Z",
-      fechaActualizacion: "2026-03-05T16:20:00.000Z",
-      fechaFinalizacion: null,
-      fechaEliminacion: null,
-      estado: "borrador",
-      imagenPrincipal: "https://picsum.photos/seed/ingles/800/600",
-      verificada: false,
-      reportada: false
-    },
-    {
-      id: 5,
-      titulo: "Cemento Portland a granel por bolsa",
-      descripcion: "Venta de cemento Portland normal en bolsas de 50kg. Stock disponible: 200 bolsas. Retiro en depósito zona industrial de Córdoba.",
-      tipo: "material",
-      tag: "Cerámica",
-      fechaCreacion: "2025-09-15T07:30:00.000Z",
-      fechaActualizacion: "2025-10-01T09:00:00.000Z",
-      fechaFinalizacion: "2025-10-15T07:30:00.000Z",
-      fechaEliminacion: "2025-10-20T12:00:00.000Z",
-      estado: "cancelada",
-      imagenPrincipal: "https://picsum.photos/seed/cemento/800/600",
-      verificada: true,
-      reportada: true
-    }
-  ];
+
 
 
 }

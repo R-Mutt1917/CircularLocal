@@ -26,6 +26,7 @@ const putPerfil = async (req, res) => {
 
         const perfilRequestDTO = {
             nombre_perfil: req.body.nombre_perfil,
+            imagen: req.body.imagen,
             descripcion: req.body.descripcion,
             direccion: req.body.direccion,
             telefono: req.body.telefono,

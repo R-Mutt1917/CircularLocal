@@ -1,0 +1,205 @@
+.pub-card {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+
+    // ── Variantes por estado ──
+    &.card--cancelada {
+        opacity: 0.85;
+
+        .pub-card__image {
+            filter: grayscale(40%);
+        }
+    }
+
+    &.card--finalizada {
+        .pub-card__image {
+            filter: brightness(0.9);
+        }
+    }
+
+    // ── Imagen ──
+    &__image-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+
+        .pub-card:hover & {
+            transform: scale(1.02);
+        }
+    }
+
+    // ── Badge estado ──
+    &__badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 10px;
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+
+        &.badge--Publicada {
+            background: var(--color-brand);
+            color: #fff;
+        }
+
+        &.badge--Borrador {
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff;
+        }
+
+        &.badge--Finalizada {
+            background: rgba(0, 0, 0, 0.45);
+            color: #e0e0e0;
+        }
+
+        &.badge--Cancelada {
+            background: #c0392b;
+            color: #fff;
+        }
+    }
+
+    // ── Body ──
+    &__body {
+        padding: 16px 16px 8px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    &__titulo {
+        font-family: var(--font-serif);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        line-height: 1.3;
+        margin: 0;
+
+        &--muted {
+            color: var(--color-text-muted);
+        }
+    }
+
+    &__descripcion {
+        font-family: var(--font-sans);
+        font-size: 13px;
+        color: var(--color-text-muted);
+        line-height: 1.5;
+        margin: 0;
+
+        // clamp a 3 líneas
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    // ── Motivo rechazo ──
+    &__motivo {
+        display: flex;
+        align-items: flex-start;
+        gap: 6px;
+        margin-top: 4px;
+        padding: 8px 10px;
+        background: rgba(192, 57, 43, 0.08);
+        border-left: 3px solid #c0392b;
+        border-radius: 0 4px 4px 0;
+
+        svg {
+            flex-shrink: 0;
+            color: #c0392b;
+            margin-top: 1px;
+        }
+
+        span {
+            font-family: var(--font-sans);
+            font-size: 12px;
+            color: #c0392b;
+            line-height: 1.4;
+        }
+    }
+
+    // ── Acciones ──
+    &__actions {
+        display: flex;
+        align-items: center;
+        margin-top: 12px;
+        background-color: #ebeaea;
+        margin: 1rem;
+    }
+
+    &__action {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 8px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: var(--color-text-muted);
+        font-family: var(--font-sans);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        transition: background 0.15s ease, color 0.15s ease;
+
+        &:last-child {
+            border-right: none;
+        }
+
+        svg {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        &:hover:not(:disabled) {
+            background: var(--color-active-bg);
+            color: var(--color-text-primary);
+
+            svg {
+                transform: translateY(-1px) scale(1.1);
+            }
+        }
+
+        // peligro
+        &--danger {
+            &:hover:not(:disabled) {
+                background: rgba(192, 57, 43, 0.08);
+                color: #c0392b;
+            }
+        }
+
+        // deshabilitado
+        &--disabled,
+        &:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+    }
+}

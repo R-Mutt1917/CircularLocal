@@ -7,6 +7,10 @@ import { AdminGuard } from './core/guards/admin.guard';
 import { AdminDashboard } from './features/admin/dashboard/dashboard';
 import { Publicaciones } from './features/user/publicaciones/publicaciones';
 import { UserDashboard } from './features/user/dashboard/dashboard';
+import { PublicacionDetallada } from './features/user/publicacion-detallada/publicacion-detallada';
+import { SubirPublicacion } from './features/user/subir-publicacion/subir-publicacion';
+import { MisPublicaciones } from './features/user/mis-publicaciones/mis-publicaciones';
+import { EditarPublicacion } from './features/user/editar-publicacion/editar-publicacion';
 
 
 export const routes: Routes = [
@@ -15,10 +19,14 @@ export const routes: Routes = [
     { path: 'register', component: Register },
     {
         path: 'app',
-        //canActivate: [AuthGuard], COMENTAR EN PRODUCCION
+        canActivate: [AuthGuard],
         children: [
             { path: '', component: UserDashboard },
             { path: 'publicaciones', component: Publicaciones },
+            { path: 'publicacion/:id', component: PublicacionDetallada },
+            { path: 'subir', component: SubirPublicacion },
+            { path: 'mis-publicaciones', component: MisPublicaciones },
+            { path: 'editar-publicacion/:id', component: EditarPublicacion },
         ]
     },
     {

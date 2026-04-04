@@ -1,0 +1,352 @@
+.section {
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 6rem 6rem;
+    background-color: #fff;
+
+    @media (max-width: 900px) {
+        padding: 2rem 1.5rem 4rem;
+    }
+}
+
+.contenedor_principal {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2.5rem;
+    align-items: start;
+    width: 100%;
+    font-family: var(--font-sans);
+    color: var(--color-text-primary);
+
+    @media (max-width: 820px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// ─── Columna principal ────
+
+.detalle-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.detalle-breadcrumb {
+    font-size: .9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+
+    span {
+        color: #000;
+    }
+}
+
+// ─── Imagen principal ─────
+
+.detalle-imagen {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--color-surface);
+    aspect-ratio: 16 / 9;
+    margin-bottom: 1.5rem;
+
+    &__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    &__badge {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        background: var(--color-brand);
+        color: #fff;
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 0.45rem 1rem;
+        border-radius: 3px;
+
+        &--finalizada {
+            background: var(--color-text-muted);
+        }
+    }
+}
+
+// ─── Tags ─────
+
+.detalle-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border-radius: 3px;
+
+    &--tipo {
+        background: var(--color-brand);
+        color: #fff;
+    }
+
+    &--categoria {
+        background: var(--color-surface);
+        color: var(--color-accent);
+        border: 1px solid var(--color-border);
+    }
+
+    &--verificada {
+        background: transparent;
+        color: var(--color-accent);
+        border: 1px solid var(--color-accent);
+    }
+}
+
+// ─── Título ────
+
+.detalle-titulo {
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
+}
+
+// ─── Meta row ────
+
+.detalle-meta {
+    display: flex;
+    gap: 2.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 1.5rem;
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    &__label {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--color-text-muted);
+    }
+
+    &__value {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+}
+
+// ─── Descripción ──────
+
+.detalle-desc {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--color-text-primary);
+    margin-bottom: 1rem;
+    white-space: pre-line;
+}
+
+// ─── Sidebar ──────
+
+.detalle-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: 1.5rem;
+}
+
+// ─── Perfil card ──────
+
+.perfil-card {
+    background: #fff;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+    }
+
+    &__avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--color-brand);
+        color: #fff;
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    &__nombre {
+        font-family: var(--font-serif);
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin: 0 0 0.15rem;
+        color: var(--color-text-primary);
+    }
+
+    &__rol {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-text-secundary);
+        font-weight: 600;
+    }
+
+    &__stats {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+        }
+    }
+
+    &__avatar__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: 50%;
+    }
+
+    &__bio {
+        font-family: var(--font-serif);
+        font-style: italic;
+        font-size: 0.82rem;
+        line-height: 1.6;
+        color: var(--color-text-muted);
+        background: var(--color-surface);
+        border-left: 3px solid var(--color-accent);
+        padding: 0.75rem 1rem;
+        margin: 0;
+        border-radius: 0 4px 4px 0;
+    }
+}
+
+// ─── Botones ──────
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    transition: background var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+
+    &--primary {
+        background: var(--color-accent);
+        color: #fff;
+        border: 2px solid var(--color-accent);
+
+        &:hover {
+            background: var(--color-brand);
+            border-color: var(--color-brand);
+        }
+    }
+}
+
+// ─── Compromiso circular ──────
+
+.compromiso-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+
+    &__titulo {
+        font-family: var(--font-sans);
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-text-muted);
+        margin: 0 0 0.6rem;
+    }
+
+    &__texto {
+        font-size: 0.8rem;
+        line-height: 1.65;
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+}
+
+// ─── Otras publicaciones ─────
+
+.otras-publicaciones {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+
+    &__titulo {
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        margin: 0 0 1.5rem;
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+
+        @media (max-width: 700px) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 480px) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
