@@ -132,7 +132,6 @@ const getPublicacionDetalle = async (publicacionId) => {
     return publicacion;
 };
 
-
 const getPreviewPublicaciones = async () => {
     const publicaciones = await Publicacion.findAll({
         where: { estado: 'Publicada' },
@@ -159,7 +158,6 @@ const getPreviewPublicaciones = async () => {
 
     return publicaciones || [];
 }
-
 
 module.exports = {
     getByUser,

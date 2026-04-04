@@ -1,5 +1,5 @@
 const solicitudService = require('../services/solicitud.service');
-const { toSolicitudDTO } = require('../dto/solicitud.dto');
+const { toSolicitudDTO, toListSolicitudesPendientesDTO } = require('../dto/solicitud.dto');
 
 const crearSolicitud = async (req, res) => {
     try {
@@ -14,6 +14,13 @@ const crearSolicitud = async (req, res) => {
     }
 };
 
+const obtenerSolicitudesPendientes = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        const solicitudes = await solicitudService.obtenerSolicitudesPendientes(userId);
+
+        res.status(200).json(toListSolicitudesPendientesDTO(solicitudes));
 const rechazarSolicitud = async (req, res) => {
     const solicitudId = parseInt(req.params.id);
     if (isNaN(solicitudId)) {
@@ -79,4 +86,5 @@ module.exports = {
     rechazarSolicitud,
     cancelarSolicitud,
     aceptarSolicitud,
+    obtenerSolicitudesPendientes,
 };

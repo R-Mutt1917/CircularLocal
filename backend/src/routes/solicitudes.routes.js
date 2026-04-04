@@ -6,6 +6,9 @@ const { verifyToken } = require('../middlewares/auth.middleware');
 // Ruta para crear una solicitud
 router.post('/', verifyToken, solicitudesController.crearSolicitud);
 
+// Ruta para obtener solicitudes pendientes de un usuario
+router.get('/pendientes', verifyToken, solicitudesController.obtenerSolicitudesPendientes);
+
 // Ruta para rechazar una solicitud
 router.patch('/:id/rechazar', verifyToken, solicitudesController.rechazarSolicitud);
 
