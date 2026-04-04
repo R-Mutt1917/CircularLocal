@@ -12,6 +12,6 @@ export class Publicacion implements OnInit {
   publicacion = input.required<PublicacionPreviewModel>();
 
   ngOnInit(): void {
-
+    console.log(this.publicacion());
   }
 }

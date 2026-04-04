@@ -23,7 +23,6 @@ import { NavPublic } from './layout/public-layout/nav-public/nav-public';
 export class App {
   protected readonly title = signal('Circular Local');
 
-  //auth = inject(AuthServices) DESCOMENTARLO AL TERMINAR EL PROYECTO
-  //role = this.auth.role;
-  role = 'ACTOR'
+  auth = inject(AuthServices)
+  role = this.auth.role;
 }

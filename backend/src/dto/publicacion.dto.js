@@ -38,6 +38,10 @@ function toPublicacionDTO(publicacion) {
         user_id: publicacion.user_id,
         createdAt: publicacion.createdAt || undefined,
         tipo: publicacion.tipo,
+        imagen: publicacion.imagen,
+        estado: publicacion.estado,
+        verificada: publicacion.verificada,
+        reportada: publicacion.reportada,
         detalle
     };
 }
@@ -49,13 +53,43 @@ function toPublicacionListDTO(publicaciones) {
 
 function toPublicacionDetalleDTO(publicacion) {
     if (!publicacion) return null;
+    //lógica de detalle de toPublicacionDTO
+    let detalle = null;
+    if (publicacion.Material) {
+        detalle = {
+            nombreMaterial: publicacion.Material.nombreMaterial,
+            cantidad: publicacion.Material.cantidad,
+            unidad: publicacion.Material.unidad,
+        };
+    } else if (publicacion.Producto) {
+        detalle = {
+            nombreProducto: publicacion.Producto.nombreProducto,
+            cantidad: publicacion.Producto.cantidad,
+            unidad: publicacion.Producto.unidad,
+        };
+    } else if (publicacion.Servicio) {
+        detalle = {
+            modalidad: publicacion.Servicio.modalidad,
+            disponibilidadHoraria: publicacion.Servicio.disponibilidadHoraria,
+            zonaCobertura: publicacion.Servicio.zonaCobertura
+        };
+    }
+
     return {
         id: publicacion.id,
         titulo: publicacion.titulo,
         descripcion: publicacion.descripcion,
+        tipo: publicacion.tipo,
+        imagen: publicacion.imagen,
+        estado: publicacion.estado,
+        verificada: publicacion.verificada,
+        reportada: publicacion.reportada,
         tag: publicacion.tag ? publicacion.tag.name : (publicacion.tagId || null),
         user_id: publicacion.user_id,
-        createdAt: publicacion.createdAt || undefined,
+        createdAt: publicacion.createdAt || undefined,        
+        verificada: publicacion.verificada,
+        reportada: publicacion.reportada,
+        detalle,
         user: publicacion.user ? {
             id: publicacion.user.id,
             perfil: publicacion.user.perfil ? {
@@ -76,6 +110,12 @@ function toPublicacionPreviewDTO(publicacion) {
     return {
         id: publicacion.id,
         titulo: publicacion.titulo,
+        descripcion: publicacion.descripcion,
+        tipo: publicacion.tipo,
+        imagen: publicacion.imagen,
+        estado: publicacion.estado,
+        verificada: publicacion.verificada,
+        reportada: publicacion.reportada,
         tag: publicacion.tag ? publicacion.tag.name : (publicacion.tagId || null),
         user_id: publicacion.user_id,
         createdAt: publicacion.createdAt || undefined,

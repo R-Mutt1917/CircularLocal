@@ -9,7 +9,8 @@ const Servicio = require('../models/servicio.model');
 // Crear una nueva publicación
 exports.crearPublicacion = async (req, res) => {
   try {
-    const { tagId, ...pubData } = req.body
+    const { tagId } = req.body;
+    const userId = req.user.id; // Asignamos el ID del usuario autenticado
 
     // Verificar que el tag exista
     const tag = await Tag.findByPk(tagId);
@@ -17,13 +18,16 @@ exports.crearPublicacion = async (req, res) => {
       return res.status(400).json({ mensaje: 'El tipo de material (tag) no existe.' });
     }
 
-    // Crear la publicación
-    const nuevaPublicacion = await publicacionService.crearPublicacion(req.body);
+    // Crear la publicación inyectando el userId
+    const nuevaPublicacion = await publicacionService.crearPublicacion({
+      ...req.body,
+      user_id: userId
+    });
 
     res.status(201).json(toPublicacionDTO(nuevaPublicacion));
   } catch (error) {
     console.error(error);
-    res.status(500).json({ mensaje: 'Error al crear la publicación.' });
+    res.status(500).json({ mensaje: 'Error al crear la publicación.', error });
   }
 };
 
@@ -159,12 +163,11 @@ exports.consultarPublicaciones = async (req, res) => {
     // Calcular el offset y el límite
     const offset = (page - 1) * limit;
 
-    // Obtener las publicaciones con paginación
     const publicaciones = await Publicacion.findAndCountAll({
       offset,
       limit: parseInt(limit),
       order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
-      include: [ Material, Producto, Servicio ]
+      include: [ Material, Producto, Servicio, { model: Tag, as: 'tag' } ]
     });
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones.rows);
@@ -187,7 +190,7 @@ exports.consultarDetallePublicacion = async (req, res) => {
 
     // Buscar la publicación por ID
     const publicacion = await Publicacion.findByPk(id, {
-      include: [ Material, Producto, Servicio ]
+      include: [ Material, Producto, Servicio, { model: Tag, as: 'tag' } ]
     });
 
     if (!publicacion) {
@@ -301,6 +304,7 @@ exports.getPublicacionDetalle = async (req, res) => {
 
 exports.getPreviewPublicaciones = async (req, res) => {
   try {
+    
     const publicaciones = await getPreviewPublicaciones();
     const publicacionesDTO = toPublicacionPreviewListDTO(publicaciones);
     res.status(200).json(publicacionesDTO);

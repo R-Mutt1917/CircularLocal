@@ -19,7 +19,7 @@ export const routes: Routes = [
     { path: 'register', component: Register },
     {
         path: 'app',
-        //canActivate: [AuthGuard], COMENTAR EN PRODUCCION
+        canActivate: [AuthGuard],
         children: [
             { path: '', component: UserDashboard },
             { path: 'publicaciones', component: Publicaciones },

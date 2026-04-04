@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card__image-wrapper">
-        <img [src]="publicacion().imagenPrincipal" alt="{{ publicacion().titulo }}" class="card__image" />
+        <img [src]="publicacion().imagen" alt="{{ publicacion().titulo }}" class="card__image" />
 
         <span class="card__badge card__badge--tipo">
             {{ publicacion().tipo}}
@@ -8,9 +8,9 @@
     </div>
 
     <div class="card__body">
-        <span class="card__tag">{{ publicacion().tag.nombre }}</span>
+        <span class="card__tag">{{ publicacion().tag }}</span>
         <h2 class="card__titulo">{{ publicacion().titulo }}</h2>
-
+        <p class="card__descripcion">{{ publicacion().descripcion }}</p>
 
         <div class="card__autor">
             <div class="card__avatar">

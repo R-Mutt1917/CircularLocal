@@ -1,5 +1,5 @@
 import { Component, input, computed, output } from '@angular/core';
-import { PublicacionModel } from '../../../../../shared/models/publicaciones.model';
+import { PublicacionPreviewModel } from '../../../../../shared/models/publicaciones.model';
 import { NgClass, NgTemplateOutlet } from '@angular/common';
 
 @Component({
@@ -9,11 +9,11 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
   styleUrl: './publicacion-perfil.scss',
 })
 export class PublicacionPerfil {
-  publicacion = input.required<PublicacionModel>();
+  publicacion = input.required<PublicacionPreviewModel>();
 
-  editar = output<PublicacionModel>();
-  toggleEstado = output<PublicacionModel>();
-  eliminar = output<PublicacionModel>();
+  editar = output<PublicacionPreviewModel>();
+  toggleEstado = output<PublicacionPreviewModel>();
+  eliminar = output<PublicacionPreviewModel>();
 
   estadoLabel = computed(() => {
     const map: Record<string, string> = {
@@ -22,8 +22,9 @@ export class PublicacionPerfil {
       borrador: 'Borrador',
       cancelada: 'Cancelada',
     };
-    return map[this.publicacion().estado] ?? this.publicacion().estado;
+    return map[this.publicacion().estado] || this.publicacion().estado;
   });
+
 
   estadoClass = computed(() => `card--${this.publicacion().estado}`);
 

@@ -36,7 +36,7 @@ const crearPublicacion = async (data) => {
         await t.commit();
 
         return await Publicacion.findByPk(publicacion.id, {
-            include: [ Material, Producto, Servicio ]
+            include: [Material, Producto, Servicio]
         });
 
     } catch (error) {
@@ -82,13 +82,13 @@ const editarPublicacion = async (id, data) => {
 
             if (publicacion.tipo === 'SERVICIO' && publicacion.Servicio) {
                 await publicacion.Servicio.update(detalle, { transaction: t });
-            }            
+            }
         }
 
         await t.commit();
 
         return await Publicacion.findByPk(publicacion.id, {
-            include: [ Material, Producto, Servicio ]
+            include: [Material, Producto, Servicio]
         });
 
     } catch (error) {
@@ -102,7 +102,6 @@ const getByUser = async (userId, limit) => {
         where: { user_id: userId },
         include: [{ model: Tag, as: 'tag' }, Material, Producto, Servicio],
         ...(limit && { limit: parseInt(limit) }),
-        include: [ Material, Producto, Servicio ]
     });
 
     return publicaciones || [];
@@ -110,7 +109,7 @@ const getByUser = async (userId, limit) => {
 
 const getPublicacionDetalle = async (publicacionId) => {
     const publicacion = await Publicacion.findByPk(publicacionId, {
-include: [
+        include: [
             { model: Tag, as: 'tag' },
             {
                 model: User,
@@ -124,16 +123,6 @@ include: [
             Producto,
             Servicio
         ]
-            { model: Tag, as: 'tag' },
-            {
-                model: User,
-                as: 'user',
-                attributes: ['id'],
-                include: [
-                    { model: Perfil, as: 'perfil' }
-                ]
-            }
-        ]
     });
 
     if (!publicacion) {
@@ -146,7 +135,8 @@ include: [
 
 const getPreviewPublicaciones = async () => {
     const publicaciones = await Publicacion.findAll({
-        attributes: ['id', 'titulo', 'tipo', 'tagId', 'user_id', 'createdAt'],
+        where: { estado: 'Publicada' },
+        attributes: ['id', 'user_id', 'titulo', 'descripcion', 'imagen', 'estado', 'verificada', 'reportada', 'tipo', 'tagId', 'createdAt'],
         include: [
             { model: Tag, as: 'tag' },
             {
@@ -158,13 +148,12 @@ const getPreviewPublicaciones = async () => {
                         model: Perfil,
                         as: 'perfil',
                         attributes: ['nombre_perfil', 'imagen']
-},
-Material,
-Producto,
-Servicio
-
+                    }
                 ]
-            }
+            },
+            Material,
+            Producto,
+            Servicio
         ]
     });
 

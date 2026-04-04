@@ -12,12 +12,12 @@ export class PublicacionesService {
 
   private http = inject(HttpClient);
 
-  consultarPublicacionesPorUsuario(id: string, limit?: number): Observable<PublicacionModel[]> {
+  consultarPublicacionesPorUsuario(id: number, limit?: number): Observable<PublicacionPreviewModel[]> {
     const query = limit ? `?limit=${limit}` : '';
-    return this.http.get<PublicacionModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
+    return this.http.get<PublicacionPreviewModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
   }
 
-  consultarPublicacionDetalle(id: string): Observable<PublicacionDetalleModel> {
+  consultarPublicacionDetalle(id: number): Observable<PublicacionDetalleModel> {
     return this.http.get<PublicacionDetalleModel>(`${this.apiUrl}/publicaciones/perfil/${id}`);
   }
 
@@ -27,16 +27,20 @@ export class PublicacionesService {
   }
 
 
-  crearPublicacion(publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
-    return this.http.post<PublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
+  crearPublicacion(publicacion: CrearPublicacionModel): Observable<CrearPublicacionModel> {
+    return this.http.post<CrearPublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
   }
 
   obtenerPublicacion(id: number): Observable<PublicacionModel> {
     return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`);
+  }  
+
+  actualizarPublicacion(id: number, publicacion: CrearPublicacionModel): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/publicaciones/${id}`, publicacion);
   }
 
-  actualizarPublicacion(id: number, publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
-    return this.http.put<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`, publicacion);
+  listarTags(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/publicaciones/tags`);
   }
 
 }

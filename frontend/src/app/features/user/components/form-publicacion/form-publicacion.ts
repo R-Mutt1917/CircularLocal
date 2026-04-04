@@ -8,9 +8,10 @@ import { CrearPublicacionModel, PublicacionModel, TipoPublicacion } from '../../
 export interface ContenidoPublicacion {
   titulo: FormControl<string>;
   descripcion: FormControl<string>;
-  categoria: FormControl<string>;
+  tagId: FormControl<number | null>;
   tipo: FormControl<TipoPublicacion>;
-  imagen: FormControl<File | string | null>;
+  imagen: FormControl<string>;
+  estado: FormControl<string>;
   detalle: FormGroup;
 }
 
@@ -24,6 +25,7 @@ type CamposPublicacion = keyof ContenidoPublicacion;
 })
 export class FormPublicacion {
   readonly initialData = input<PublicacionModel | null>(null);
+  readonly publicacionId = input<number | null>(null);
 
   private fb = inject(NonNullableFormBuilder);
   private router = inject(Router);
@@ -31,37 +33,55 @@ export class FormPublicacion {
 
   backendErrors: Partial<Record<CamposPublicacion, string>> = {};
   isLoading = signal(false);
+  tags = signal<any[]>([]);
 
   formPublicacion: FormGroup<ContenidoPublicacion> = this.fb.group({
     titulo: ['', [Validators.required, Validators.minLength(5)]],
     descripcion: ['', Validators.required],
-    categoria: ['', Validators.required],
+    tagId: [null as number | null, Validators.required],
     tipo: [null as unknown as TipoPublicacion, Validators.required],
-    imagen: [null as File | string | null, Validators.required],
+    imagen: ["", Validators.required],
+    estado: ['Borrador', Validators.required],
     detalle: this.fb.group({}),
   });
 
+  previewUrl = signal<string | null>(null);
+
   ngOnInit() {
+    this.cargarTags();
+
     this.formPublicacion.controls.tipo.valueChanges.subscribe((tipo) => {
       this.buildDetalleForm(tipo);
     });
 
+    this.formPublicacion.controls.imagen.valueChanges.subscribe((url) => {
+      this.previewUrl.set(url || null);
+    });
+
     const data = this.initialData();
+    console.log("Publicacion a editar:", data);
     if (data) {
       this.buildDetalleForm(data.tipo);
-
       this.formPublicacion.patchValue({
         titulo: data.titulo,
         descripcion: data.descripcion,
-        categoria: data.tag,
+        tagId: data.tagId,
         tipo: data.tipo,
-        imagen: data.imagenPrincipal,
+        imagen: data.imagen,
+        estado: data.estado,
       });
-
+      this.previewUrl.set(data.imagen);
       if (data.detalle) {
         this.formPublicacion.controls.detalle.patchValue(data.detalle);
       }
     }
+  }
+
+  private cargarTags() {
+    this.publicacionService.listarTags().subscribe({
+      next: (tags) => this.tags.set(tags),
+      error: (err) => console.error('Error al cargar tags', err)
+    });
   }
 
   private buildDetalleForm(tipo: TipoPublicacion) {
@@ -96,14 +116,10 @@ export class FormPublicacion {
 
   onSubmit() {
     this.backendErrors = {};
-
-    if (this.formPublicacion.invalid) {
-      this.formPublicacion.markAllAsTouched();
-      return;
-    }
-
     this.isLoading.set(true);
+
     const datosPublicacion = this.formPublicacion.getRawValue() as CrearPublicacionModel;
+    console.log('Datos de la publicación', datosPublicacion);
 
     if (this.initialData() === null) {
       this.publicacionService.crearPublicacion(datosPublicacion).subscribe({
@@ -127,8 +143,8 @@ export class FormPublicacion {
         },
       });
     } else {
-      const id = this.initialData()!.id;
-      this.publicacionService.actualizarPublicacion(id, datosPublicacion).subscribe({
+      const id = this.publicacionId();
+      this.publicacionService.actualizarPublicacion(id!, datosPublicacion).subscribe({
         next: () => {
           this.formPublicacion.reset();
           this.removeImage();
@@ -151,24 +167,8 @@ export class FormPublicacion {
     }
   }
 
-  selectedFile: File | null = null;
-  previewUrl: string | null = null;
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      this.selectedFile = input.files[0];
-      this.formPublicacion.controls.imagen.setValue(this.selectedFile);
-
-      const reader = new FileReader();
-      reader.onload = () => (this.previewUrl = reader.result as string);
-      reader.readAsDataURL(this.selectedFile);
-    }
-  }
-
   removeImage(): void {
-    this.selectedFile = null;
-    this.previewUrl = null;
+    this.previewUrl.set(null);
     this.formPublicacion.controls.imagen.reset();
   }
 }

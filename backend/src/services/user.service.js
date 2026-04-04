@@ -34,12 +34,12 @@ const login = async (username, password) => {
     if (!isValid) throw new Error('Contraseña incorrecta');
 
     const token = jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.id, username: user.username, role: user.rol },
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
     );
 
-    return token;
+    return { token, role: user.rol, id: user.id };
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {

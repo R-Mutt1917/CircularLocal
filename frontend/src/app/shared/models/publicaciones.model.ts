@@ -23,40 +23,38 @@ export interface PublicacionModel {
     titulo: string;
     descripcion: string;
     tipo: TipoPublicacion;
+    tagId: number;
     tag: string;
     user_id: number;
     createdAt: string;
     detalle: DetalleMaterial | DetalleProducto | DetalleServicio | null;
-
-    // Estos campos NO están en el DTO actual del backend, 
-    // agregarlos allá para que funcione correctamente
-    estado?: string;
-    imagenPrincipal?: string;
+    estado: string;
+    imagen: string;
+    verificada: boolean;
+    reportada: boolean;
 }
 
 
 export interface CrearPublicacionModel {
     titulo: string;
     descripcion: string;
-    categoria: string;
+    tagId: number;
     tipo: TipoPublicacion;
-    imagen: File | string | null;
+    imagen: string | null;
+    estado: string;
     detalle: DetalleMaterial | DetalleProducto | DetalleServicio;
 }
 
 export interface PublicacionPreviewModel {
     id: number;
     titulo: string;
-    imagenPrincipal: string;
+    imagen: string;
     estado: string;
+    descripcion: string;
     tipo: string;
-    tagId: number;
+    tag: string;
     user_id: number;
     createdAt: string;
-    tag: {
-        id: number;
-        nombre: string;
-    };
     user: {
         id: number;
         perfil: {
@@ -66,23 +64,21 @@ export interface PublicacionPreviewModel {
     };
 }
 
+
+
 export interface PublicacionDetalleModel {
     id: number;
-    titulo: string; // len: [5, 255]
+    titulo: string;
     descripcion: string;
-    tipo: string; // 'material', 'producto', 'servicio'
-    fechaCreacion: string;
-    fechaActualizacion: string;
-    fechaFinalizacion: string | null;
-    fechaEliminacion: string | null;
-    estado: string; // 'borrador', 'publicada', 'finalizada', 'cancelada'
-    imagenPrincipal: string;
+    tipo: string;
+    estado: string;
+    imagen: string;
     verificada: boolean;
     reportada: boolean;
-    tag: {
-        id: number;
-        nombre: string;
-    };
+    createdAt: string | undefined;
+    user_id: number;
+    tag: string;
+    detalle: DetalleMaterial | DetalleProducto | DetalleServicio | null;
     user: {
         id: number;
         perfil: {
@@ -93,6 +89,7 @@ export interface PublicacionDetalleModel {
             telefono: string;
             email: string;
             tipo_actor: string;
-        };
-    };
+        } | null;
+    } | null;
 }
+

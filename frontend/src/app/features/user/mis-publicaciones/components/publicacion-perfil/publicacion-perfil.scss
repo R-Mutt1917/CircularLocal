@@ -54,22 +54,22 @@
         letter-spacing: 0.06em;
         text-transform: uppercase;
 
-        &.badge--publicada {
+        &.badge--Publicada {
             background: var(--color-brand);
             color: #fff;
         }
 
-        &.badge--borrador {
+        &.badge--Borrador {
             background: rgba(0, 0, 0, 0.55);
             color: #fff;
         }
 
-        &.badge--finalizada {
+        &.badge--Finalizada {
             background: rgba(0, 0, 0, 0.45);
             color: #e0e0e0;
         }
 
-        &.badge--cancelada {
+        &.badge--Cancelada {
             background: #c0392b;
             color: #fff;
         }
