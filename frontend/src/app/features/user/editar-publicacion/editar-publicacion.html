@@ -11,7 +11,11 @@
             </p>
         </div>
 
-        <app-form-publicacion [initialData]="publicacion" />
+        @if (publicacion) {
+            <app-form-publicacion [initialData]="publicacion" [publicacionId]="publicacionId" />
+        } @else {
+            <p>Cargando publicación...</p>
+        }
 
         <span class="contenedor_principal__watermark" aria-hidden="true">Circular</span>
 

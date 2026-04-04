@@ -13,33 +13,23 @@ import { PublicacionModel } from '../../../shared/models/publicaciones.model';
 export class EditarPublicacion {
   private route = inject(ActivatedRoute);
   private publicacionesService = inject(PublicacionesService);
-  private router = inject(Router);
 
   publicacionId: number | null = null;
   publicacion: PublicacionModel | null = null;
-  isLoading = signal(false);
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.publicacionId = Number(params.get('id'));
-      if (this.publicacionId) {
-        this.cargarPublicacion();
-      }
-    });
+    const publicacionId = this.route.snapshot.paramMap.get('id');
+    if(publicacionId){
+      this.publicacionId = Number(publicacionId);
+      this.publicacionesService.obtenerPublicacion(this.publicacionId).subscribe({
+        next: (publicacion) => {
+            this.publicacion = publicacion
+          },
+        error: (err) => console.error('Error al obtener la publicación', err)
+      })
+    }
+    
   }
 
 
-  cargarPublicacion() {
-    this.isLoading.set(true);
-    this.publicacionesService.obtenerPublicacion(this.publicacionId!).subscribe({
-      next: (data: PublicacionModel) => {
-        this.publicacion = data;
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.isLoading.set(false);
-        this.router.navigate(['/app/mis-publicaciones']);
-      }
-    });
-  }
 }

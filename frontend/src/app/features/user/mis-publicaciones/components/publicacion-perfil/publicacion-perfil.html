@@ -1,7 +1,7 @@
 <article class="pub-card" [ngClass]="estadoClass()">
 
     <div class="pub-card__image-wrap">
-        <img [src]="publicacion().imagenPrincipal" [alt]="publicacion().titulo" class="pub-card__image" />
+        <img [src]="publicacion().imagen" [alt]="publicacion().titulo" class="pub-card__image" />
         <span class="pub-card__badge" [ngClass]="'badge--' + publicacion().estado">
             {{ estadoLabel() }}
         </span>
@@ -11,7 +11,6 @@
         <h3 class="pub-card__titulo" [class.pub-card__titulo--muted]="publicacion().estado === 'cancelada'">
             {{ publicacion().titulo }}
         </h3>
-
         @if (publicacion().estado === 'cancelada') {
         <div class="pub-card__motivo">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24"
@@ -26,9 +25,9 @@
 
     <div class="pub-card__actions">
 
-        @switch (publicacion().estado) {
+        @switch (estadoLabel()) {
 
-        @case ('publicada') {
+        @case ('Publicada') {
         <button class="pub-card__action" (click)="onEditar()">
             <ng-container *ngTemplateOutlet="iconEditar" />
             <span>Editar</span>
@@ -43,7 +42,7 @@
         </button>
         }
 
-        @case ('borrador') {
+        @case ('Borrador') {
         <button class="pub-card__action" (click)="onEditar()">
             <ng-container *ngTemplateOutlet="iconEditar" />
             <span>Editar</span>
@@ -58,7 +57,7 @@
         </button>
         }
 
-        @case ('finalizada') {
+        @case ('Finalizada') {
         <button class="pub-card__action" (click)="onEditar()">
             <ng-container *ngTemplateOutlet="iconEditar" />
             <span>Editar</span>
@@ -73,7 +72,7 @@
         </button>
         }
 
-        @case ('cancelada') {
+        @case ('Cancelada') {
         <button class="pub-card__action pub-card__action--disabled" disabled>
             <ng-container *ngTemplateOutlet="iconEditar" />
             <span>Corregir</span>

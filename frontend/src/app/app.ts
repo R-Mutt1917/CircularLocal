@@ -25,5 +25,4 @@ export class App {
 
   auth = inject(AuthServices)
   role = this.auth.role;
-  //role = 'ACTOR'
 }

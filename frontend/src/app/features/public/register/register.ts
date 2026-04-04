@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AuthServices } from '../../../core/services/auth';
 import { Perfil } from '../../../core/services/perfilServices/perfil';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
 export class Register {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authServices: AuthServices, private perfilService: Perfil) {
+  constructor(private fb: FormBuilder, private authServices: AuthServices, private perfilService: Perfil, private router: Router) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       nombre_perfil: ['', Validators.required],
@@ -42,6 +43,7 @@ export class Register {
             this.perfilService.updateUser(userId, perfilData).subscribe({
               next: () => {
                 alert('¡Bienvenido! Tu cuenta y perfil han sido creados.');
+                this.router.navigate(['/app']);
               },
               error: (err) => {
                 console.error('Error al completar perfil:', err);

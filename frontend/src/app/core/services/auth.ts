@@ -16,13 +16,15 @@ export class AuthServices {
 
   constructor(private httpClient: HttpClient) { }
 
-  //Tuve que cambiarlo para poder guardar en el localstore el token y el rol para usarlo en el auth.guard.ts
   login(username: string, password: string): Observable<any> {
-    return this.httpClient.post<{ token: string, role: string, id: string }>(`${this.apiUrl}/auth/login`, { username, password }).pipe(
+    return this.httpClient.post<{ token: { token: string, role: string, id: number } }>(`${this.apiUrl}/auth/login`, { username, password }).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token);
-        localStorage.setItem('role', res.role);
-        localStorage.setItem('id', res.id);
+        console.log(res)
+        localStorage.setItem('token', res.token.token);
+        localStorage.setItem('role', res.token.role);
+        localStorage.setItem('id', res.token.id.toString());
+        this.role.set(res.token.role);
+        this.isLoggedIn.set(true);
       })
     );
   }
@@ -44,8 +46,8 @@ export class AuthServices {
     return localStorage.getItem('role');
   }
 
-  getId(): string | null {
-    return localStorage.getItem('id');
+  getId(): number | null {
+    return Number(localStorage.getItem('id'));
   }
 
 

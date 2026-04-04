@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthServices } from '../../../core/services/auth';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
 export class Login {
   loginForm: FormGroup
 
-  constructor(private fb: FormBuilder, private authServices: AuthServices) {
+  constructor(private fb: FormBuilder, private authServices: AuthServices, private router: Router) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -29,6 +29,7 @@ export class Login {
           console.log('Login exitoso', res);
           alert('Inicio de sesión correcto');
           this.loginForm.reset();
+          this.router.navigate(['/app/publicaciones']);
         },
         error: (err) => {
           console.error('Error al iniciar sesion:', err);

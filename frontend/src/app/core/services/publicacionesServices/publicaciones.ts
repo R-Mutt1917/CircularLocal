@@ -27,16 +27,20 @@ export class PublicacionesService {
   }
 
 
-  crearPublicacion(publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
-    return this.http.post<PublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
+  crearPublicacion(publicacion: CrearPublicacionModel): Observable<CrearPublicacionModel> {
+    return this.http.post<CrearPublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
   }
 
   obtenerPublicacion(id: number): Observable<PublicacionModel> {
     return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`);
+  }  
+
+  actualizarPublicacion(id: number, publicacion: CrearPublicacionModel): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/publicaciones/${id}`, publicacion);
   }
 
-  actualizarPublicacion(id: number, publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
-    return this.http.put<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`, publicacion);
+  listarTags(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/publicaciones/tags`);
   }
 
 }

@@ -102,7 +102,6 @@ const getByUser = async (userId, limit) => {
         where: { user_id: userId },
         include: [{ model: Tag, as: 'tag' }, Material, Producto, Servicio],
         ...(limit && { limit: parseInt(limit) }),
-        include: [Material, Producto, Servicio]
     });
 
     return publicaciones || [];
@@ -136,7 +135,8 @@ const getPublicacionDetalle = async (publicacionId) => {
 
 const getPreviewPublicaciones = async () => {
     const publicaciones = await Publicacion.findAll({
-        attributes: ['id', 'titulo', 'tipo', 'tagId', 'user_id', 'createdAt'],
+        where: { estado: 'Publicada' },
+        attributes: ['id', 'user_id', 'titulo', 'descripcion', 'imagen', 'estado', 'verificada', 'reportada', 'tipo', 'tagId', 'createdAt'],
         include: [
             { model: Tag, as: 'tag' },
             {
@@ -148,13 +148,12 @@ const getPreviewPublicaciones = async () => {
                         model: Perfil,
                         as: 'perfil',
                         attributes: ['nombre_perfil', 'imagen']
-                    },
-                    Material,
-                    Producto,
-                    Servicio
-
+                    }
                 ]
-            }
+            },
+            Material,
+            Producto,
+            Servicio
         ]
     });
 

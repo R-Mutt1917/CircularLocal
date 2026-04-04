@@ -22,8 +22,9 @@ export class PublicacionPerfil {
       borrador: 'Borrador',
       cancelada: 'Cancelada',
     };
-    return map[this.publicacion().estado] ?? this.publicacion().estado;
+    return map[this.publicacion().estado] || this.publicacion().estado;
   });
+
 
   estadoClass = computed(() => `card--${this.publicacion().estado}`);
 

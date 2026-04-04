@@ -17,37 +17,33 @@ export class PublicacionDetallada {
   private publicacionesService = inject(PublicacionesService);
   mostrarModal = false;
 
-  idPublicacion!: PublicacionDetalleModel;
+  Publicacion: PublicacionDetalleModel | null = null;
   otrasPublicaciones: PublicacionPreviewModel[] = [];
+  errorMessage: string | null = null;
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      window.scrollTo(0, 0);
-      const id = params.get('id');
-      console.log('id de ruta:', id);
-
-      this.publicacionesService.consultarPublicacionDetalle(Number(id)).subscribe({
+    const publicacionId = this.route.snapshot.paramMap.get('id');
+    if(publicacionId){
+      this.publicacionesService.consultarPublicacionDetalle(Number(publicacionId)).subscribe({
         next: (publicacion) => {
-          this.idPublicacion = publicacion;
-          console.log(this.idPublicacion);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+            this.Publicacion = publicacion;
+            this.obtenerOtrasPublicaciones();
+          },
+        error: (err) => console.error('Error al obtener la publicación', err)
+      })
+    }
+  }
 
-
-      this.publicacionesService.consultarPublicacionesPorUsuario(Number(id), 3).subscribe({
+  obtenerOtrasPublicaciones(): void {
+    if(this.Publicacion && this.Publicacion.user){
+      const userId = this.Publicacion.user.id;
+      this.publicacionesService.consultarPublicacionesPorUsuario(userId, 3).subscribe({
         next: (publicaciones) => {
-          this.otrasPublicaciones = publicaciones;
-          console.log(this.otrasPublicaciones);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-
-    });
+            this.otrasPublicaciones = publicaciones;
+          },
+        error: (err) => console.error('Error al obtener otras publicaciones', err)
+      })
+    }
   }
 
   abrirModal(): void {
