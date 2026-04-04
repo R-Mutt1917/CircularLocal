@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderMenu } from './header-menu';
+import { EditarPublicacion } from './editar-publicacion';
 
-describe('HeaderMenu', () => {
-  let component: HeaderMenu;
-  let fixture: ComponentFixture<HeaderMenu>;
+describe('EditarPublicacion', () => {
+  let component: EditarPublicacion;
+  let fixture: ComponentFixture<EditarPublicacion>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderMenu]
+      imports: [EditarPublicacion]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HeaderMenu);
+    fixture = TestBed.createComponent(EditarPublicacion);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

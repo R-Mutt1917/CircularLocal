@@ -2,8 +2,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
+<<<<<<< HEAD
 const { User } = require('../models');
 const { createProfile, putPerfil } = require('./perfil.service');
+=======
+const { User, Perfil } = require('../models');
+const { createProfile, updateProfile } = require('./perfil.service');
+>>>>>>> origin/develop
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -34,45 +39,35 @@ const login = async (username, password) => {
     if (!isValid) throw new Error('Contraseña incorrecta');
 
     const token = jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.id, username: user.username, role: user.rol },
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
     );
 
-    return token;
+    return { token, role: user.rol, id: user.id };
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
-    const transaction = await sequelize.transaction();
-    try {
-        if (userData.username) {
-            const exists = await User.findOne({
-                where: { username: userData.username },
-                transaction
-            });
-            if (exists && exists.id !== userId) {
-                throw new Error('El nombre de usuario ya está en uso');
-            }
-            await User.update({ ...userData }, {
-                where: { id: userId },
-                transaction
-            });
-        }
 
-        if (profileData) {
-            // updateProfile implementacion pendiente en perfil.service.js
-            await putPerfil(userId,profileData,transaction)
-        }
-        await transaction.commit();
-
-        return await User.findByPk(userId, {
-            include: ['perfil']
+    if (userData.username) {
+        const exists = await User.findOne({
+            where: { username: userData.username },
         });
-    } catch (error) {
-        await transaction.rollback();
-        throw error;
-
+        if (exists && exists.id !== userId) {
+            throw new Error('El nombre de usuario ya está en uso');
+        }
+        await User.update({ ...userData }, {
+            where: { id: userId },
+        });
     }
+
+    if (profileData) {
+        // updateProfile implementacion pendiente en perfil.service.js
+    }
+
+    return await User.findByPk(userId, {
+        include: [{ model: Perfil, as: 'perfil' }]
+    });
 };
 
 // Baja logica del usuario
@@ -89,5 +84,8 @@ const deleteUser = async (id) => {
 
     return user;
 }
+
+
+
 
 module.exports = { register, login, updateUserWithProfile, deleteUser }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Header } from './header';
+import { MisPublicaciones } from './mis-publicaciones';
 
-describe('Header', () => {
-  let component: Header;
-  let fixture: ComponentFixture<Header>;
+describe('MisPublicaciones', () => {
+  let component: MisPublicaciones;
+  let fixture: ComponentFixture<MisPublicaciones>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Header]
+      imports: [MisPublicaciones]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Header);
+    fixture = TestBed.createComponent(MisPublicaciones);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

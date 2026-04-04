@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthServices } from '../auth';
 
@@ -8,27 +8,13 @@ import { AuthServices } from '../auth';
   providedIn: 'root',
 })
 export class Perfil {
-  private apiUrl = environment.apiUrl;
-  private httpClient = inject(HttpClient);
-  private authService = inject(AuthServices);
 
-  getProfile(id: number): Observable<any>{
-    const token = this.authService.getToken();
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    return this.httpClient.get<any>(`${this.apiUrl}/perfil/${id}`,{headers});
-  }
+  //YA NO SE NECESITA OBTENE EL TOKEN POR IMPLEMENTACION DE INTERCEPTOR en app.config.ts
+  apiUrl = environment.apiUrl;
+  http = inject(HttpClient);
 
   updateUser(id: number, data: any): Observable<any> {
-    const token = this.authService.getToken();
+    return this.http.put<any>(`${this.apiUrl}/perfil/${id}`, data);
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-
-    return this.httpClient.put<any>(`${this.apiUrl}/perfil/${id}`, data, { headers });
   }
 }
