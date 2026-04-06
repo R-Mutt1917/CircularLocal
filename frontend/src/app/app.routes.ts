@@ -11,7 +11,6 @@ import { PublicacionDetallada } from './features/user/publicacion-detallada/publ
 import { SubirPublicacion } from './features/user/subir-publicacion/subir-publicacion';
 import { Profile } from './features/user/profile/profile';
 
-
 export const routes: Routes = [
     { path: '', component: Landing, pathMatch: 'full' },
     { path: 'login', component: Login },

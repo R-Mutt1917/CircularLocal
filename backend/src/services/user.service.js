@@ -2,8 +2,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
-const { User } = require('../models');
-const { createProfile, putPerfil } = require('./perfil.service');
+const { User, Perfil } = require('../models');
+const { createProfile, updateProfile } = require('./perfil.service');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -43,6 +43,7 @@ const login = async (username, password) => {
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
+
     const transaction = await sequelize.transaction();
     try {
         if (userData.username) {
@@ -66,7 +67,7 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
         await transaction.commit();
 
         return await User.findByPk(userId, {
-            include: ['perfil']
+            include: [{ model: Perfil, as: 'perfil' }]
         });
     } catch (error) {
         await transaction.rollback();
