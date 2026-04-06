@@ -2,13 +2,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
-<<<<<<< HEAD
-const { User } = require('../models');
-const { createProfile, putPerfil } = require('./perfil.service');
-=======
 const { User, Perfil } = require('../models');
 const { createProfile, updateProfile } = require('./perfil.service');
->>>>>>> origin/develop
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -48,7 +43,6 @@ const login = async (username, password) => {
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
-
     if (userData.username) {
         const exists = await User.findOne({
             where: { username: userData.username },
