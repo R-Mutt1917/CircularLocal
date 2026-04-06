@@ -1,9 +1,8 @@
 <form class="pub-form" [formGroup]="formPublicacion" (ngSubmit)="onSubmit()">
     <div class="pub-form__upload">
-        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
-        @if (previewUrl) {
+        @if (previewUrl()) {
         <div class="pub-form__preview">
-            <img [src]="previewUrl" alt="Vista previa" class="pub-form__preview-img">
+            <img [src]="previewUrl()" alt="Vista previa" class="pub-form__preview-img">
             <button type="button" class="pub-form__remove-img" (click)="removeImage()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -12,7 +11,7 @@
             </button>
         </div>
         } @else {
-        <div class="pub-form__upload-zone" (click)="fileInput.click()">
+        <div class="pub-form__upload-zone">
             <div class="pub-form__upload-icon">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -20,16 +19,11 @@
                     <line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
             </div>
-            <p class="pub-form__upload-label">Arrastrá las fotos aquí o seleccioná un archivo</p>
-            <span class="pub-form__upload-hint">JPG, PNG hasta 10MB</span>
+            <p class="pub-form__upload-label">Acá se previsualizará la imagen</p>
         </div>
         }
 
-        @if (backendErrors['imagen']) {
-        <p class="pub-form__error">{{ backendErrors['imagen'] }}</p>
-        } @else if (formPublicacion.controls.imagen.invalid && formPublicacion.controls.imagen.touched) {
-        <p class="pub-form__error">La imagen es requerida</p>
-        }
+        
 
         <div class="pub-form__tip">
             <span class="pub-form__tip-title">Consejo del Artesano</span>
@@ -43,36 +37,65 @@
     <div class="pub-form__fields">
 
         <div class="pub-form__field pub-form__field--full">
-            <label class="pub-form__label">Título de la publicación</label>
-            <input formControlName="titulo" class="pub-form__input" type="text"
-                placeholder="Ej: Madera de roble recuperada" />
-            @if (backendErrors['titulo']) {
-            <p class="pub-form__error">{{ backendErrors['titulo'] }}</p>
-            } @else if (formPublicacion.controls.titulo.invalid && formPublicacion.controls.titulo.touched) {
-            <p class="pub-form__error">El título es requerido</p>
+                <label class="pub-form__label">Título de la publicación</label>
+                <input formControlName="titulo" class="pub-form__input" type="text"
+                    placeholder="Ej: Madera de roble recuperada" />
+                @if (backendErrors['titulo']) {
+                <p class="pub-form__error">{{ backendErrors['titulo'] }}</p>
+                } @else if (formPublicacion.controls.titulo.invalid && formPublicacion.controls.titulo.touched) {
+                <p class="pub-form__error">Escribe un titulo con al menos 5 caracteres</p>
+                }            
+        </div>
+
+        <div class="pub-form__row">
+            <div class="pub-form__field">
+                <label class="pub-form__label">Imagen de la publicación</label>
+                <input 
+                    type="text" 
+                    formControlName="imagen" 
+                    placeholder="Pegá la URL de la imagen"
+                    class="pub-form__input"
+                />  
+                @if (backendErrors['imagen']) {
+                    <p class="pub-form__error">{{ backendErrors['imagen'] }}</p>
+                } @else if (formPublicacion.controls.imagen.invalid && formPublicacion.controls.imagen.touched) {
+                    <p class="pub-form__error">La imagen es requerida</p>
+                }    
+            </div>   
+            <div class="pub-form__field">
+                <label class="pub-form__label">Estado de Publicacion</label>
+            <select formControlName="estado" class="pub-form__select">
+                <option  [value]="'Borrador'">Borrador</option>
+                <option [value]="'Publicada'">Publicada</option>
+                <option [value]="'Cancelada'">Cancelada</option>
+                <option [value]="'Finalizada'">Finalizada</option>
+            </select>
+            @if (backendErrors['estado']) {
+            <p class="pub-form__error">{{ backendErrors['estado'] }}</p>
+            } @else if (formPublicacion.controls.estado.invalid && formPublicacion.controls.estado.touched) {
+            <p class="pub-form__error">El estado es requerido</p>
             }
+            </div>
         </div>
 
         <div class="pub-form__row">
             <div class="pub-form__field">
                 <label class="pub-form__label">Categoría</label>
                 <div class="pub-form__select-wrapper">
-                    <select formControlName="categoria" class="pub-form__select">
-                        <option value="">Seleccioná una categoría</option>
-                        <option value="Madera Recup.">Madera Recup.</option>
-                        <option value="Textiles Orgánicos">Textiles Orgánicos</option>
-                        <option value="Cerámica">Cerámica</option>
-                        <option value="Herramientas">Herramientas</option>
-                        <option value="Metalurgia">Metalurgia</option>
+                    <select formControlName="tagId" class="pub-form__select">
+                        <option [ngValue]="null">Seleccioná una categoría</option>
+                        @for (tag of tags(); track tag.id) {
+                        <option [ngValue]="tag.id">{{ tag.name }}</option>
+                        }
                     </select>
                     <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2">
                         <polyline points="6 9 12 15 18 9" />
                     </svg>
                 </div>
-                @if (backendErrors['categoria']) {
-                <p class="pub-form__error">{{ backendErrors['categoria'] }}</p>
-                } @else if (formPublicacion.controls.categoria.invalid && formPublicacion.controls.categoria.touched) {
+                @if (backendErrors['tagId']) {
+                <p class="pub-form__error">{{ backendErrors['tagId'] }}</p>
+                } @else if (formPublicacion.controls.tagId.invalid && formPublicacion.controls.tagId.touched) {
                 <p class="pub-form__error">La categoría es requerida</p>
                 }
             </div>
@@ -81,15 +104,15 @@
                 <label class="pub-form__label">Tipo de recurso</label>
                 <div class="pub-form__radio-group">
                     <label class="pub-form__radio">
-                        <input formControlName="tipo" type="radio" name="tipo" value="material" />
+                        <input formControlName="tipo" type="radio" name="tipo" value="MATERIAL" />
                         <span>Material</span>
                     </label>
                     <label class="pub-form__radio">
-                        <input formControlName="tipo" type="radio" name="tipo" value="producto" />
+                        <input formControlName="tipo" type="radio" name="tipo" value="PRODUCTO" />
                         <span>Producto</span>
                     </label>
                     <label class="pub-form__radio">
-                        <input formControlName="tipo" type="radio" name="tipo" value="servicio" />
+                        <input formControlName="tipo" type="radio" name="tipo" value="SERVICIO" />
                         <span>Servicio</span>
                     </label>
                 </div>
@@ -101,30 +124,125 @@
             </div>
         </div>
 
-        <div class="pub-form__field pub-form__field--full">
-            <label class="pub-form__label">Descripción detallada</label>
-            <textarea formControlName="descripcion" class="pub-form__textarea"
-                placeholder="Describí el origen, estado y dimensiones..." rows="4"></textarea>
-            @if (backendErrors['descripcion']) {
-            <p class="pub-form__error">{{ backendErrors['descripcion'] }}</p>
-            } @else if (formPublicacion.controls.descripcion.invalid && formPublicacion.controls.descripcion.touched) {
-            <p class="pub-form__error">La descripción es requerida</p>
-            }
-        </div>
+            <div [formGroupName]="'detalle'">
+                @switch (formPublicacion.controls.tipo.value) {
+                @case ('MATERIAL') {
+                <div>
+                    <label class="pub-form__label">Nombre del material</label>
+                    <input formControlName="nombreMaterial" class="pub-form__input" type="text"
+                        placeholder="Ej: Madera de roble recuperada" />
 
-        <div class="pub-form__footer">
-            <div class="pub-form__actions">
-                <button type="button" routerLink="/app/publicaciones" class="pub-form__btn pub-form__btn--ghost">
-                    Cancelar
-                </button>
-                <button type="submit" class="pub-form__btn pub-form__btn--primary">
-                    @if (initialData()) {
-                    @if (isLoading()) { Guardando Cambios... } @else { Guardar cambios }
-                    } @else {
-                    @if (isLoading()) { Publicando... } @else { Publicar recurso }
-                    }
-                </button>
+                    <div class="pub-form__row">
+                        <div class="pub-form__field">
+                            <label class="pub-form__label">Cantidad</label>
+                            <input type="number" formControlName="cantidad" class="pub-form__input"
+                                placeholder="Cantidad" />
+                        </div>
+                        <div class="pub-form__field">
+                            <label class="pub-form__label">Unidad</label>
+                            <div class="pub-form__select-wrapper">
+                                <select formControlName="unidad" class="pub-form__select">
+                                    <option value="kg">Kg</option>
+                                    <option value="m">M</option>
+                                    <option value="m2">M2</option>
+                                    <option value="m3">M3</option>
+                                    <option value="unidad">Unidad</option>
+                                </select>
+                                <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                @case ('PRODUCTO') {
+                <div>
+                    <label class="pub-form__label">Nombre del producto</label>
+                    <input formControlName="nombreProducto" class="pub-form__input" type="text"
+                        placeholder="Ej: Mesa de madera recuperada" />
+
+                    <div class="pub-form__row">
+                        <div class="pub-form__field">
+                            <label class="pub-form__label">Cantidad</label>
+                            <input type="number" formControlName="cantidad" class="pub-form__input"
+                                placeholder="Cantidad" />
+                        </div>
+                        <div class="pub-form__field">
+                            <label class="pub-form__label">Unidad</label>
+                            <div class="pub-form__select-wrapper">
+                                <select  formControlName="unidad" class="pub-form__select">
+                                    <option value="unidad">Unidad</option>
+                                </select>
+                                <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+
+                @case ('SERVICIO') {
+                <div class="pub-form__row">
+                    <div class="pub-form__field">
+                        <label class="pub-form__label">Modalidad</label>
+                        <div class="pub-form__select-wrapper">
+                            <select formControlName="modalidad" class="pub-form__select">
+                                <option value="PRESENCIAL">Presencial</option>
+                                <option value="REMOTO">Remoto</option>
+                                <option value="HIBRIDO">Híbrido</option>
+                            </select>
+                            <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pub-form__field">
+                        <label class="pub-form__label">Disponibilidad Horaria</label>
+                        <input type="text" formControlName="disponibilidadHoraria" class="pub-form__input"
+                            placeholder="Ej: Lunes a Viernes de 9 a 17" />
+                    </div>
+                </div>
+                <div class="pub-form__field pub-form__field--full">
+                    <label class="pub-form__label">Zona de cobertura</label>
+                    <input type="text" formControlName="zonaCobertura" class="pub-form__input"
+                        placeholder="Ej: Cordoba Capital" />
+                </div>
+                }
+                }
+            </div>
+
+
+            <div class="pub-form__field pub-form__field--full">
+                <label class="pub-form__label">Descripción detallada</label>
+                <textarea formControlName="descripcion" class="pub-form__textarea"
+                    placeholder="Describí el origen, estado y dimensiones..." rows="4"></textarea>
+                @if (backendErrors['descripcion']) {
+                <p class="pub-form__error">{{ backendErrors['descripcion'] }}</p>
+                } @else if (formPublicacion.controls.descripcion.invalid &&
+                formPublicacion.controls.descripcion.touched) {
+                <p class="pub-form__error">La descripción es requerida</p>
+                }
+            </div>
+
+            <div class="pub-form__footer">
+                <div class="pub-form__actions">
+                    <button type="button" routerLink="/app/publicaciones" class="pub-form__btn pub-form__btn--ghost">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="pub-form__btn pub-form__btn--primary">
+                        @if (initialData()) {
+                        @if (isLoading()) { Guardando Cambios... } @else { Guardar cambios }
+                        } @else {
+                        @if (isLoading()) { Publicando... } @else { Publicar recurso }
+                        }
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
 </form>

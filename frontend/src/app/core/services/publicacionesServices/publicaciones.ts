@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { PublicacionModel } from '../../../shared/models/publicaciones.model';
-import { CrearPublicacionModel, PublicacionModel } from '../../../shared/models/publicaciones.model';
+import { CrearPublicacionModel, PublicacionDetalleModel, PublicacionModel, PublicacionPreviewModel } from '../../../shared/models/publicaciones.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -13,44 +12,36 @@ export class PublicacionesService {
 
   private http = inject(HttpClient);
 
-  //Se necesita endpoint que traiga publicaciones por id de usuario
+  consultarPublicacionesPorUsuario(id: number, limit?: number): Observable<PublicacionPreviewModel[]> {
+    const query = limit ? `?limit=${limit}` : '';
+    return this.http.get<PublicacionPreviewModel[]>(`${this.apiUrl}/publicaciones/user/${id}${query}`);
+  }
 
-
-
-  //Se necesita endpoint de una previsualizacion de publicacion + perfil de usuario con los siguientes atribututos:
-  //PUBLICACION: id, imagenPrincipal, titulo, tag, estado, tipo
-  //PERFIL: id, nombre, foto de perfil
-
-
-  //CUANDO SE CREE NUEVO ENDOPOINT DE PREVISUALIZACION NO USAR MAS ESTE ENDPOINT
-  //SE USA PARA MOSTRAR TODAS LAS PUBLICACIONES EN LA SECCION DE user/publicaciones
-  consultarPublicaciones(): Observable<PublicacionModel[]> {
-    return this.http.get<PublicacionModel[]>(`${this.apiUrl}/publicaciones`);
+  consultarPublicacionDetalle(id: number): Observable<PublicacionDetalleModel> {
+    return this.http.get<PublicacionDetalleModel>(`${this.apiUrl}/publicaciones/perfil/${id}`);
   }
 
 
-  //TRAER TODOS LOS ATRIBUTOS DE PUBLICACION + PERFIL DE USUARIO
-  //SE USA PARA MOSTRAR LA PUBLICACION EN LA SECCION DE user/publicacion-detallada
-  consultarPublicacionDetallada(id: string): Observable<PublicacionModel> {
-    return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`)
-  }
-
-  crearPublicacion(publicacion: CrearPublicacionModel): Observable<PublicacionModel> {
-    return this.http.post<PublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
+  consultarPublicacionesPreview(): Observable<PublicacionPreviewModel[]> {
+    return this.http.get<PublicacionPreviewModel[]>(`${this.apiUrl}/publicaciones/preview`);
   }
 
 
-  //TRAER TODOS LOS ATRIBUTOS DE PUBLICACION + PERFIL DE USUARIO
-  //SE USA PARA MOSTRAR LA PUBLICACION EN LA SECCION DE user/publicacion-detallada
-  consultarPublicacionDetallada(id: string): Observable<PublicacionModel> {
-    return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`)
+  crearPublicacion(publicacion: CrearPublicacionModel): Observable<CrearPublicacionModel> {
+    return this.http.post<CrearPublicacionModel>(`${this.apiUrl}/publicaciones`, publicacion);
   }
 
+  obtenerPublicacion(id: number): Observable<PublicacionModel> {
+    return this.http.get<PublicacionModel>(`${this.apiUrl}/publicaciones/${id}`);
+  }  
+
+  actualizarPublicacion(id: number, publicacion: CrearPublicacionModel): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/publicaciones/${id}`, publicacion);
+  }
+
+  listarTags(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/publicaciones/tags`);
+  }
 
 }
 
-// POST /publicaciones: Crear una nueva publicación.
-// PUT /publicaciones/:id/publicar: Publicar una publicación.
-// PUT /publicaciones/:id/finalizar: Finalizar una publicación.
-// PUT /publicaciones/:id/cancelar: Cancelar una publicación.
-// PUT /publicaciones/:id/cancelar: Cancelar una publicación.

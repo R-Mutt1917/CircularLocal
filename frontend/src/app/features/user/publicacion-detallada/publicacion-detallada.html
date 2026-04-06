@@ -1,100 +1,123 @@
 <section class="section">
-    <div class="contenedor_principal">
-        <div class="detalle-main">
-            <div class="detalle-breadcrumb">
-                <a routerLink="/app/publicaciones">PUBLICACIONES > </a>
-                <span>DETALLE DE {{idPublicacion.tipo | uppercase}}</span>
-            </div>
-            <div class="detalle-imagen">
-                <img [src]="idPublicacion.imagenPrincipal" [alt]="idPublicacion.titulo" class="detalle-imagen__img" />
-                @if(idPublicacion.estado === 'publicada'){
-                <div class="detalle-imagen__badge">
-                    Disponible para Intercambio
+    @if(Publicacion) {
+        <div class="contenedor_principal">
+            <div class="detalle-main">
+                <div class="detalle-breadcrumb">
+                    <a routerLink="/app/publicaciones">PUBLICACIONES > </a>
+                    <span>DETALLE DE {{Publicacion.tipo | uppercase}}</span>
                 </div>
-                }
-                @if(idPublicacion.estado === 'finalizada'){
-                <div class="detalle-imagen__badge detalle-imagen__badge--finalizada">
-                    Finalizado
-                </div>
-                }
-            </div>
-
-            <div class="detalle-tags">
-                <span class="tag tag--tipo">{{ idPublicacion.tipo | titlecase }}</span>
-                <span class="tag tag--categoria">{{ idPublicacion.tag }}</span>
-                @if(idPublicacion.verificada){
-                <span class="tag tag--verificada">Verificada</span>
-                }
-            </div>
-
-            <h1 class="detalle-titulo">{{ idPublicacion.titulo }}</h1>
-
-            <div class="detalle-meta">
-                <div class="detalle-meta__item">
-                    <span class="detalle-meta__label">Publicación</span>
-                    <span class="detalle-meta__value">{{ idPublicacion.estado | titlecase }}</span>
-                </div>
-                <div class="detalle-meta__item">
-                    <span class="detalle-meta__label">Tipo</span>
-                    <span class="detalle-meta__value">{{ idPublicacion.tipo | titlecase }}</span>
-                </div>
-                <div class="detalle-meta__item">
-                    <span class="detalle-meta__label">Creada</span>
-                    <span class="detalle-meta__value">{{ idPublicacion.fechaCreacion | date:'dd/MM/yyyy' }}</span>
-                </div>
-            </div>
-
-            <p class="detalle-desc">{{ idPublicacion.descripcion }}</p>
-
-        </div>
-
-        <aside class="detalle-sidebar">
-
-            <div class="perfil-card">
-                <div class="perfil-card__header">
-                    <div class="perfil-card__avatar">
-                        <span>{{ perfil.nombre_perfil.charAt(0) }}</span>
+                <div class="detalle-imagen">
+                    <img [src]="Publicacion.imagen" [alt]="Publicacion.titulo" class="detalle-imagen__img" />
+                    @if(Publicacion.estado === 'publicada'){
+                    <div class="detalle-imagen__badge">
+                        Disponible para Intercambio
                     </div>
-                    <div class="perfil-card__info">
-                        <h3 class="perfil-card__nombre">{{ perfil.nombre_perfil }}</h3>
-                        <span class="perfil-card__rol">{{ perfil.tipo_actor }}</span>
+                    }
+                    @if(Publicacion.estado === 'finalizada'){
+                    <div class="detalle-imagen__badge detalle-imagen__badge--finalizada">
+                        Finalizado
+                    </div>
+                    }
+                </div>
+
+                <div class="detalle-tags">
+                    <span class="tag tag--tipo">{{ Publicacion.tipo | titlecase }}</span>
+                    <span class="tag tag--categoria">{{ Publicacion.tag }}</span>
+                    @if(Publicacion.verificada){
+                    <span class="tag tag--verificada">Verificada</span>
+                    }@else{
+                    <span class="tag tag--no-verificada">No verificada</span>
+                    }
+                </div>
+
+                <h1 class="detalle-titulo">{{ Publicacion.titulo }}</h1>
+
+                <div class="detalle-meta">
+                    <div class="detalle-meta__item">
+                        <span class="detalle-meta__label">Publicación</span>
+                        <span class="detalle-meta__value">{{ Publicacion.estado | titlecase }}</span>
+                    </div>
+                    <div class="detalle-meta__item">
+                        <span class="detalle-meta__label">Tipo</span>
+                        <span class="detalle-meta__value">{{ Publicacion.tipo | titlecase }}</span>
+                    </div>
+                    <div class="detalle-meta__item">
+                        <span class="detalle-meta__label">Creada</span>
+                        <span class="detalle-meta__value">{{ Publicacion.createdAt || 'Cargando...' }}</span>
                     </div>
                 </div>
 
-                <ul class="perfil-card__stats">
-                    <li>
-                        <span class="perfil-card__stats-icon">📍</span>
-                        <span>{{ perfil.direccion }}</span>
-                    </li>
-                </ul>
+                <p class="detalle-desc">{{ Publicacion.descripcion }}</p>
 
-                <blockquote class="perfil-card__bio">
-                    "{{ perfil.descripcion }}"
-                </blockquote>
-
-                <button class="btn btn--primary">Solicitar intercambio</button>
             </div>
 
-            <div class="compromiso-card">
-                <h4 class="compromiso-card__titulo">Compromiso Circular</h4>
-                <p class="compromiso-card__texto">
-                    Requerimos que todos los intercambios se realicen en lugares públicos y seguros.
-                    Circular Urbano fomenta la economía de tejido y el trueque justo.
-                </p>
-            </div>
+            <aside class="detalle-sidebar">
 
-        </aside>
-    </div>
+                @if(Publicacion.user && Publicacion.user.perfil){
+                <div class="perfil-card">
+                    <div class="perfil-card__header">
+                        <div class="perfil-card__avatar">
+                            <img class="perfil-card__avatar__img" [src]="Publicacion.user.perfil.imagen" alt="">
+                        </div>
+                        <div class="perfil-card__info">
+                            <h3 class="perfil-card__nombre">{{ Publicacion.user.perfil.nombre_perfil }}</h3>
+                            <span class="perfil-card__rol">{{ Publicacion.user.perfil.tipo_actor }}</span>
+                        </div>
+                    </div>
 
-    <section class="otras-publicaciones">
-        <h2 class="otras-publicaciones__titulo">Otras publicaciones de {{ perfil.nombre_perfil }}</h2>
-        <div class="otras-publicaciones__grid">
-            @for(publicacion of otrasPublicaciones; track publicacion.id){
-            <app-publicacion [publicacion]="publicacion"></app-publicacion>
-            }
-            @empty {
-            <p>No hay otras publicaciones del usuario.</p>
-            }
+                    <ul class="perfil-card__stats">
+                        <li>
+                            <span class="perfil-card__stats-icon">📍</span>
+                            <span>{{ Publicacion.user.perfil.direccion }}</span>
+                        </li>
+                    </ul>
+
+                    <blockquote class="perfil-card__bio">
+                        "{{ Publicacion.user.perfil.descripcion }}"
+                    </blockquote>
+
+                    <button class="btn btn--primary" (click)="abrirModal()">Solicitar intercambio</button>
+
+                    @if(mostrarModal){
+                    <app-solicitar-intercambio-modal [publicacionId]="1" (cerrar)="cerrarModal()">
+                    </app-solicitar-intercambio-modal>
+                    }
+                </div>
+                }
+
+                <div class="compromiso-card">
+                    <h4 class="compromiso-card__titulo">Compromiso Circular</h4>
+                    <p class="compromiso-card__texto">
+                        Requerimos que todos los intercambios se realicen en lugares públicos y seguros.
+                        Circular Urbano fomenta la economía de tejido y el trueque justo.
+                    </p>
+                </div>
+
+            </aside>
         </div>
-    </section>
+
+        <section class="otras-publicaciones">
+            @if(Publicacion.user && Publicacion.user.perfil){
+            <h2 class="otras-publicaciones__titulo">Otras publicaciones de {{ Publicacion.user.perfil.nombre_perfil }}
+            </h2>
+            }
+            <div class="otras-publicaciones__grid">
+                @for(publicacion of otrasPublicaciones; track publicacion.id){
+                <app-publicacion [publicacion]="publicacion"></app-publicacion>
+                }
+                @empty {
+                <p>No hay otras publicaciones del usuario.</p>
+                }
+            </div>
+        </section>
+    } @else if (errorMessage) {
+        <div class="mensaje-error"
+            style="color: red; padding: 1rem; border: 1px solid red; margin-bottom: 1rem; border-radius: 4px;">
+            {{ errorMessage }}
+        </div>
+    } @else {
+        <div class="loading-state" style="padding: 2rem; text-align: center;">
+            <p>Cargando publicación...</p>
+        </div>
+    }
 </section>

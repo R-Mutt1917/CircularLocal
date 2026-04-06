@@ -1,24 +1,24 @@
 <div>
-  @switch (role) {
+  @switch (role()) {
   @case ('ACTOR') {
   <app-nav-user></app-nav-user>
   <main class="main-content-user">
     <router-outlet></router-outlet>
   </main>
   }
-  @case ('ADMINISTRADOR') {
+  @case ('ADMIN') {
   <app-nav-admin></app-nav-admin>
   <main class="main-content-admin">
     <router-outlet></router-outlet>
   </main>
   }
   @default {
-  <app-header></app-header>
+  <app-nav-public></app-nav-public>
   <main class="main-content-public">
     <router-outlet></router-outlet>
   </main>
+  <app-footer-public></app-footer-public>
   }
   }
 
-  <!-- <app-footer-public></app-footer-public> -->
 </div>

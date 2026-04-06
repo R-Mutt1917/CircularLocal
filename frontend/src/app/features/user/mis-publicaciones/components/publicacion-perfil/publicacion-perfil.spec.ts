@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HeaderMenu } from './header-menu';
+import { PublicacionPerfil } from './publicacion-perfil';
 
-describe('HeaderMenu', () => {
-  let component: HeaderMenu;
-  let fixture: ComponentFixture<HeaderMenu>;
+describe('PublicacionPerfil', () => {
+  let component: PublicacionPerfil;
+  let fixture: ComponentFixture<PublicacionPerfil>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderMenu]
+      imports: [PublicacionPerfil]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HeaderMenu);
+    fixture = TestBed.createComponent(PublicacionPerfil);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

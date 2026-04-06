@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
 const { User, Perfil } = require('../models');
-const { createProfile, updateProfile } = require('./perfil.service');
+const { createProfile, putPerfil } = require('./perfil.service');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -61,7 +61,6 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
         }
 
         if (profileData) {
-            // updateProfile implementacion pendiente en perfil.service.js
             await putPerfil(userId,profileData,transaction)
         }
         await transaction.commit();

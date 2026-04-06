@@ -1,3 +1,251 @@
-<section>
-    ESTA ES LA LANDING
-</section>
+<main class="landing-page">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="eyebrow">— ECOSISTEMA DE MATERIALES</span>
+                <h1 class="hero-title serif">
+                    Conectá.<br>
+                    Reutilizá.<br>
+                    <span class="accent-text">Generá impacto local.</span>
+                </h1>
+                <p class="hero-description">
+                    La plataforma que une cooperativas, recicladores y emprendedores para hacer circular la economía en
+                    tu comunidad.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary" id="btn-join">
+                        SUMARTE AHORA
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z">
+                            </path>
+                        </svg>
+                    </button>
+                    <a href="#" class="btn btn-link link-italic" id="link-posts" routerLink="/register">Ver
+                        publicaciones</a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">+120</span>
+                        <span class="stat-label">ACTORES</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">+300</span>
+                        <span class="stat-label">INTERCAMBIOS</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">+4.5 tn</span>
+                        <span class="stat-label">RECUPERADAS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visuals">
+                <div class="image-wrapper">
+                    <img src="/img/taller_trabajadora.png" alt="Artesano trabajando con materiales recuperados"
+                        class="hero-image">
+                    <div class="floating-badge">
+                        <p>Materia prima regenerada por actores locales.</p>
+                    </div>
+                    <div class="decorative-rect"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Materials Section -->
+    <section class="materials-section">
+        <div class="container">
+            <div class="materials-header">
+                <h2 class="section-title serif">Materiales Disponibles</h2>
+                <a href="#" class="btn-text" id="link-catalog">
+                    VER CATÁLOGO COMPLETO
+                    <svg class="icon-small" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor"
+                            d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="materials-grid">
+                <!-- Madera Recuperada -->
+                <article class="material-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="icon-material" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m-7 14h-2V7h2zm4 0h-2V7h2zm-8 0H6V7h2z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Madera Recuperada</h3>
+                    <p class="card-text">Sobrantes de ebanistería local, curados y listos para nuevos proyectos.</p>
+                </article>
+
+                <!-- Textiles Orgánicos -->
+                <article class="material-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="icon-material" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M17.66 11.2c-.2 0-.3-.05-.44-.15C16.92 10.82 16.5 10.6 16.1 10.6c-.4 0-.82.22-1.12.45-.14.1-.24.15-.44.15s-.3-.05-.44-.15c-.3-.23-.72-.45-1.12-.45-.4 0-.82.22-1.12.45-.14.1-.24.15-.44.15s-.3-.05-.44-.15c-.3-.23-.72-.45-1.12-.45-.4 0-.82.22-1.12.45-.14.1-.24.15-.44.15-.17 0-.31-.1-.47-.21l-.65-.5-.65.5C6.31 11.1 6.17 11.2 6 11.2h-.1l-.9-.9 1.4-1.4.15.15c.16.11.3.21.45.21.2 0 .3-.05.44-.15.3-.23.72-.45 1.12-.45.4 0 .82.22 1.12.45.14.1.24.15.44.15s.3-.05.44-.15c.3-.23.72-.45 1.12-.45.4 0 .82.22 1.12.45.14.1.24.15.44.15s.3-.05.44-.15c.3-.23.72-.45 1.12-.45.4 0 .82.22 1.12.45.14.1.24.15.44.15.15 0 .29-.1.45-.21l.15-.15 1.4 1.4-.9.9zM6 15.2c.15 0 .29.1.45.21l.65.5.65-.5c.16-.11.3-.21.45-.21h.1c.2 0 .3.05.44.15.3.23.72.45 1.12.45.4 0 .82-.22 1.12-.45.14-.1.24-.15.44-.15s.3.05.44.15c.3.23.72.45 1.12.45.4 0 .82-.22 1.12-.45.14-.1.24-.15.44-.15s.3.05.44.15c.3.23.72.45 1.12.45.4 0 .82-.22 1.12-.45.14-.1.24-.15.44-.15s.3.05.44.15c.3.23.72.45 1.12.45.4 0 .82-.22 1.12-.45.14-.1.24-.15.44-.15l.9.9-1.4 1.4-.15-.15c-.16-.11-.3-.21-.45-.21s-.3.05-.44.15c-.3.23-.72.45-1.12.45-.4 0-.82-.22-1.12-.45-.14-.1-.24-.15-.44-.15s-.3.05-.44.15c-.3.23-.72.45-1.12.45-.4 0-.82-.22-1.12-.45-.14-.1.24-.15.44-.15s.3.05.44.15c-.3.23-.72.45-1.12.45-.4 0-.82-.22-1.12-.45-.14-.1.24-.15-.44-.15s-.3.05-.44-.15c-.16-.11-.3-.21-.45-.21l-.15.15-1.4-1.4.9-.9c.1 0 .1 0 .1 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Textiles Orgánicos</h3>
+                    <p class="card-text">Fibras naturales de proximidad procesadas sin químicos industriales.</p>
+                </article>
+
+                <!-- Bioplásticos -->
+                <article class="material-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="icon-material" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 3L2 12h3v8h14v-8h3L12 3zm0 14.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Bioplásticos</h3>
+                    <p class="card-text">Materiales compostables derivados de residuos orgánicos municipales.</p>
+                </article>
+
+                <!-- Cerámica Local -->
+                <article class="material-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="icon-material" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 3c-4.42 0-8 3.58-8 8v8h16v-8c0-4.42-3.58-8-8-8zm4 14H8v-2h8v2zm0-4H8v-2h8v2z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Cerámica Local</h3>
+                    <p class="card-text">Arcillas de canteras regionales con procesos de bajo impacto.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artisan Section -->
+    <section class="artisan-section">
+        <div class="container artisan-container">
+            <header class="artisan-header">
+                <span class="eyebrow">THE MODERN ARTIST</span>
+                <h2 class="section-title serif">
+                    Curando la<br>
+                    Textura Orgánica del<br>
+                    Espacio.
+                </h2>
+            </header>
+
+            <div class="artisan-grid">
+                <div class="artisan-visual">
+                    <div class="image-wrapper">
+                        <div class="image-placeholder">
+                            <img src="/img/producto_minimalista.png" alt="Producto minimalista">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="artisan-content">
+                    <p class="description">
+                        Circular Local es una exploración editorial en la intersección de la industria ligera y la
+                        honestidad biológica. Creemos en materiales que envejecen con gracia.
+                    </p>
+                    <button class="btn-dark" id="btn-explore" routerLink="/register">EXPLORAR PUBLICACIONES</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Section -->
+    <section class="community-section">
+        <div class="container">
+            <div class="community-header">
+                <div class="header-left">
+                    <span class="eyebrow">COMUNIDAD CIRCULAR</span>
+                    <h2 class="section-title serif">¿Quién puede sumarse?</h2>
+                </div>
+                <div class="header-right">
+                    <p class="section-description">
+                        Construimos una red diversa donde cada actor cumple un rol fundamental para la sostenibilidad
+                        urbana.
+                    </p>
+                </div>
+            </div>
+
+            <div class="community-grid">
+                <!-- Cooperativas -->
+                <article class="community-card">
+                    <div class="card-icon-wrapper icon-bg-green">
+                        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Cooperativas</h3>
+                    <p class="card-text">Gestioná recursos, conectate con la red y ampliá tu impacto territorial con
+                        herramientas digitales diseñadas para la gestión colectiva.</p>
+                    <a href="#" class="card-link">Registrate como Cooperativa <span class="arrow">→</span></a>
+                </article>
+
+                <!-- Recicladores -->
+                <article class="community-card">
+                    <div class="card-icon-wrapper icon-bg-orange">
+                        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6zm0 4h8v2H6zm10 0h2v2h-2zm-6-4h8v2h-8z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Recicladores</h3>
+                    <p class="card-text">Publicá materiales recuperados y encontrá quién los necesita. Optimizá tu
+                        logística y asegurá un precio justo por tu labor ambiental.</p>
+                    <a href="#" class="card-link">Registrate como Reciclador <span class="arrow">→</span></a>
+                </article>
+
+                <!-- Emprendedores -->
+                <article class="community-card">
+                    <div class="card-icon-wrapper icon-bg-light">
+                        <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                            <path fill="currentColor"
+                                d="M17 8C15.34 8 14 9.34 14 11C14 12.66 15.34 14 17 14C18.66 14 20 12.66 20 11C20 9.34 18.66 8 17 8ZM17 12C16.45 12 16 11.55 16 11C16 10.45 16.45 10 17 10C17.55 10 18 10.45 18 11C18 11.55 17.55 12 17 12ZM12 7V3L2 12H5V21H12V17H14V21H19V12H22L12 3V7H12ZM10 19H7V11.27L12 6.77L14 8.57V15H12V19H10Z" />
+                        </svg>
+                    </div>
+                    <h3 class="card-title">Emprendedores sustentables</h3>
+                    <p class="card-text">Ofrecé productos y servicios con impacto real. Accedé a insumos reciclados de
+                        calidad y mostrá la trazabilidad de tu producción.</p>
+                    <a href="#" class="card-link">Registrate como Emprendedor <span class="arrow">→</span></a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <div class="card-icon-wrapper">
+                <svg viewBox="0 0 24 24" class="icon" aria-hidden="true">
+                    <path fill="currentColor"
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                </svg>
+            </div>
+
+            <h2 class="cta-title serif">
+                Sumate a la economía<br>
+                circular de tu<br>
+                comunidad.
+            </h2>
+
+            <p class="cta-subtitle">
+                UNITE A LA RED QUE TRANSFORMA RESIDUOS EN RECURSOS LOCALES.
+            </p>
+
+            <div class="cta-actions">
+                <button class="btn btn-brand" routerLink="/register">Crear mi perfil gratis</button>
+                <a href="#" class="btn-text" routerLink="/register">VER IMPACTO LOCAL</a>
+            </div>
+
+            <div class="cta-badge">
+                <p>ESTÁNDAR<br>ARTESANO<br>2026</p>
+            </div>
+        </div>
+    </section>
+</main>
