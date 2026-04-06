@@ -55,4 +55,7 @@ export class AuthServices {
     return this.httpClient.post<any>(`${this.apiUrl}/auth/register`, { username, password });
   }
 
+  getUser(): Observable<any> {
+   return this.httpClient.get<any>(`${this.apiUrl}/auth/profile`);
+  }
 }
