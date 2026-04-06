@@ -12,7 +12,6 @@ import { SubirPublicacion } from './features/user/subir-publicacion/subir-public
 import { MisPublicaciones } from './features/user/mis-publicaciones/mis-publicaciones';
 import { EditarPublicacion } from './features/user/editar-publicacion/editar-publicacion';
 
-
 export const routes: Routes = [
     { path: '', component: Landing, pathMatch: 'full' },
     { path: 'login', component: Login },
