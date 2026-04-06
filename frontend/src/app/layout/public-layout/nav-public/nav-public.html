@@ -1,0 +1,19 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="logo" routerLink="/">
+            <span class="icon">♻</span>
+            <span class="brand-name">Circular Local</span>
+        </div>
+
+        <button class="menu-toggle" (click)="isMenuOpen = !isMenuOpen" aria-label="Toggle navigation">
+            @if (isMenuOpen) { ✕ } @else { ☰ }
+        </button>
+
+        <div class="nav-content" [class.open]="isMenuOpen">
+            <div class="nav-actions">
+                <a class="btn-login" routerLink="/login" (click)="isMenuOpen = false">INICIAR SESIÓN</a>
+                <a class="btn-register" routerLink="/register" (click)="isMenuOpen = false">REGISTRARSE GRATIS</a>
+            </div>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,85 @@
+// auth.service.js
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { sequelize } = require('../config/database');
+const { User, Perfil } = require('../models');
+const { createProfile, updateProfile } = require('./perfil.service');
+
+const register = async (username, password) => {
+    const exists = await User.findOne({ where: { username } });
+    if (exists) throw new Error('El nombre de usuario ya está registrado');
+
+    const hash = await bcrypt.hash(password, 10);
+
+    // Crea el usuario
+    const user = await User.create({
+        username,
+        password: hash,
+        rol: 'ACTOR',
+        fecha_registro: new Date(),
+        activo: true
+    });
+
+    // Crea el perfil vacio
+    await createProfile(user.id);
+
+    return user;
+};
+
+const login = async (username, password) => {
+    const user = await User.findOne({ where: { username } });
+    if (!user) throw new Error('Usuario no encontrado');
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) throw new Error('Contraseña incorrecta');
+
+    const token = jwt.sign(
+        { id: user.id, username: user.username, role: user.rol },
+        process.env.JWT_SECRET,
+        { expiresIn: '24h' }
+    );
+
+    return { token, role: user.rol, id: user.id };
+};
+
+const updateUserWithProfile = async (userId, userData, profileData) => {
+    if (userData.username) {
+        const exists = await User.findOne({
+            where: { username: userData.username },
+        });
+        if (exists && exists.id !== userId) {
+            throw new Error('El nombre de usuario ya está en uso');
+        }
+        await User.update({ ...userData }, {
+            where: { id: userId },
+        });
+    }
+
+    if (profileData) {
+        // updateProfile implementacion pendiente en perfil.service.js
+    }
+
+    return await User.findByPk(userId, {
+        include: [{ model: Perfil, as: 'perfil' }]
+    });
+};
+
+// Baja logica del usuario
+const deleteUser = async (id) => {
+    const user = await User.findByPk(id);
+    if (!user) return null;
+
+    if (!user.activo) {
+        throw new Error("El usuario ya está dado de baja");
+    }
+
+    user.activo = false;
+    await user.save();
+
+    return user;
+}
+
+
+
+
+module.exports = { register, login, updateUserWithProfile, deleteUser }

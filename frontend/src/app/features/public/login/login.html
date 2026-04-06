@@ -1,0 +1,34 @@
+<section class="presentation">
+  <div class="login-card">
+    <header class="card-header">
+      <span class="brand-name">Circular Local</span>
+      <span class="brand-tagline">THE MODERN ARTISAN</span>
+    </header>
+
+    <h1>Bienvenido de nuevo</h1>
+    <p class="subtitle">
+      Ingresá a tu cuenta para conectar con la comunidad de artesanos locales.
+    </p>
+
+    <form [formGroup]="loginForm" (ngSubmit) ="onSubmit()" class="login-form">
+      <div class="input-group">
+        <label>USUARIO</label>
+        <input formControlName="username" placeholder="username" />
+      </div>
+
+      <div class="input-group">
+        <label>CONTRASEÑA</label>
+        <input formControlName="password" type="password" placeholder="••••••••" />
+      </div>
+
+      <button type="submit" class="login-button" [disabled]="loginForm.invalid">
+        Ingresar →
+      </button>
+      
+      <div class="form-footer">
+        <a routerLink="/" class="forgot-link">¿OLVIDASTE TU CONTRASEÑA?</a>
+        <p>¿No tenés cuenta? <a routerLink="/register" class="register-link">Registrate</a></p>
+      </div>
+    </form>
+  </div>
+</section>

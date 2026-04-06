@@ -1,0 +1,17 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: ${DB_NAME}
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    ports:
+      - "${DB_PORT}:${DB_PORT_CONTAINER}"
+    volumes:
+      - ${VOLUME}
+
+volumes:
+  db_data:
