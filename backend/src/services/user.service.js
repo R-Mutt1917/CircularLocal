@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
 const { User, Perfil } = require('../models');
-const { createProfile, updateProfile } = require('./perfil.service');
+const { createProfile, putPerfil } = require('./perfil.service');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
@@ -43,25 +43,36 @@ const login = async (username, password) => {
 };
 
 const updateUserWithProfile = async (userId, userData, profileData) => {
-    if (userData.username) {
-        const exists = await User.findOne({
-            where: { username: userData.username },
-        });
-        if (exists && exists.id !== userId) {
-            throw new Error('El nombre de usuario ya está en uso');
+
+    const transaction = await sequelize.transaction();
+    try {
+        if (userData.username) {
+            const exists = await User.findOne({
+                where: { username: userData.username },
+                transaction
+            });
+            if (exists && exists.id !== userId) {
+                throw new Error('El nombre de usuario ya está en uso');
+            }
+            await User.update({ ...userData }, {
+                where: { id: userId },
+                transaction
+            });
         }
-        await User.update({ ...userData }, {
-            where: { id: userId },
+
+        if (profileData) {
+            await putPerfil(userId,profileData,transaction)
+        }
+        await transaction.commit();
+
+        return await User.findByPk(userId, {
+            include: [{ model: Perfil, as: 'perfil' }]
         });
-    }
+    } catch (error) {
+        await transaction.rollback();
+        throw error;
 
-    if (profileData) {
-        // updateProfile implementacion pendiente en perfil.service.js
     }
-
-    return await User.findByPk(userId, {
-        include: [{ model: Perfil, as: 'perfil' }]
-    });
 };
 
 // Baja logica del usuario

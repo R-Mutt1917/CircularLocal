@@ -15,4 +15,8 @@ export class Perfil {
   updateUser(id: number, data: any): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/perfil/${id}`, data);
   }
+
+  getProfile(id: number): Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/perfil/${id}`);
+  }
 }
