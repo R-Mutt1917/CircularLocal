@@ -26,19 +26,21 @@ export class Form implements OnInit {
   });
 
   tiposRecurso = [
-    { label: 'Material', value: 'material' },
-    { label: 'Producto', value: 'producto' },
-    { label: 'Servicio', value: 'servicio' },
+    { label: 'Material', value: 'MATERIAL' },
+    { label: 'Producto', value: 'PRODUCTO' },
+    { label: 'Servicio', value: 'SERVICIO' },
   ];
 
   //DEFINIR BIEN CON EL EQUIPO CUALES VAN A SER TODOS LOS TAGS
   tags = ['todos', 'Madera Recup.', 'Textiles Orgánicos', 'Cerámica', 'Herramientas', 'Metalurgia'];
 
   seleccionarTipo(value: string): void {
+    console.log("TIPO SELECCIONADO",value);
     this.form.patchValue({ tipo: value });
   }
 
   seleccionarTag(tag: string): void {
+    console.log("TAG SELECCIONADO",tag);
     const current = this.form.value.tag;
     this.form.patchValue({ tag: current === tag ? '' : tag });
     if (tag === 'todos') {
@@ -48,6 +50,7 @@ export class Form implements OnInit {
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
+      console.log("VALOR DEL FORMULARIO",value);
       this.filtradorDeProductos.emit({
         searchQuery: value.searchQuery ?? '',
         tipoSeleccionado: value.tipo ?? '',

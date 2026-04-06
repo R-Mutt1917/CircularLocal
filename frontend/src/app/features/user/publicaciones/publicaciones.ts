@@ -28,12 +28,13 @@ export class Publicaciones implements OnInit {
   }
 
   filtradorDeProductos(filters: SearchFilters) {
+    //ARREGLAR ESTO PORQUE NO ANDA
     this.publicaciones = this.publicaciones.filter((publicacion) => {
-      const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
+      const matchQuery = publicacion.titulo.includes(filters.searchQuery)
       const matchTag = filters.tagSeleccionado === ''
         || publicacion.tag === filters.tagSeleccionado;
       const matchType = filters.tipoSeleccionado === ''
-        || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
+        || publicacion.tipo === filters.tipoSeleccionado;
 
       return matchQuery && matchTag && matchType;
     });
