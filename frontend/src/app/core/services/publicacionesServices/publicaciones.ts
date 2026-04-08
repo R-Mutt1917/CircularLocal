@@ -43,5 +43,9 @@ export class PublicacionesService {
     return this.http.get<any[]>(`${this.apiUrl}/publicaciones/tags`);
   }
 
+  reportarPublicacion(id: number): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/publicaciones/${id}/reportar`, {});
+  }
+
 }
 
