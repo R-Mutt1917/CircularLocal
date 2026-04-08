@@ -54,4 +54,22 @@ export class PublicacionDetallada {
     this.mostrarModal = false;
   }
 
+  reportarPublicacion(): void {
+    if(!confirm('¿Estas seguro que quieres reportar esta publicacion?')){
+      return;
+    }
+    if(this.Publicacion){
+      this.publicacionesService.reportarPublicacion(this.Publicacion.id).subscribe({
+        next: (response) => {
+          alert('Publicacion reportada correctamente');
+          console.log(response);
+        },
+        error: (err) => {
+          console.error('Error al reportar la publicación', err)
+          alert('Error al reportar la publicación');
+        }
+      })
+    }
+  }
+
 }
