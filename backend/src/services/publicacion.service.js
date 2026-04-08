@@ -160,11 +160,26 @@ const getPreviewPublicaciones = async () => {
     return publicaciones || [];
 }
 
+const reportar = async (id) => {
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) throw new Error('Publicación no encontrada');
+
+    if (publicacion.verificada) {
+        throw new Error('La publicacion esta verificada, no puede ser reportada');
+    }
+
+    publicacion.reportada = true;
+    await publicacion.save();
+
+    return { message: 'Publicación reportada correctamente' };
+}
+
 
 module.exports = {
     getByUser,
     crearPublicacion,
     editarPublicacion,
     getPublicacionDetalle,
-    getPreviewPublicaciones
+    getPreviewPublicaciones,
+    reportar
 };

@@ -38,5 +38,5 @@ export const routes: Routes = [
             { path: 'dashboard', component: AdminDashboard },
         ]
     },
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '' },
 ];
