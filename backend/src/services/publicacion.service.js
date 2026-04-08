@@ -162,15 +162,14 @@ const getPreviewPublicaciones = async () => {
 
 const reportar = async (id) => {
     const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) throw new Error('Publicación no encontrada');
+
     if (publicacion.verificada) {
         throw new Error('La publicacion esta verificada, no puede ser reportada');
     }
-    const [affectedRows] = await Publicacion.update(
-        { reportada: true },
-        { where: { id } }
-    );
 
-    if (affectedRows === 0) throw new Error('Publicación no encontrada');
+    publicacion.reportada = true;
+    await publicacion.save();
 
     return { message: 'Publicación reportada correctamente' };
 }
