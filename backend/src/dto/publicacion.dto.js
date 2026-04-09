@@ -134,13 +134,32 @@ function toPublicacionPreviewListDTO(publicaciones) {
     return publicaciones.map(toPublicacionPreviewDTO);
 }
 
+function toPublicacionReportadaDTO(publicacion) {
+    if (!publicacion) return null;
+    return {
+        id: publicacion.id,
+        titulo: publicacion.titulo,
+        tipo: publicacion.tipo,
+        createdAt: publicacion.createdAt,
+        user: publicacion.user.id,
+        nombrePerfil: publicacion.user.perfil.nombre_perfil,
+        imagenPerfil: publicacion.user.perfil.imagen,
+    };
+}
+
+function toPublicacionReportadaListDTO(publicaciones) {
+    if (!publicaciones?.rows) return [];
+    return publicaciones.rows.map(toPublicacionReportadaDTO);
+}
 
 module.exports = {
     toPublicacionDTO,
     toPublicacionListDTO,
     toPublicacionDetalleDTO,
     toPublicacionPreviewDTO,
-    toPublicacionPreviewListDTO
+    toPublicacionPreviewListDTO,
+    toPublicacionReportadaDTO,
+    toPublicacionReportadaListDTO,
 };
 //class PublicacionDTO {
 //        this.titulo = publicacion.titulo;
