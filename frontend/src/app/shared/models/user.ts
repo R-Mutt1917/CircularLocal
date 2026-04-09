@@ -8,4 +8,5 @@ export interface User{
   imagen: string;
   email: string;
   tipoActor: 'Emprendedor' | 'Reciclador' | 'Cooperativa';
+  activo: number;
 }
