@@ -21,6 +21,7 @@ export const routes: Routes = [
     { path: '', component: Landing, canActivate: [GuestGuard] },
     { path: 'login', component: Login, canActivate: [GuestGuard] },
     { path: 'register', component: Register, canActivate: [GuestGuard] },
+    { path: '', component: Landing, pathMatch: 'full' },
     {
         path: 'app',
         canActivate: [AuthGuard],
@@ -31,7 +32,7 @@ export const routes: Routes = [
             { path: 'subir', component: SubirPublicacion },
             { path: 'mis-publicaciones', component: MisPublicaciones },
             { path: 'editar-publicacion/:id', component: EditarPublicacion },
-            { path: 'mi-perfil', component: Profile },
+            { path: 'mi-perfil', component: Profile},
         ]
     },
     {
@@ -44,5 +45,5 @@ export const routes: Routes = [
             { path: 'usuarios', component: Usuarios },
         ]
     },
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '' },
 ];

@@ -312,3 +312,13 @@ exports.getPreviewPublicaciones = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener las publicaciones.', error });
   }
 }
+
+exports.reportarPublicacion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const resultado = await publicacionService.reportar(id);
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al reportar la publicación.', error });
+  }
+}
