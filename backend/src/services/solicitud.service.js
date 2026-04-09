@@ -78,10 +78,10 @@ const aceptarSolicitud = async (solicitudId) => {
     }
 
     // Actualiza es estado de la Solicitud
-    solicitud.update({ estadoSolicitud: 'ACEPTADA' });
+    await solicitud.update({ estadoSolicitud: 'ACEPTADA' });
 
     // Crea el Intercambio
-    intercambioService.crearIntercambio(solicitudId);
+    await intercambioService.crearIntercambio(solicitudId);
 
     return solicitud;
 }
