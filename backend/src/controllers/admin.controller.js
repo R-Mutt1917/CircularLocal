@@ -1,4 +1,5 @@
 const adminService = require('../services/admin.service');
+const { toPublicacionReportadaListDTO } = require('../dto/publicacion.dto');
 const { toListUserDTO } = require('../dto/usuario.dto');
 
 const banearUsuario = async (req, res) => {
@@ -22,6 +23,30 @@ const banearUsuario = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+const getPublicacionReportadas = async (req, res) => {
+  try {
+    const { page = 1, limit = 5 } = req.query; // Parámetros de paginación
+
+    // Validar que los parámetros sean números positivos
+    if (page <= 0 || limit <= 0) {
+        return res.status(400).json({ mensaje: 'Los parámetros de paginación deben ser números positivos.' });
+    }
+
+    const publicacionesReportadas = await adminService.getPublicacionReportadas(page, limit);
+
+    const publicacionesDto = toPublicacionReportadaListDTO(publicacionesReportadas);
+
+    return res.status(200).json({
+        total: publicacionesReportadas.count,
+        paginas: Math.ceil(publicacionesReportadas.count / limit),
+        publicaciones: publicacionesDto,
+    });
+    
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 const obtenerUsuarios = async (req, res) => {
     try {
@@ -49,4 +74,5 @@ const obtenerUsuarios = async (req, res) => {
 module.exports = {
     banearUsuario,
     obtenerUsuarios,
+    getPublicacionReportadas,
 };

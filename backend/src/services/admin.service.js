@@ -1,4 +1,4 @@
-const { User, Perfil } = require('../models');
+const { User, Publicacion, Perfil } = require('../models');
 
 const banUser = async (userId, adminId) => {
     if (adminId === userId) {
@@ -16,6 +16,36 @@ const banUser = async (userId, adminId) => {
     await user.save();
 
     return user;
+}
+
+// Obtiene las publicaciones reportadas con paginación
+const getPublicacionReportadas = async (page, limit) => {
+    // Calcula el offset
+    const offset = (page - 1) * limit;
+
+    const publicaciones = await Publicacion.findAndCountAll({
+        offset,
+        limit: parseInt(limit),
+        where: { reportada: 1 },
+        attributes: ['id', 'titulo', 'tipo', 'createdAt'],
+        include: [
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id'],
+                include: [
+                    {
+                        model: Perfil,
+                        as: 'perfil',
+                        attributes: ['nombre_perfil', 'imagen']
+                    }
+                ]
+            }
+        ],
+        order: [['createdAt', 'DESC']] // Ordena por fecha de registro descendente
+    });
+
+    return publicaciones;
 }
 
 const getUsers = async (page, limit) => {
@@ -41,4 +71,5 @@ const getUsers = async (page, limit) => {
 module.exports = {
     banUser,
     getUsers,
+    getPublicacionReportadas,
 };
