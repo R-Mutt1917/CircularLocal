@@ -10,8 +10,10 @@ export class adminService {
   private apiUrl = environment.apiUrl;
   private httpClient = inject(HttpClient);
 
-    obtenerUsuarios(){
-    return this.httpClient.get<any>(`${this.apiUrl}/admin/usuarios`);
+    obtenerUsuarios(page: number = 1, limit: number = 1000){
+    return this.httpClient.get<any>(`${this.apiUrl}/admin/usuarios`, {
+      params: { page: page.toString(), limit: limit.toString() }
+    });
   }
 
   banUser(userID: number){

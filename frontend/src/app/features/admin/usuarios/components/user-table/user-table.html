@@ -12,7 +12,9 @@
       </thead>
       <tbody>
         @for (user of users(); track user.id) {
-          <tr class="user-table__row">
+
+          @if(user.activo){
+<tr class="user-table__row">
 
             <td class="user-table__td">
               <div class="user-table__user-cell">
@@ -46,17 +48,68 @@
 
             <td class="user-table__td user-table__td--actions">
               <button
+                type="button"
                 class="user-table__action-btn user-table__action-btn--delete"
-                (click)="banUser.emit(user)"
-                title="Eliminar usuario"
+                (click)="onBan(user)"
+                title="Banear usuario"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                  <path d="M3 6h18"/><path  d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
                 </svg>
               </button>
             </td>
 
           </tr>
+          }@else{
+            <tr class="user-table__row--banned">
+
+            <td class="user-table__td">
+              <div class="user-table__user-cell">
+                @if (user.imagen && user.imagen !== 'url imagen') {
+                  <img class="user-table__avatar" [src]="user.imagen" [alt]="user.nombrePerfil" />
+                } @else {
+                  <div class="user-table__avatar user-table__avatar--fallback">
+                    {{ getInitials(user.nombrePerfil) }}
+                  </div>
+                }
+                <div class="user-table__user-info">
+                  <span class="user-table__user-name--banned">{{ user.nombrePerfil }}</span>
+                  <span class="user-table__user-email--banned">{{ user.email }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td class="user-table__td">
+              <span class="user-table__username">&#64;{{ user.username }}</span>
+            </td>
+
+            <td class="user-table__td">
+              <span class="user-table__tipo-actor user-table__tipo-actor--{{ user.tipoActor | lowercase }}">
+                {{ user.tipoActor }}
+              </span>
+            </td>
+
+            <td class="user-table__td user-table__td--date">
+              {{ formatDate(user.fecha_registro) }}
+            </td>
+
+            <td class="user-table__td user-table__td--actions">
+              <button
+                type="button"
+                class="user-table__action-btn user-table__action-btn--delete"
+                (click)="onBan(user)"
+                title="Desbloquear usuario"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"/><path d="M5 12h14"/>
+                </svg>
+              </button>
+            </td>
+
+          </tr>
+          }
+
+          
         }
 
         @if (users().length === 0) {

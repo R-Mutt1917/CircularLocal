@@ -47,6 +47,18 @@
     }
   }
 
+  &__row--banned {
+    border-bottom: 1px solid var(--color-border);
+    transition: background 0.15s;
+    background-color: #b4282834;
+    &:last-child {
+      border-bottom: none;
+    }
+
+  }
+
+  
+
   &__td {
     padding: 1rem 1.25rem;
     font-family: var(--font-sans);
@@ -111,6 +123,16 @@
     font-size: 0.825rem;
     color: var(--color-text-muted);
     font-family: 'Courier New', monospace;
+  }
+
+  &__user-name--banned {
+    font-weight: 600;
+    color: rgb(100, 3, 3);
+  }
+
+  &__user-email--banned {
+    font-size: 0.775rem;
+    color: rgb(100, 3, 3);
   }
 
   // TipoActor badges

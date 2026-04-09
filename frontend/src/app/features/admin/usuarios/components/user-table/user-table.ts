@@ -35,7 +35,15 @@ export class UserTable {
     });
   }
  
+  
 
+
+  onBan(user: User) {
+    console.log("Se hizo click usuario",user);
+    if(confirm('¿Estas seguro de banear este usuario?')){
+      this.banUser.emit(user);
+    }
+  }
 
   getInitials(name: string): string {
     return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();

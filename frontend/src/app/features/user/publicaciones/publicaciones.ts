@@ -21,7 +21,7 @@ export class Publicaciones implements OnInit {
         this.publicaciones = publicaciones;
       },
       error: (err) => {
-        console.log(err);
+        console.log("error al obtener publicaciones",err);
       },
     });
 

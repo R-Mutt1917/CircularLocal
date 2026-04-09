@@ -2,11 +2,9 @@ import { Component, computed, inject, OnInit, signal } from "@angular/core";
 import { FormFilter } from "./components/form-filter/form-filter";
 import { UserTable } from "./components/user-table/user-table";
 import { User } from "../../../shared/models/user";
-import { UserServices } from "../../../core/services/userServices/user";
 import { adminService } from "../../../core/services/adminService/admin";
 
 
-const PAGE_SIZE = 5;
 
 export interface UserFilters {
   nombre: string;
@@ -20,18 +18,25 @@ export interface UserFilters {
   styleUrl: './usuarios.scss',
 })
 export class Usuarios implements OnInit {
-  private userServices = inject(adminService);
+  private adminServices = inject(adminService);
+  private PAGE_SIZE = 5;
 
   private allUsers = signal<User[]>([]);
   private filters = signal<UserFilters>({ nombre: '', tipoActor: '' });
 
 
   ngOnInit(){
-    this.userServices.obtenerUsuarios().subscribe((users) => {
-      console.log(users);
-      this.allUsers.set(users);
+    this.adminServices.obtenerUsuarios().subscribe({
+      next: (users) => {
+        console.log("usuarios obtenidos",users);
+        this.allUsers.set(users.users);
+      },
+      error: (err) => {
+        console.log("error al obtener usuarios",err);
+      },
     });
   }
+
 
   currentPage = signal(1);
 
@@ -39,23 +44,24 @@ export class Usuarios implements OnInit {
     const { nombre, tipoActor } = this.filters();
     
     return this.allUsers().filter(u => {
+      const isNotAdmin = u.rol !== 'ADMIN';
       const matchesNombre =
         !nombre ||
         u.nombrePerfil.toLowerCase().includes(nombre.toLowerCase());
       const matchesTipo = !tipoActor || u.tipoActor === tipoActor;
-      return matchesNombre && matchesTipo;
+      return matchesNombre && matchesTipo && isNotAdmin;
     });
   });
 
 
   pagedUsers = computed(() => {
-    const start = (this.currentPage() - 1) * PAGE_SIZE;
-    return this.filteredUsers().slice(start, start + PAGE_SIZE);
+    const start = (this.currentPage() - 1) * this.PAGE_SIZE;
+    return this.filteredUsers().slice(start, start + this.PAGE_SIZE);
   });
 
  
   totalPages = computed(() =>
-    Math.max(1, Math.ceil(this.filteredUsers().length / PAGE_SIZE))
+    Math.ceil(this.filteredUsers().length / this.PAGE_SIZE) || 1
   );
 
 
@@ -65,8 +71,16 @@ export class Usuarios implements OnInit {
   }
 
   onBanUser(user: User) {
-    this.userServices.banUser(user.id).subscribe(() => {
-      this.allUsers.update(users => users.filter(u => u.id !== user.id));
+    this.adminServices.banUser(user.id).subscribe({
+      next: () => {
+        console.log("usuario baneado");
+        this.allUsers.update(users => users.map(u => 
+          u.id === user.id ? { ...u, activo: 0 } : u
+        ));
+      },
+      error: (err) => {
+        console.log("error al banear usuario",err);
+      },
     });
   }
 

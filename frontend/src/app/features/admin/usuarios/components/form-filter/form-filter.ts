@@ -19,9 +19,9 @@ export class FormFilter {
  
   tipoActorOptions = [
     { value: '', label: 'Todos' },
-    { value: 'Emprendedor', label: 'Emprendedor' },
-    { value: 'Reciclador', label: 'Reciclador' },
-    { value: 'Cooperativa', label: 'Cooperativa' },
+    { value: 'EMPRENDEDOR', label: 'Emprendedor' },
+    { value: 'RECICLADOR', label: 'Reciclador' },
+    { value: 'COOPERATIVA', label: 'Cooperativa' },
   ];
  
   form = this.fb.group({
