@@ -48,4 +48,28 @@ const getPublicacionReportadas = async (page, limit) => {
     return publicaciones;
 }
 
-module.exports = { banUser, getPublicacionReportadas }
+const getUsers = async (page, limit) => {
+    // Calcula el offset
+    const offset = (page - 1) * limit;
+
+    const users = await User.findAndCountAll({
+        offset,
+        limit: parseInt(limit),
+        order: [['fecha_registro', 'DESC']], // Ordena por fecha de registro descendente
+        include: [
+            {
+                model: Perfil,
+                as: 'perfil',
+                attributes: ['id', 'nombre_perfil', 'imagen', 'email', 'tipo_actor']
+            }
+        ]
+    });
+
+    return users;
+}
+
+module.exports = {
+    banUser,
+    getUsers,
+    getPublicacionReportadas,
+};
