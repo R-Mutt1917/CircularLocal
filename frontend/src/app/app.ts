@@ -25,4 +25,8 @@ export class App {
 
   auth = inject(AuthServices)
   role = this.auth.role;
+
+  constructor() {
+    console.log("El rol es: ", this.role())
+  }
 }

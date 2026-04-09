@@ -2,17 +2,17 @@
   @switch (role()) {
   @case ('ACTOR') {
   <app-nav-user></app-nav-user>
-  <main class="main-content-user">
+  <main class="main-content">
     <router-outlet></router-outlet>
   </main>
   }
   @case ('ADMIN') {
   <app-nav-admin></app-nav-admin>
-  <main class="main-content-admin">
+  <main class="main-content">
     <router-outlet></router-outlet>
   </main>
   }
-  @default {
+  @case (null) {
   <app-nav-public></app-nav-public>
   <main class="main-content-public">
     <router-outlet></router-outlet>

@@ -29,9 +29,14 @@ export class Publicaciones implements OnInit {
 
   filtradorDeProductos(filters: SearchFilters) {
     this.publicaciones = this.publicaciones.filter((publicacion) => {
+      console.log("publicaciones a querer fliltrar", this.publicaciones);
+      console.log("filters", filters);
+      
       const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
+
       const matchTag = filters.tagSeleccionado === ''
         || publicacion.tag === filters.tagSeleccionado;
+
       const matchType = filters.tipoSeleccionado === ''
         || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
 
