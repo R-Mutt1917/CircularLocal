@@ -22,6 +22,7 @@ function toUserDTO(user) {
         imagen: user.perfil.imagen,
         email: user.perfil.email,
         tipoActor: user.perfil.tipo_actor,
+        activo: user.activo,
     };
 }
 

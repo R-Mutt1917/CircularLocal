@@ -11,5 +11,5 @@ export const AuthGuard = () => {
         return true
     }
 
-    return router.createUrlTree(['/app'])
+    return router.createUrlTree(['/login'])
 }

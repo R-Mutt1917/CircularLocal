@@ -4,6 +4,15 @@
         <span class="sidebar__brand-tagline">MODERN ARTISAN</span>
     </div>
 
+    <div class="sidebar__user">
+        <div class="sidebar__user-avatar">
+            <span class="sidebar__user-avatar-initials">{{ user()?.charAt(0) }}</span>
+        </div>
+        <div class="sidebar__user-info">
+            <span class="sidebar__user-name">{{ user() }}</span>
+        </div>
+    </div>
+
     <nav class="sidebar__nav">
         <ul class="sidebar__nav-list">
             <li class="sidebar__nav-item">
@@ -81,7 +90,6 @@
                 [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link subir">
                 <span class="sidebar__nav-label">Subir nueva publicacion</span>
             </a>
-            <!--AGREGAR AUTH.SERVICE PARA MANEJAR EL LOGOUT-->
             <button class="sidebar__logout-btn">
                 <svg class="sidebar__logout-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">

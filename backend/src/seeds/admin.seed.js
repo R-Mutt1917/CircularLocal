@@ -8,7 +8,7 @@ const seedAdmin = async () => {
     const exists = await User.findOne({ where: { username } });
     if (exists) return null;
 
-    const hash = await bcrypt.hash('admin', 10);
+    const hash = await bcrypt.hash('admin12345', 10);
 
     // Crea el admin
     const admin = await User.create({

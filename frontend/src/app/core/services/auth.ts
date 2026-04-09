@@ -10,20 +10,26 @@ import { Router } from '@angular/router';
 export class AuthServices {
   apiUrl = environment.apiUrl;
   private router = inject(Router)
+  private httpClient = inject(HttpClient)
 
   readonly role = signal<string | null>(localStorage.getItem('role'));
   readonly isLoggedIn = signal<boolean>(!!localStorage.getItem('token'));
+  readonly userName = signal<string | null>(localStorage.getItem('name'));
 
-  constructor(private httpClient: HttpClient) { }
+  constructor() {
+    this.validateStoredToken();
+  }
 
   login(username: string, password: string): Observable<any> {
-    return this.httpClient.post<{ token: { token: string, role: string, id: number } }>(`${this.apiUrl}/auth/login`, { username, password }).pipe(
+    return this.httpClient.post<{ token: { token: string, role: string, id: number, username: string } }>(`${this.apiUrl}/auth/login`, { username, password }).pipe(
       tap((res) => {
         console.log(res)
         localStorage.setItem('token', res.token.token);
         localStorage.setItem('role', res.token.role);
         localStorage.setItem('id', res.token.id.toString());
+        localStorage.setItem('name', res.token.username);
         this.role.set(res.token.role);
+        this.userName.set(res.token.username);
         this.isLoggedIn.set(true);
       })
     );
@@ -33,9 +39,16 @@ export class AuthServices {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('id');
+    localStorage.removeItem('name');
     this.role.set(null);
     this.isLoggedIn.set(false);
+    this.userName.set(null);
     this.router.navigate(['/login']);
+  }
+
+  private validateStoredToken(): void {
+    if (!this.getToken()) return;
+    this.getUser().subscribe();
   }
 
   getToken(): string | null {

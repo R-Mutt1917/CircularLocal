@@ -10,6 +10,7 @@ import { AuthServices } from '../../../core/services/auth';
 })
 export class NavUser {
   authService = inject(AuthServices);
+  user = this.authService.userName;
   logout() {
     if (confirm("¿Estas seguro de que quieres cerrar sesion?")) {
       this.authService.logout();

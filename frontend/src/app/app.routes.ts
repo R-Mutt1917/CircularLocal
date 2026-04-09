@@ -4,6 +4,7 @@ import { Login } from './features/public/login/login';
 import { Register } from './features/public/register/register';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard';
+import { GuestGuard } from './core/guards/guest.guard';
 import { AdminDashboard } from './features/admin/dashboard/dashboard';
 import { Publicaciones } from './features/user/publicaciones/publicaciones';
 import { UserDashboard } from './features/user/dashboard/dashboard';
@@ -12,11 +13,15 @@ import { SubirPublicacion } from './features/user/subir-publicacion/subir-public
 import { MisPublicaciones } from './features/user/mis-publicaciones/mis-publicaciones';
 import { EditarPublicacion } from './features/user/editar-publicacion/editar-publicacion';
 import { Profile } from './features/user/profile/profile';
+import { Moderacion } from './features/admin/moderacion/moderacion';
+import { Metricas } from './features/admin/metricas/metricas';
+import { Usuarios } from './features/admin/usuarios/usuarios';
 
 export const routes: Routes = [
+    { path: '', component: Landing, canActivate: [GuestGuard] },
+    { path: 'login', component: Login, canActivate: [GuestGuard] },
+    { path: 'register', component: Register, canActivate: [GuestGuard] },
     { path: '', component: Landing, pathMatch: 'full' },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
     {
         path: 'app',
         canActivate: [AuthGuard],
@@ -34,8 +39,10 @@ export const routes: Routes = [
         path: 'admin',
         canActivate: [AuthGuard, AdminGuard],
         children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-            { path: 'dashboard', component: AdminDashboard },
+            { path: '', component: AdminDashboard },
+            { path: 'moderacion', component: Moderacion },
+            { path: 'metricas', component: Metricas },
+            { path: 'usuarios', component: Usuarios },
         ]
     },
     { path: '**', redirectTo: '' },
