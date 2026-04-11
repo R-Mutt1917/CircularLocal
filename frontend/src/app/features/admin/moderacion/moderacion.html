@@ -1,1 +1,21 @@
-<p>moderacion works!</p>
+<section class="section">
+    <div class="contenedor_principal">
+        <div class="contenedor_titulo">
+            <span class="titulo">Moderacion de Publicaciones</span>
+            <p class="subtitulo">Administra las publicaciones reportadas por los usuarios para mantener un ambiente seguro y respetuoso</p>
+        </div>
+        <div>
+            <app-form-filter (filtersApplied)="onFiltersApplied($event)" filtroTipo="PUBLICACIONES" />
+        </div>
+        <div class="contenedor_publicaciones">
+            <app-listado-publicaciones
+                [publications]="pagedPublicaciones()"
+                [totalPublications]="filteredPublicaciones().length"
+                [currentPage]="currentPage()"
+                [totalPages]="totalPages()"
+                (cancelPublication)="onCancelPublication($event)"
+                (pageChange)="onPageChange($event)"
+            />
+        </div>
+    </div>
+</section>

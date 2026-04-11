@@ -117,7 +117,21 @@
         color: var(--color-accent);
         border: 1px solid var(--color-accent);
     }
+
+    
 }
+
+    .reportada {
+        background: #5e0101;
+        border: 1px solid #5e0101;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.75rem;
+        border-radius: 3px;
+    }
 
 // ─── Título ────
 

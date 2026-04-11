@@ -93,7 +93,11 @@
                     </p>
                 </div>
 
+                @if(!seReporto()){
                 <button class="btn btn--primary" (click)="reportarPublicacion()">Reportar publicación</button>
+                }@else{
+                <div class=" reportada">Publicación reportada</div>
+                }
 
             </aside>
         </div>

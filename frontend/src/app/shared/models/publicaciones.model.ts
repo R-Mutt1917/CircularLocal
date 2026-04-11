@@ -93,3 +93,12 @@ export interface PublicacionDetalleModel {
     } | null;
 }
 
+export interface PublicacionAdmin {
+    id: number;
+    titulo: string;
+    tipo: string;
+    createdAt: string;
+    user: number;
+    nombrePerfil: string;
+    imagenPerfil: string | null;
+}

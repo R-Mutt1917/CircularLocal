@@ -20,4 +20,15 @@ export class adminService {
     return this.httpClient.patch<any>(`${this.apiUrl}/admin/usuarios/${userID}/ban`, {});
   }
 
+
+  obtenerPublicacionesReportadas(page: number = 1, limit: number = 1000){
+    return this.httpClient.get<any>(`${this.apiUrl}/admin/publicaciones/reportadas`, {
+      params: { page: page.toString(), limit: limit.toString() }
+    });
+  }
+
+  cancelarPublicacion(publicacionId: number){
+    return this.httpClient.patch<any>(`${this.apiUrl}/admin/publicaciones/${publicacionId}/cancelar`, {});
+  }
+
 }

@@ -71,8 +71,30 @@ const obtenerUsuarios = async (req, res) => {
     }
 };
 
+const cancelarPublicacion = async (req, res) => {
+    const publicacionId = parseInt(req.params.id);
+    if (isNaN(publicacionId)) {
+        return res.status(400).json({ message: "ID inválido" });
+    }
+
+    try {
+        const publicacion = await adminService.cancelar(publicacionId);
+
+        if (!publicacion) {
+            return res.status(404).json({
+                error: "Publicación no encontrada"
+            });
+        }
+
+        return res.status(200).json({ message: 'Publicación cancelada' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     banearUsuario,
     obtenerUsuarios,
     getPublicacionReportadas,
+    cancelarPublicacion,
 };

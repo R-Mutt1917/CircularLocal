@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit, signal } from "@angular/core";
-import { FormFilter } from "./components/form-filter/form-filter";
+import { FormFilter } from "../components/form-filter/form-filter";
 import { UserTable } from "./components/user-table/user-table";
 import { User } from "../../../shared/models/user";
 import { adminService } from "../../../core/services/adminService/admin";
@@ -8,7 +8,7 @@ import { adminService } from "../../../core/services/adminService/admin";
 
 export interface UserFilters {
   nombre: string;
-  tipoActor: string;
+  tipo: string;
 }
 
 @Component({
@@ -22,7 +22,7 @@ export class Usuarios implements OnInit {
   private PAGE_SIZE = 5;
 
   private allUsers = signal<User[]>([]);
-  private filters = signal<UserFilters>({ nombre: '', tipoActor: '' });
+  private filters = signal<UserFilters>({ nombre: '', tipo: '' });
 
 
   ngOnInit(){
@@ -41,14 +41,14 @@ export class Usuarios implements OnInit {
   currentPage = signal(1);
 
   filteredUsers = computed(() => {
-    const { nombre, tipoActor } = this.filters();
+    const { nombre, tipo } = this.filters();
     
     return this.allUsers().filter(u => {
       const isNotAdmin = u.rol !== 'ADMIN';
       const matchesNombre =
         !nombre ||
         u.nombrePerfil.toLowerCase().includes(nombre.toLowerCase());
-      const matchesTipo = !tipoActor || u.tipoActor === tipoActor;
+      const matchesTipo = !tipo || u.tipoActor === tipo;
       return matchesNombre && matchesTipo && isNotAdmin;
     });
   });
