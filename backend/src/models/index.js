@@ -7,6 +7,7 @@ const Material = require('./material.model');
 const Producto = require('./producto.model');
 const Servicio = require('./servicio.model');
 const Intercambio = require('./intercambio.model');
+const MetricaImpacto = require('./metricaImpacto.model');
 
 // Relacion User - Perfil
 User.hasOne(Perfil, {
@@ -106,4 +107,5 @@ module.exports = {
     Tag,
     Solicitud,
     Intercambio,
+    MetricaImpacto,
 };
