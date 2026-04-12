@@ -92,9 +92,26 @@ const cancelarPublicacion = async (req, res) => {
     }
 }
 
+const obtenerMetricas = async (req, res) => {
+    try {
+        const metricas = await adminService.getMetricas();
+
+        if (!metricas) {
+            return res.status(404).json({
+                error: "Metricas no encontradas"
+            });
+        }
+
+        return res.status(200).json(metricas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
 module.exports = {
     banearUsuario,
     obtenerUsuarios,
     getPublicacionReportadas,
     cancelarPublicacion,
+    obtenerMetricas,
 };
