@@ -5,8 +5,7 @@ const inicializarMetricas = async () => {
         where: { periodo: 'global' },
         defaults: {
             totalIntercambios: 0,
-            totalMaterialesReutilizados: 0,
-            totalServiciosBrindados: 0
+            totalMaterialesReutilizados: 0
         }
     });
 };

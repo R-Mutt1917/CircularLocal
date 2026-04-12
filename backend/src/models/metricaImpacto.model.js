@@ -15,13 +15,10 @@ const MetricaImpacto = sequelize.define('MetricaImpacto', {
         type: DataTypes.INTEGER,
         defaultValue: 0
     },
-    totalServiciosBrindados: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
-    },
     periodo: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     fechaUltimaActualizacion: {
         type: DataTypes.DATE,

@@ -1,4 +1,5 @@
-const { Intercambio, Solicitud, Publicacion } = require('../models');
+const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio } = require('../models');
+const metricaImpactoService = require('../services/metricaImpacto.service');
 
 const crearIntercambio = async (solicitudId) => {
     return await Intercambio.create({
@@ -18,7 +19,12 @@ const confirmarIntercambio = async (intercambioId, userId) => {
                     {
                         model: Publicacion,
                         as: 'publicacion',
-                        attributes: ['id', 'user_id']
+                        attributes: ['id', 'user_id', 'tipo'],
+                        include: [
+                            { model: Material },
+                            { model: Producto },
+                            { model: Servicio }
+                        ]
                     }
                 ]
             }
@@ -43,7 +49,30 @@ const confirmarIntercambio = async (intercambioId, userId) => {
     };
 
     if (intercambio.confirmadoSolicitante && intercambio.confirmadoPublicador) {
-        await intercambio.update({ estadoIntercambio: 'COMPLETADO' });
+
+        const fecha = new Date();
+
+        // Actualiza el estado del Intercambio a COMPLETADO
+        await intercambio.update({ estadoIntercambio: 'COMPLETADO', fechaCierre: fecha });
+
+        // Actualiza las Metricas de Impacto
+        const periodoActual = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+        const publicacion = intercambio.solicitud.publicacion;
+
+        let cantidadReutilizada = 0;
+
+        if (publicacion.tipo === 'MATERIAL') {
+            cantidadReutilizada = publicacion.Material?.cantidad || 0;
+        }
+
+        if (publicacion.tipo === 'PRODUCTO') {
+            cantidadReutilizada = publicacion.Producto?.cantidad || 0;
+        }
+
+        await Promise.all([
+            metricaImpactoService.actualizarMetricaPorPeriodo('global', cantidadReutilizada, fecha),
+            metricaImpactoService.actualizarMetricaPorPeriodo(periodoActual, cantidadReutilizada, fecha)
+        ]);
     }
 
     return intercambio;
