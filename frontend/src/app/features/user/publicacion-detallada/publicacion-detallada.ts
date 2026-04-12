@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
 import { PublicacionDetalleModel, PublicacionPreviewModel, } from '../../../shared/models/publicaciones.model';
@@ -16,6 +16,7 @@ export class PublicacionDetallada {
   private route = inject(ActivatedRoute);
   private publicacionesService = inject(PublicacionesService);
   mostrarModal = false;
+  seReporto = signal(false);
 
   Publicacion: PublicacionDetalleModel | null = null;
   otrasPublicaciones: PublicacionPreviewModel[] = [];
@@ -27,6 +28,7 @@ export class PublicacionDetallada {
       this.publicacionesService.consultarPublicacionDetalle(Number(publicacionId)).subscribe({
         next: (publicacion) => {
             this.Publicacion = publicacion;
+            this.seReporto.set(publicacion.reportada);
             this.obtenerOtrasPublicaciones();
           },
         error: (err) => console.error('Error al obtener la publicación', err)
@@ -62,6 +64,7 @@ export class PublicacionDetallada {
       this.publicacionesService.reportarPublicacion(this.Publicacion.id).subscribe({
         next: (response) => {
           alert('Publicacion reportada correctamente');
+          this.seReporto.set(true);
           console.log(response);
         },
         error: (err) => {

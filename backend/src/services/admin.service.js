@@ -68,8 +68,20 @@ const getUsers = async (page, limit) => {
     return users;
 }
 
+const cancelar = async (publicacionId) => {
+    const publicacion = await Publicacion.findByPk(publicacionId);
+    if (!publicacion) return null;
+
+    publicacion.estado = 'Cancelada';
+    publicacion.reportada = 0;
+    await publicacion.save();
+
+    return publicacion;
+}
+
 module.exports = {
     banUser,
     getUsers,
     getPublicacionReportadas,
+    cancelar,
 };
