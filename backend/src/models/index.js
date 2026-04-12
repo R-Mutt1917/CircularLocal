@@ -89,14 +89,15 @@ Servicio.belongsTo(Publicacion, {
 });
 
 // Relacion Intercambio - Solicitud
-Intercambio.hasOne(Solicitud, {
+Solicitud.hasOne(Intercambio, {
     foreignKey: 'solicitudId',
-    unique: true
-})
+    as: 'intercambio'
+});
 
-Solicitud.belongsTo(Intercambio, {
-    foreignKey: 'solicitudId'
-})
+Intercambio.belongsTo(Solicitud, {
+    foreignKey: 'solicitudId',
+    as: 'solicitud'
+});
 
 module.exports = {
     User,
