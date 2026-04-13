@@ -1,57 +1,38 @@
-//Punto de entrada
+// Punto de entrada
 const app = require('./src/app');
 const { initDB } = require('./src/config/database');
 const { seedTags } = require('./src/seeds/tag.seed');
 const { seedAdmin } = require('./src/seeds/admin.seed');
 const http = require('http');
-const { Server } = require('socket.io');
-const jwt = require('jsonwebtoken');
+const { configureSocketIO } = require('./src/utils/socket'); // Módulo separado para WebSocket
+const logger = require('./src/utils/logger'); // Logger personalizado
 
 const PORT = process.env.PORT || 3000;
 
 async function startServer() {
     try {
+        // Inicializar la base de datos
         await initDB();
+        logger.info('Base de datos inicializada correctamente.');
 
+        // Semillas
         await seedTags();
+        logger.info('Tags inicializados correctamente.');
         await seedAdmin();
+        logger.info('Administrador inicializado correctamente.');
 
+        // Crear servidor HTTP
         const server = http.createServer(app);
-        const io = new Server(server, { cors: { origin: '*' } });
 
-        io.use((socket, next) => {
-            const token = socket.handshake.auth.token;
-            if (!token) {
-                return next(new Error('Token de autenticación requerido'));
-            }
-            try {
-                const decoded = jwt.verify(token, process.env.JWT_SECRET);
-                socket.user = decoded;
-                next();
-            } catch (err) {
-                next(new Error('Token de autenticación inválido'));
-            }
+        // Configurar WebSocket
+        configureSocketIO(server);
+
+        // Iniciar servidor
+        server.listen(PORT, () => {
+            logger.info(`Servidor corriendo en el puerto ${PORT}`);
         });
-
-        io.on('connection', (socket) => {
-            console.log('User connected:', socket.user);
-
-                socket.on('send-message', (data) => {
-                    // Enviar el mensaje al destinatario específico
-                    io.to(data.recipientId).emit('receive-message', data);
-                });
-
-                socket.on('disconnect', () => {
-                console.log('User disconnected:', socket.user);
-            });
-        });
-
-        app.listen(PORT, () => {
-            console.log(`Servidor corriendo en el puerto ${PORT}`);
-        });
-
     } catch (error) {
-        console.error('Error iniciando el servidor:', error);
+        logger.error('Error iniciando el servidor:', error);
         process.exit(1);
     }
 }
