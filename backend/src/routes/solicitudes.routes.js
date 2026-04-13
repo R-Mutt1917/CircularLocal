@@ -12,6 +12,9 @@ router.get('/pendientes', verifyToken, solicitudesController.obtenerSolicitudesP
 // Ruta para rechazar una solicitud
 router.patch('/:id/rechazar', verifyToken, solicitudesController.rechazarSolicitud);
 
+// Ruta para obtener solicitudes enviadas por un usuario
+router.get('/enviadas', verifyToken, solicitudesController.obtenerSolicitudesEnviadas);
+
 // Ruta para cancelar solicitud
 router.patch('/:id/cancelar', verifyToken, solicitudesController.cancelarSolicitud);
 

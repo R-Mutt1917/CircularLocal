@@ -12,6 +12,7 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
     // Crea la Solicitud
     const solicitud = await Solicitud.create({
+
         publicacionId: publicacionId,
         mensajeInicial: mensajeInicial,
         estadoSolicitud: 'PENDIENTE',
@@ -86,10 +87,36 @@ const aceptarSolicitud = async (solicitudId) => {
     return solicitud;
 }
 
+const obtenerSolicitudesEnviadas = async (userId) => {
+    if (!userId) {
+        throw new Error("No se pudo obtener el ID del usuario");
+    }
+    const solicitudes = await Solicitud.findAll({
+        where: { solicitanteId: userId },
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion',
+                attributes: ['id', 'titulo', 'imagen'],
+                include: [{
+                    model: User,
+                    as: 'user', // dueño de la publicación
+                    attributes: ['username']
+                }]
+            }
+        ],
+        order: [['createdAt', 'DESC']]
+    });
+
+    return solicitudes;
+};
+
+
 module.exports = {
     crearSolicitud,
     rechazarSolicitud,
     cancelarSolicitud,
     aceptarSolicitud,
     obtenerSolicitudesPendientes,
+    obtenerSolicitudesEnviadas,
 }

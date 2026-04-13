@@ -12,13 +12,16 @@
         <h2 class="card__titulo">{{ publicacion().titulo }}</h2>
         <p class="card__descripcion">{{ publicacion().descripcion }}</p>
 
+        @if(tipo() !== 'detalle'){
         <div class="card__autor">
             <div class="card__avatar">
-                <img [src]="publicacion().user.perfil.imagen" alt="{{ publicacion().user.perfil.nombre_perfil }}"
+                <img [src]="publicacion().user.perfil.imagen || 'https://ui-avatars.com/api/?name='+publicacion().user.perfil.nombre_perfil" alt="{{ publicacion().user.perfil.nombre_perfil }}"
                     class="card__avatar" />
             </div>
             <span>{{ publicacion().user.perfil.nombre_perfil }}</span>
-        </div>
+        </div>  
+        }
+        
 
         <a class="card__link" routerLink="/app/publicacion/{{ publicacion().id }}">
             Ver detalle <span class="card__arrow">→</span>

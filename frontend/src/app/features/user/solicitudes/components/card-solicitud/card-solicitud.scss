@@ -1,0 +1,187 @@
+.solicitud-card {
+  display: grid;
+  grid-template-columns: 120px 1fr auto;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 12px rgba(44, 58, 30, 0.08);
+  }
+}
+
+// ── Imagen ──────────────────────────────────────────
+.card__image-wrapper {
+  width: 120px;
+  height: 90px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--color-surface);
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// ── Contenido ────────────────────────────────────────
+.card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.card__badge {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+
+  &.badge--pendiente {
+    color: var(--color-text-secundary);
+    background: rgba(161, 64, 9, 0.1);
+  }
+
+  &.badge--aceptada {
+    color: var(--color-accent);
+    background: rgba(74, 94, 47, 0.12);
+  }
+
+  &.badge--rechazada {
+    color: #8b2e2e;
+    background: rgba(139, 46, 46, 0.1);
+  }
+
+  &.badge--cancelada {
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+  }
+}
+
+.card__fecha {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.card__titulo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card__solicitante {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.card__solicitante-link {
+  color: var(--color-brand);
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+.card__mensaje {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  margin: 0.15rem 0 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-style: normal;
+}
+
+// ── Acciones ─────────────────────────────────────────
+.card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  min-width: 100px;
+  text-align: center;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &--aceptar {
+    background: var(--color-brand);
+    color: #fff;
+
+    &:hover {
+      opacity: 0.88;
+    }
+  }
+
+  &--rechazar {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+
+    &:hover {
+      background: var(--color-surface);
+    }
+  }
+}
+
+// ── Responsive ───────────────────────────────────────
+@media (max-width: 640px) {
+  .solicitud-card {
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .card__actions {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .card__image-wrapper {
+    width: 80px;
+    height: 70px;
+  }
+}

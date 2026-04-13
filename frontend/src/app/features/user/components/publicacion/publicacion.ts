@@ -10,8 +10,8 @@ import { PublicacionPreviewModel } from '../../../../shared/models/publicaciones
 })
 export class Publicacion implements OnInit {
   publicacion = input.required<PublicacionPreviewModel>();
+  tipo = input<string>();
 
   ngOnInit(): void {
-    console.log(this.publicacion());
   }
 }
