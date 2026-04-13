@@ -13,4 +13,7 @@ router.get('/usuarios', verifyAdmin, adminController.obtenerUsuarios);
 
 router.patch('/usuarios/:id/ban', verifyAdmin, adminController.banearUsuario);
 
+// Ruta para obtener las metricas de impacto
+router.get('/metricas', verifyAdmin, adminController.obtenerMetricas);
+
 module.exports = router;

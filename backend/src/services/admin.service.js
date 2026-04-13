@@ -1,4 +1,4 @@
-const { User, Publicacion, Perfil } = require('../models');
+const { User, Publicacion, Perfil, MetricaImpacto } = require('../models');
 
 const banUser = async (userId, adminId) => {
     if (adminId === userId) {
@@ -79,9 +79,16 @@ const cancelar = async (publicacionId) => {
     return publicacion;
 }
 
+const getMetricas = async () => {
+    const metricas = await MetricaImpacto.findAll();
+    if (!metricas) return null;
+    return metricas;
+}
+
 module.exports = {
     banUser,
     getUsers,
     getPublicacionReportadas,
     cancelar,
+    getMetricas,
 };
