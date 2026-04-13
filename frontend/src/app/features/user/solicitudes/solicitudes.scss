@@ -1,0 +1,122 @@
+.solicitudes {
+  max-width: 100%;
+  padding: 2.5rem 1.5rem 3rem;
+  background: #fff;
+  min-height: 100vh;
+}
+
+// ── Header ────────────────────────────────────────────
+.solicitudes__header {
+  margin-bottom: 2rem;
+}
+
+.solicitudes__titulo {
+  font-family: var(--font-serif);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  margin: 0 0 0.5rem;
+  line-height: 1.1;
+}
+
+.solicitudes__subtitulo {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 380px;
+  line-height: 1.5;
+}
+
+// ── Tabs ──────────────────────────────────────────────
+.solicitudes__tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0;
+}
+
+.tab-btn {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.1rem;
+  margin-right: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+
+  &--active {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    border-bottom-color: var(--color-brand);
+  }
+
+  &:hover:not(.tab-btn--active) {
+    color: var(--color-text-primary);
+  }
+}
+
+.tab-btn__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-text-secundary);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 9px;
+}
+
+// ── Divider ───────────────────────────────────────────
+.solicitudes__divider {
+  height: 1px;
+  background: var(--color-border);
+  margin-bottom: 1.5rem;
+}
+
+// ── Lista ─────────────────────────────────────────────
+.solicitudes__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.solicitudes__empty {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 3rem 0;
+}
+
+// ── Footer ────────────────────────────────────────────
+.solicitudes__footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.link-btn {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-text-secundary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}

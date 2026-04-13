@@ -23,17 +23,21 @@ export class PublicacionDetallada {
   errorMessage: string | null = null;
 
   ngOnInit(): void {
-    const publicacionId = this.route.snapshot.paramMap.get('id');
-    if(publicacionId){
-      this.publicacionesService.consultarPublicacionDetalle(Number(publicacionId)).subscribe({
-        next: (publicacion) => {
+    this.route.paramMap.subscribe(params => {
+      const publicacionId = params.get('id');
+      if (publicacionId) {
+        this.publicacionesService.consultarPublicacionDetalle(Number(publicacionId)).subscribe({
+          next: (publicacion) => {
+            console.log("PUBLICACION DETALLADA:",publicacion);
             this.Publicacion = publicacion;
             this.seReporto.set(publicacion.reportada);
             this.obtenerOtrasPublicaciones();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           },
-        error: (err) => console.error('Error al obtener la publicación', err)
-      })
-    }
+          error: (err) => console.error('Error al obtener la publicación', err)
+        });
+      }
+    });
   }
 
   obtenerOtrasPublicaciones(): void {
@@ -41,7 +45,8 @@ export class PublicacionDetallada {
       const userId = this.Publicacion.user.id;
       this.publicacionesService.consultarPublicacionesPorUsuario(userId, 3).subscribe({
         next: (publicaciones) => {
-            this.otrasPublicaciones = publicaciones;
+          const publicacionesFiltradas = publicaciones.filter(p => p.id !== this.Publicacion?.id);
+          this.otrasPublicaciones = publicacionesFiltradas;
           },
         error: (err) => console.error('Error al obtener otras publicaciones', err)
       })
@@ -65,7 +70,6 @@ export class PublicacionDetallada {
         next: (response) => {
           alert('Publicacion reportada correctamente');
           this.seReporto.set(true);
-          console.log(response);
         },
         error: (err) => {
           console.error('Error al reportar la publicación', err)

@@ -20,34 +20,101 @@
                     }
                 </div>
 
-                <div class="detalle-tags">
-                    <span class="tag tag--tipo">{{ Publicacion.tipo | titlecase }}</span>
-                    <span class="tag tag--categoria">{{ Publicacion.tag }}</span>
-                    @if(Publicacion.verificada){
-                    <span class="tag tag--verificada">Verificada</span>
-                    }@else{
-                    <span class="tag tag--no-verificada">No verificada</span>
+                <div class="detalle-info-general">
+                    <div class="detalle-tags">
+                        <span class="tag tag--tipo">{{ Publicacion.tipo | uppercase }}</span>
+                        <span class="tag tag--categoria">{{ Publicacion.tag }}</span>
+                        @if(Publicacion.verificada){
+                        <span class="tag tag--verificada">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            Verificada
+                        </span>
+                        }@else{
+                        <span class="tag tag--no-verificada">No verificada</span>
+                        }
+                    </div>
+
+                    <h1 class="detalle-titulo">{{ Publicacion.titulo }}</h1>
+
+                    <p class="detalle-desc">{{ Publicacion.descripcion }}</p>
+
+                    <div class="detalle-meta">
+                        <div class="detalle-meta__item">
+                            <span class="detalle-meta__label">Estado</span>
+                            <span class="detalle-meta__value">
+                                <span class="status-dot" [class.status-dot--publicada]="Publicacion.estado === 'publicada'"></span>
+                                {{ Publicacion.estado | titlecase }}
+                            </span>
+                        </div>
+                        <div class="detalle-meta__item">
+                            <span class="detalle-meta__label">Tipo de Oferta</span>
+                            <span class="detalle-meta__value">{{ Publicacion.tipo | titlecase }}</span>
+                        </div>
+                        <div class="detalle-meta__item">
+                            <span class="detalle-meta__label">Fecha de Creación</span>
+                            <span class="detalle-meta__value">{{ Publicacion.createdAt || 'Cargando...' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                @switch(Publicacion.tipo){
+                    @case('PRODUCTO'){
+                        <div class="detalle-detalle">
+                            <h2 class="detalle-detalle__titulo">Detalles del Producto</h2>
+                        </div>
+                       <div class="detalle-meta">
+                            <div class="detalle-meta__item">
+                                <span class="detalle-meta__label">Nombre del Producto</span>
+                                <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.nombreProducto }}</span>
+                            </div>
+                            <div class="detalle-meta__item">
+                                <span class="detalle-meta__label">Cantidad</span>
+                                <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.cantidad }}</span>
+                            </div>
+                            <div class="detalle-meta__item">
+                                <span class="detalle-meta__label">Unidad</span>
+                                <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.unidad }}</span>
+                            </div>
+                       </div>
                     }
-                </div>
-
-                <h1 class="detalle-titulo">{{ Publicacion.titulo }}</h1>
-
-                <div class="detalle-meta">
-                    <div class="detalle-meta__item">
-                        <span class="detalle-meta__label">Publicación</span>
-                        <span class="detalle-meta__value">{{ Publicacion.estado | titlecase }}</span>
-                    </div>
-                    <div class="detalle-meta__item">
-                        <span class="detalle-meta__label">Tipo</span>
-                        <span class="detalle-meta__value">{{ Publicacion.tipo | titlecase }}</span>
-                    </div>
-                    <div class="detalle-meta__item">
-                        <span class="detalle-meta__label">Creada</span>
-                        <span class="detalle-meta__value">{{ Publicacion.createdAt || 'Cargando...' }}</span>
-                    </div>
-                </div>
-
-                <p class="detalle-desc">{{ Publicacion.descripcion }}</p>
+                    @case('SERVICIO'){
+                        <div class="detalle-detalle">
+                            <h2 class="detalle-detalle__titulo">Detalles del Servicio</h2>
+                        </div>
+                        <div class="detalle-meta">
+                                <div class="detalle-meta__item">
+                                    <span class="detalle-meta__label">Modalidad</span>
+                                    <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.modalidad }}</span>
+                                </div>
+                                <div class="detalle-meta__item">
+                                    <span class="detalle-meta__label">Disponibilidad Horaria</span>
+                                    <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.disponibilidadHoraria }}</span>
+                                </div>
+                                <div class="detalle-meta__item">
+                                    <span class="detalle-meta__label">Zona de Cobertura</span>
+                                    <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.zonaCobertura }}</span>
+                                </div>
+                        </div>
+                    }@case('MATERIAL'){
+                        <div class="detalle-detalle">
+                            <h2 class="detalle-detalle__titulo">Detalles del Material</h2>
+                        </div>
+                        <div class="detalle-meta">
+                                <div class="detalle-meta__item">
+                                    <span class="detalle-meta__label">Nombre del Material</span>
+                                    <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.nombreMaterial }}</span>
+                                </div>
+                                <div class="detalle-meta__item">
+                                    <span class="detalle-meta__label">Cantidad</span>
+                                    <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.cantidad }}</span>
+                                </div>
+                                <div class="detalle-meta__item">
+                                    <span class="detalle-meta__label">Unidad</span>
+                                    <span class="detalle-meta__value">{{ $any(Publicacion.detalle)?.unidad }}</span>
+                                </div>
+                        </div>
+                    }
+                }
 
             </div>
 
@@ -57,7 +124,7 @@
                 <div class="perfil-card">
                     <div class="perfil-card__header">
                         <div class="perfil-card__avatar">
-                            <img class="perfil-card__avatar__img" [src]="Publicacion.user.perfil.imagen" alt="">
+                            <img class="perfil-card__avatar__img" [src]="Publicacion.user.perfil.imagen || 'https://ui-avatars.com/api/?name='+Publicacion.user.perfil.nombre_perfil" alt="">
                         </div>
                         <div class="perfil-card__info">
                             <h3 class="perfil-card__nombre">{{ Publicacion.user.perfil.nombre_perfil }}</h3>
@@ -79,7 +146,7 @@
                     <button class="btn btn--primary" (click)="abrirModal()">Solicitar intercambio</button>
 
                     @if(mostrarModal){
-                    <app-solicitar-intercambio-modal [publicacionId]="1" (cerrar)="cerrarModal()">
+                    <app-solicitar-intercambio-modal [publicacionId]="Publicacion.id" (cerrar)="cerrarModal()">
                     </app-solicitar-intercambio-modal>
                     }
                 </div>
@@ -109,7 +176,7 @@
             }
             <div class="otras-publicaciones__grid">
                 @for(publicacion of otrasPublicaciones; track publicacion.id){
-                <app-publicacion [publicacion]="publicacion"></app-publicacion>
+                <app-publicacion [publicacion]="publicacion" [tipo]="'detalle'"></app-publicacion>
                 }
                 @empty {
                 <p>No hay otras publicaciones del usuario.</p>
