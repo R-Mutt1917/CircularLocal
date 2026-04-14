@@ -1,0 +1,163 @@
+<div class="user-table">
+  <div class="user-table__wrapper">
+    <table class="user-table__table">
+      <thead class="user-table__head">
+        <tr>
+          <th class="user-table__th">USUARIO</th>
+          <th class="user-table__th user-table__th--hide-mobile">USERNAME</th>
+          <th class="user-table__th">TIPO ACTOR</th>
+          <th class="user-table__th user-table__th--hide-mobile">FECHA REGISTRO</th>
+          <th class="user-table__th user-table__th--right">ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users(); track user.id) {
+
+          @if(user.activo){
+<tr class="user-table__row">
+
+            <td class="user-table__td">
+              <div class="user-table__user-cell">
+                @if (user.imagen && user.imagen !== 'url imagen') {
+                  <img class="user-table__avatar" [src]="user.imagen" [alt]="user.nombrePerfil" />
+                } @else {
+                  <div class="user-table__avatar user-table__avatar--fallback">
+                    {{ getInitials(user.nombrePerfil) }}
+                  </div>
+                }
+                <div class="user-table__user-info">
+                  <span class="user-table__user-name">{{ user.nombrePerfil }}</span>
+                  <span class="user-table__user-email">{{ user.email }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td class="user-table__td user-table__td--hide-mobile">
+              <span class="user-table__username">&#64;{{ user.username }}</span>
+            </td>
+
+            <td class="user-table__td">
+              <span class="user-table__tipo-actor user-table__tipo-actor--{{ user.tipoActor | lowercase }}">
+                {{ user.tipoActor }}
+              </span>
+            </td>
+
+            <td class="user-table__td user-table__td--date user-table__td--hide-mobile">
+              {{ formatDate(user.fecha_registro) }}
+            </td>
+
+            <td class="user-table__td user-table__td--actions">
+              <button
+                type="button"
+                class="user-table__action-btn user-table__action-btn--delete"
+                (click)="onBan(user)"
+                title="Banear usuario"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18"/><path  d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                </svg>
+              </button>
+            </td>
+
+          </tr>
+          }@else{
+            <tr class="user-table__row--banned">
+
+            <td class="user-table__td">
+              <div class="user-table__user-cell">
+                @if (user.imagen && user.imagen !== 'url imagen') {
+                  <img class="user-table__avatar" [src]="user.imagen" [alt]="user.nombrePerfil" />
+                } @else {
+                  <div class="user-table__avatar user-table__avatar--fallback">
+                    {{ getInitials(user.nombrePerfil) }}
+                  </div>
+                }
+                <div class="user-table__user-info">
+                  <span class="user-table__user-name--banned">{{ user.nombrePerfil }}</span>
+                  <span class="user-table__user-email--banned">{{ user.email }}</span>
+                </div>
+              </div>
+            </td>
+
+            <td class="user-table__td">
+              <span class="user-table__username">&#64;{{ user.username }}</span>
+            </td>
+
+            <td class="user-table__td">
+              <span class="user-table__tipo-actor user-table__tipo-actor--{{ user.tipoActor | lowercase }}">
+                {{ user.tipoActor }}
+              </span>
+            </td>
+
+            <td class="user-table__td user-table__td--date">
+              {{ formatDate(user.fecha_registro) }}
+            </td>
+
+            <td class="user-table__td user-table__td--actions">
+              <button
+                type="button"
+                class="user-table__action-btn user-table__action-btn--delete"
+                (click)="onBan(user)"
+                title="Desbloquear usuario"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14"/><path d="M5 12h14"/>
+                </svg>
+              </button>
+            </td>
+
+          </tr>
+          }
+
+          
+        }
+
+        @if (users().length === 0) {
+          <tr>
+            <td class="user-table__empty" colspan="5">
+              No se encontraron usuarios con los filtros aplicados.
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="user-table__footer">
+    <span class="user-table__count">
+      Mostrando {{ users().length }} de {{ totalUsers() }} usuarios
+    </span>
+
+    <div class="user-table__pagination">
+      <button
+        class="user-table__page-btn user-table__page-btn--nav"
+        [disabled]="currentPage() === 1"
+        (click)="pageChange.emit(currentPage() - 1)"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+      </button>
+
+      @for (page of pages; track page) {
+        <button
+          class="user-table__page-btn"
+          [class.user-table__page-btn--active]="page === currentPage()"
+          (click)="pageChange.emit(page)"
+        >
+          {{ page }}
+        </button>
+      }
+
+      <button
+        class="user-table__page-btn user-table__page-btn--nav"
+        [disabled]="currentPage() === totalPages()"
+        (click)="pageChange.emit(currentPage() + 1)"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

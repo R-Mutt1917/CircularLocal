@@ -3,6 +3,11 @@
     grid-template-columns: 200px 1fr;
     gap: 24px;
     align-items: start;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
 }
 
 // ── Upload zone ──────────────────────────────────────────
@@ -124,6 +129,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
 }
 
 .pub-form__field {
@@ -214,6 +224,14 @@
     gap: 4px;
     align-items: center;
     height: 40px;
+
+    @media (max-width: 480px) {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        gap: 8px;
+        padding-bottom: 8px;
+    }
 }
 
 .pub-form__radio {
@@ -244,15 +262,28 @@
 .pub-form__footer {
     display: flex;
     justify-content: flex-end;
-    padding-top: 8px;
+    padding-top: 16px;
     border-top: 1px solid var(--color-border);
-    margin-top: 4px;
+    margin-top: 8px;
+
+    @media (max-width: 480px) {
+        justify-content: center;
+    }
 }
 
 .pub-form__actions {
     display: flex;
     gap: 10px;
     align-items: center;
+
+    @media (max-width: 480px) {
+        flex-direction: column-reverse;
+        width: 100%;
+        
+        .pub-form__btn {
+            width: 100%;
+        }
+    }
 }
 
 // ── Buttons ──────────────────────────────────────────────

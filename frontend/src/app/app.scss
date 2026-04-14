@@ -1,3 +1,78 @@
-.main-content-user {
+.main-content {
     margin-left: var(--sidebar-width);
+    transition: margin-left var(--transition-speed) ease;
+
+    @media (max-width: 768px) {
+        margin-left: 0;
+        padding-top: 60px; // Espacio para el header móvil
+    }
+}
+
+.mobile-header {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background-color: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 101;
+    align-items: center;
+    padding: 0 1rem;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+        display: flex;
+    }
+
+    &__toggle {
+        background: none;
+        border: none;
+        color: var(--color-brand);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border-radius: 4px;
+
+        &:active {
+            background-color: var(--color-active-bg);
+        }
+        
+        svg {
+            stroke-width: 2.5;
+        }
+    }
+
+    &__brand {
+        font-family: var(--font-serif);
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--color-brand);
+    }
+}
+
+.sidebar-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 102; // Por encima de todo excepto el sidebar y el header
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease;
+    pointer-events: none;
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+
+    &--active {
+        opacity: 1;
+        pointer-events: auto;
+    }
 }

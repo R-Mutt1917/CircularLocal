@@ -4,5 +4,6 @@ const { verifyToken } = require('../middlewares/auth.middleware');
 
 router.put('/:id', verifyToken, usuarioController.updateUser);
 router.delete('/:id', verifyToken, usuarioController.deleteUser);
+router.put('/perfil/:id', verifyToken, usuarioController.updateUser);
 
 module.exports = router;

@@ -1,12 +1,147 @@
-const { Intercambio } = require('../models');
+const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio } = require('../models');
+const metricaImpactoService = require('../services/metricaImpacto.service');
 
 const crearIntercambio = async (solicitudId) => {
-    return Intercambio.create({
+    return await Intercambio.create({
         solicitudId: solicitudId,
         estadoIntercambio: 'EN_PROCESO',
     });
 }
 
+const confirmarIntercambio = async (intercambioId, userId) => {
+    const intercambio = await Intercambio.findByPk(intercambioId, {
+        include: [
+            {
+                model: Solicitud,
+                as: 'solicitud',
+                attributes: ['id', 'solicitanteId'],
+                include: [
+                    {
+                        model: Publicacion,
+                        as: 'publicacion',
+                        attributes: ['id', 'user_id', 'tipo'],
+                        include: [
+                            { model: Material },
+                            { model: Producto },
+                            { model: Servicio }
+                        ]
+                    }
+                ]
+            }
+        ]
+    });
+
+    if (!intercambio) return null;
+
+    if (intercambio.estadoIntercambio !== 'EN_PROCESO') {
+        throw new Error("No se puede confirmar este intercambio");
+    };
+
+    // Verifica quien esta confirmando el intercambio
+    if (userId == intercambio.solicitud.solicitanteId) {
+        await intercambio.update({ confirmadoSolicitante: true }); // confirma el solicitante
+    } else {
+        if (userId == intercambio.solicitud.publicacion.user_id) {
+            await intercambio.update({ confirmadoPublicador: true }); // confirma el publicador
+        } else {
+            throw new Error("No puedes confirmar este intercambio");
+        }
+    };
+
+    if (intercambio.confirmadoSolicitante && intercambio.confirmadoPublicador) {
+
+        const fecha = new Date();
+
+        // Actualiza el estado del Intercambio a COMPLETADO
+        await intercambio.update({ estadoIntercambio: 'COMPLETADO', fechaCierre: fecha });
+
+        // Actualiza las Metricas de Impacto
+        const periodoActual = `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+        const publicacion = intercambio.solicitud.publicacion;
+
+        let cantidadReutilizada = 0;
+
+        if (publicacion.tipo === 'MATERIAL') {
+            cantidadReutilizada = publicacion.Material?.cantidad || 0;
+        }
+
+        if (publicacion.tipo === 'PRODUCTO') {
+            cantidadReutilizada = publicacion.Producto?.cantidad || 0;
+        }
+
+        await Promise.all([
+            metricaImpactoService.actualizarMetricaPorPeriodo('global', cantidadReutilizada, fecha),
+            metricaImpactoService.actualizarMetricaPorPeriodo(periodoActual, cantidadReutilizada, fecha)
+        ]);
+    }
+
+    return intercambio;
+}
+
+const cancelarIntercambio = async (intercambioId, userId) => {
+    const intercambio = await Intercambio.findByPk(intercambioId, {
+        include: [
+            {
+                model: Solicitud,
+                as: 'solicitud',
+                attributes: ['id', 'solicitanteId'],
+                include: [
+                    {
+                        model: Publicacion,
+                        as: 'publicacion',
+                        attributes: ['id', 'user_id']
+                    }
+                ]
+            }
+        ]
+    });
+
+    if (!intercambio) return null;
+
+    if (intercambio.estadoIntercambio !== 'EN_PROCESO') {
+        throw new Error("No se puede cancelar este intercambio");
+    };
+
+    // Valida quien esta cancelando el intercambio
+    if (userId == intercambio.solicitud.solicitanteId || userId == intercambio.solicitud.publicacion.user_id) {
+        await intercambio.update({ estadoIntercambio: 'CANCELADO' });
+    } else {
+        throw new Error("No puedes cancelar este intercambio");
+    };
+
+    return intercambio;
+}
+
+const obtenerIntercambiosCompletados = async (userId) => {
+    const cantidad = await Intercambio.count({
+        where: {
+            estadoIntercambio: 'COMPLETADO'
+        },
+        include: [
+            {
+                model: Solicitud,
+                as: 'solicitud',
+                attributes: [],
+                required: true,
+                include: [
+                    {
+                        model: Publicacion,
+                        as: 'publicacion',
+                        attributes: [],
+                        where: { user_id: userId },
+                        required: true
+                    }
+                ]
+            }
+        ]
+    });
+
+    return cantidad;
+};
+
 module.exports = {
     crearIntercambio,
+    confirmarIntercambio,
+    cancelarIntercambio,
+    obtenerIntercambiosCompletados,
 };

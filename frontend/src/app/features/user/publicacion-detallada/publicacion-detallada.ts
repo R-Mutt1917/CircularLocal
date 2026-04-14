@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PublicacionesService } from '../../../core/services/publicacionesServices/publicaciones';
 import { PublicacionDetalleModel, PublicacionPreviewModel, } from '../../../shared/models/publicaciones.model';
@@ -16,22 +16,28 @@ export class PublicacionDetallada {
   private route = inject(ActivatedRoute);
   private publicacionesService = inject(PublicacionesService);
   mostrarModal = false;
+  seReporto = signal(false);
 
   Publicacion: PublicacionDetalleModel | null = null;
   otrasPublicaciones: PublicacionPreviewModel[] = [];
   errorMessage: string | null = null;
 
   ngOnInit(): void {
-    const publicacionId = this.route.snapshot.paramMap.get('id');
-    if(publicacionId){
-      this.publicacionesService.consultarPublicacionDetalle(Number(publicacionId)).subscribe({
-        next: (publicacion) => {
+    this.route.paramMap.subscribe(params => {
+      const publicacionId = params.get('id');
+      if (publicacionId) {
+        this.publicacionesService.consultarPublicacionDetalle(Number(publicacionId)).subscribe({
+          next: (publicacion) => {
+            console.log("PUBLICACION DETALLADA:",publicacion);
             this.Publicacion = publicacion;
+            this.seReporto.set(publicacion.reportada);
             this.obtenerOtrasPublicaciones();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           },
-        error: (err) => console.error('Error al obtener la publicación', err)
-      })
-    }
+          error: (err) => console.error('Error al obtener la publicación', err)
+        });
+      }
+    });
   }
 
   obtenerOtrasPublicaciones(): void {
@@ -39,7 +45,8 @@ export class PublicacionDetallada {
       const userId = this.Publicacion.user.id;
       this.publicacionesService.consultarPublicacionesPorUsuario(userId, 3).subscribe({
         next: (publicaciones) => {
-            this.otrasPublicaciones = publicaciones;
+          const publicacionesFiltradas = publicaciones.filter(p => p.id !== this.Publicacion?.id);
+          this.otrasPublicaciones = publicacionesFiltradas;
           },
         error: (err) => console.error('Error al obtener otras publicaciones', err)
       })
@@ -52,6 +59,24 @@ export class PublicacionDetallada {
 
   cerrarModal(): void {
     this.mostrarModal = false;
+  }
+
+  reportarPublicacion(): void {
+    if(!confirm('¿Estas seguro que quieres reportar esta publicacion?')){
+      return;
+    }
+    if(this.Publicacion){
+      this.publicacionesService.reportarPublicacion(this.Publicacion.id).subscribe({
+        next: (response) => {
+          alert('Publicacion reportada correctamente');
+          this.seReporto.set(true);
+        },
+        error: (err) => {
+          console.error('Error al reportar la publicación', err)
+          alert('Error al reportar la publicación');
+        }
+      })
+    }
   }
 
 }

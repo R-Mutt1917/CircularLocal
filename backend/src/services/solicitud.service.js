@@ -1,4 +1,4 @@
-const { Solicitud, Publicacion } = require('../models');
+const { Solicitud, Publicacion, User } = require('../models');
 const intercambioService = require('./intercambio.service');
 
 const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
@@ -12,6 +12,7 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
     // Crea la Solicitud
     const solicitud = await Solicitud.create({
+
         publicacionId: publicacionId,
         mensajeInicial: mensajeInicial,
         estadoSolicitud: 'PENDIENTE',
@@ -20,6 +21,26 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
     return solicitud;
 }
+
+const obtenerSolicitudesPendientes = async (userId) => {
+    return await Solicitud.findAll({
+        where: { estadoSolicitud: 'PENDIENTE' },
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion',
+                where: { user_id: userId },
+                attributes: ['id', 'titulo', 'imagen']
+            },
+            {
+                model: User,
+                as: 'solicitante',
+                attributes: ['id', 'username']
+            }
+        ],
+        order: [['createdAt', 'DESC']]
+    });
+};
 
 const rechazarSolicitud = async (solicitudId) => {
     const solicitud = await Solicitud.findByPk(solicitudId);
@@ -58,17 +79,44 @@ const aceptarSolicitud = async (solicitudId) => {
     }
 
     // Actualiza es estado de la Solicitud
-    solicitud.update({ estadoSolicitud: 'ACEPTADA' });
+    await solicitud.update({ estadoSolicitud: 'ACEPTADA' });
 
     // Crea el Intercambio
-    intercambioService.crearIntercambio(solicitudId);
+    await intercambioService.crearIntercambio(solicitudId);
 
     return solicitud;
 }
+
+const obtenerSolicitudesEnviadas = async (userId) => {
+    if (!userId) {
+        throw new Error("No se pudo obtener el ID del usuario");
+    }
+    const solicitudes = await Solicitud.findAll({
+        where: { solicitanteId: userId },
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion',
+                attributes: ['id', 'titulo', 'imagen'],
+                include: [{
+                    model: User,
+                    as: 'user', // dueño de la publicación
+                    attributes: ['username']
+                }]
+            }
+        ],
+        order: [['createdAt', 'DESC']]
+    });
+
+    return solicitudes;
+};
+
 
 module.exports = {
     crearSolicitud,
     rechazarSolicitud,
     cancelarSolicitud,
     aceptarSolicitud,
+    obtenerSolicitudesPendientes,
+    obtenerSolicitudesEnviadas,
 }

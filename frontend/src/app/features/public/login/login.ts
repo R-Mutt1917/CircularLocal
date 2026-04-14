@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthServices } from '../../../core/services/auth';
 import { CommonModule } from '@angular/common';
@@ -12,8 +12,11 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class Login {
   loginForm: FormGroup
+  authServices = inject(AuthServices);
+  router = inject(Router);
+  fb = inject(FormBuilder);
 
-  constructor(private fb: FormBuilder, private authServices: AuthServices, private router: Router) {
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -26,10 +29,14 @@ export class Login {
 
       this.authServices.login(username, password).subscribe({
         next: (res) => {
-          console.log('Login exitoso', res);
+          console.log('Login exitoso', res.role);
           alert('Inicio de sesión correcto');
           this.loginForm.reset();
-          this.router.navigate(['/app/publicaciones']);
+          if (this.authServices.role() === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/app']);
+          }
         },
         error: (err) => {
           console.error('Error al iniciar sesion:', err);

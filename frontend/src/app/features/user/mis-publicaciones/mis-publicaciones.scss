@@ -49,6 +49,13 @@
     display: flex;
     gap: 1rem;
     align-items: center;
+    width: 300px;
+    height: 8rem;
+}
+
+.parrafo_empty {
+    font-size: 1;
+    color: var(--color-text-muted);
 }
 
 .boton_crear_publicacion {
@@ -74,5 +81,9 @@
 
     .titulo_mis_publicaciones {
         font-size: 3rem;
+    }
+
+    .contenedor_principal {
+        margin: 4rem 1rem 2rem 1rem;
     }
 }

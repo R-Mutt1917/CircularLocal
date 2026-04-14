@@ -14,26 +14,31 @@ export class Publicaciones implements OnInit {
   private publicacionesService = inject(PublicacionesService);
 
   publicaciones: PublicacionPreviewModel[] = [];
+  allPublicaciones: PublicacionPreviewModel[] = [];
 
   ngOnInit() {
     this.publicacionesService.consultarPublicacionesPreview().subscribe({
       next: (publicaciones) => {
-        this.publicaciones = publicaciones;
+        this.allPublicaciones = publicaciones;
+        this.publicaciones = [...publicaciones];
       },
       error: (err) => {
-        console.log(err);
+        console.error("Error al obtener publicaciones:", err);
       },
     });
 
   }
 
-  filtradorDeProductos(filters: SearchFilters) {
-    this.publicaciones = this.publicaciones.filter((publicacion) => {
-      const matchQuery = publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase())
-      const matchTag = filters.tagSeleccionado === ''
+  filtrarPublicaciones(filters: SearchFilters) {
+    this.publicaciones = this.allPublicaciones.filter((publicacion) => {
+      const matchQuery = !filters.searchQuery || 
+        publicacion.titulo.toLowerCase().includes(filters.searchQuery.toLowerCase());
+
+      const matchTag = !filters.tagSeleccionado
         || publicacion.tag === filters.tagSeleccionado;
-      const matchType = filters.tipoSeleccionado === ''
-        || publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
+
+      const matchType = !filters.tipoSeleccionado || 
+        publicacion.tipo.toLowerCase() === filters.tipoSeleccionado.toLowerCase();
 
       return matchQuery && matchTag && matchType;
     });

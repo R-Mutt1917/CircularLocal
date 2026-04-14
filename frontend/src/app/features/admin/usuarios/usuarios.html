@@ -1,0 +1,22 @@
+<section class="section">
+    <div class="contenedor_principal">
+        <div class="contenedor_titulo">
+            <span class="titulo">Gestion de Usuarios</span>
+            <p class="subtitulo">Administra perfiles, roles y estados de la comunidad circular local para asegurar un
+                ecosistema sostenible.</p>
+        </div>
+        <div>
+            <app-form-filter (filtersApplied)="onFiltersApplied($event)" filtroTipo="USUARIOS" />
+        </div>
+        <div class="contenedor_users">
+            <app-user-table
+                [users]="pagedUsers()"
+                [totalUsers]="filteredUsers().length"
+                [currentPage]="currentPage()"
+                [totalPages]="totalPages()"
+                (banUser)="onBanUser($event)"
+                (pageChange)="onPageChange($event)"
+            />
+        </div>
+    </div>
+</section>

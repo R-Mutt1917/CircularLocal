@@ -1,4 +1,6 @@
 const adminService = require('../services/admin.service');
+const { toPublicacionReportadaListDTO } = require('../dto/publicacion.dto');
+const { toListUserDTO } = require('../dto/usuario.dto');
 
 const banearUsuario = async (req, res) => {
     const userId = parseInt(req.params.id);
@@ -22,4 +24,94 @@ const banearUsuario = async (req, res) => {
     }
 };
 
-module.exports = { banearUsuario };
+const getPublicacionReportadas = async (req, res) => {
+  try {
+    const { page = 1, limit = 5 } = req.query; // Parámetros de paginación
+
+    // Validar que los parámetros sean números positivos
+    if (page <= 0 || limit <= 0) {
+        return res.status(400).json({ mensaje: 'Los parámetros de paginación deben ser números positivos.' });
+    }
+
+    const publicacionesReportadas = await adminService.getPublicacionReportadas(page, limit);
+
+    const publicacionesDto = toPublicacionReportadaListDTO(publicacionesReportadas);
+
+    return res.status(200).json({
+        total: publicacionesReportadas.count,
+        paginas: Math.ceil(publicacionesReportadas.count / limit),
+        publicaciones: publicacionesDto,
+    });
+    
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
+
+const obtenerUsuarios = async (req, res) => {
+    try {
+        const { page = 1, limit = 5 } = req.query; // Parámetros de paginación
+
+        // Validar que los parámetros sean números positivos
+        if (page <= 0 || limit <= 0) {
+            return res.status(400).json({ mensaje: 'Los parámetros de paginación deben ser números positivos.' });
+        }
+
+        const users = await adminService.getUsers(page, limit);
+
+        const usersDto = toListUserDTO(users.rows);
+
+        return res.status(200).json({
+            total: users.count,
+            paginas: Math.ceil(users.count / limit),
+            users: usersDto,
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const cancelarPublicacion = async (req, res) => {
+    const publicacionId = parseInt(req.params.id);
+    if (isNaN(publicacionId)) {
+        return res.status(400).json({ message: "ID inválido" });
+    }
+
+    try {
+        const publicacion = await adminService.cancelar(publicacionId);
+
+        if (!publicacion) {
+            return res.status(404).json({
+                error: "Publicación no encontrada"
+            });
+        }
+
+        return res.status(200).json({ message: 'Publicación cancelada' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+const obtenerMetricas = async (req, res) => {
+    try {
+        const metricas = await adminService.getMetricas();
+
+        if (!metricas) {
+            return res.status(404).json({
+                error: "Metricas no encontradas"
+            });
+        }
+
+        return res.status(200).json(metricas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = {
+    banearUsuario,
+    obtenerUsuarios,
+    getPublicacionReportadas,
+    cancelarPublicacion,
+    obtenerMetricas,
+};

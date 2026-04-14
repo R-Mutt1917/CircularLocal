@@ -41,4 +41,7 @@ router.get('/user/:id', publicacionesController.getPublicacionesByUser)
 // RUTA PARA OBTENER PUBLICACION CON PERFIL
 router.get('/perfil/:id', publicacionesController.getPublicacionDetalle);
 
+// RUTA PARA REPORTAR UNA PUBLICACION 
+router.patch('/:id/reportar', verifyToken, publicacionesController.reportarPublicacion);
+
 module.exports = router;

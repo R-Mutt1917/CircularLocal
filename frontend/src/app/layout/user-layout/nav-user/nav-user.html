@@ -1,14 +1,23 @@
-<header class="sidebar">
-    <div class="sidebar__brand">
+<header class="sidebar" [class.sidebar--open]="sidebarService.isOpen()">
+    <div class="sidebar__brand" (click)="sidebarService.close()">
         <span class="sidebar__brand-name">Circular Local</span>
         <span class="sidebar__brand-tagline">MODERN ARTISAN</span>
+    </div>
+
+    <div class="sidebar__user">
+        <div class="sidebar__user-avatar">
+            <span class="sidebar__user-avatar-initials">{{ user()?.charAt(0) }}</span>
+        </div>
+        <div class="sidebar__user-info">
+            <span class="sidebar__user-name">{{ user() }}</span>
+        </div>
     </div>
 
     <nav class="sidebar__nav">
         <ul class="sidebar__nav-list">
             <li class="sidebar__nav-item">
                 <a routerLink="/app" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" />
@@ -20,7 +29,7 @@
 
             <li class="sidebar__nav-item">
                 <a routerLink="/app/publicaciones" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2C8 2 5 5 5 8c0 4 4 7 7 10 3-3 7-6 7-10 0-3-2.5-6-7-6z" />
@@ -31,8 +40,8 @@
             </li>
 
             <li class="sidebar__nav-item">
-                <a routerLink="/pp/solicitudes" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                <a routerLink="/app/solicitudes" routerLinkActive="sidebar__nav-link--active"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 15l-3 3m0 0l-3-3m3 3V9a6 6 0 0 1 12 0v1" />
@@ -43,7 +52,7 @@
 
             <li class="sidebar__nav-item">
                 <a routerLink="/mensajes" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -54,7 +63,7 @@
 
             <li class="sidebar__nav-item">
                 <a routerLink="/app/mis-publicaciones" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 2C8 2 5 5 5 8c0 4 4 7 7 10 3-3 7-6 7-10 0-3-2.5-6-7-6z" />
@@ -65,8 +74,8 @@
             </li>
 
             <li class="sidebar__nav-item">
-                <a routerLink="/mi-perfil" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                <a routerLink="/app/mi-perfil" routerLinkActive="sidebar__nav-link--active"
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="8" r="4" />
@@ -78,10 +87,9 @@
         </ul>
         <div class="sidebar__footer">
             <a routerLink="/app/subir" routerLinkActive="sidebar__nav-link--active"
-                [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link subir">
+                [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link subir">
                 <span class="sidebar__nav-label">Subir nueva publicacion</span>
             </a>
-            <!--AGREGAR AUTH.SERVICE PARA MANEJAR EL LOGOUT-->
             <button class="sidebar__logout-btn">
                 <svg class="sidebar__logout-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">

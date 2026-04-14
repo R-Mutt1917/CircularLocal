@@ -1,0 +1,44 @@
+<div class="filter-form">
+  <form [formGroup]="form" (ngSubmit)="apply()">
+    <div class="filter-form__fields">
+
+      <div class="filter-form__group">
+        <label class="filter-form__label">{{ filtroTipo() === 'USUARIOS' ? 'NOMBRE DEL USUARIO' : 'NOMBRE DE LA PUBLICACIÓN' }}</label>
+        <div class="filter-form__search-wrapper">
+          <svg class="filter-form__search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            class="filter-form__input"
+            type="text"
+            formControlName="nombre"
+            placeholder="{{ filtroTipo() === 'USUARIOS' ? 'Buscar por nombre...' : 'Buscar por nombre...' }}"
+          />
+        </div>
+      </div>
+
+      <div class="filter-form__group filter-form__group--select">
+        <label class="filter-form__label">
+          {{ filtroTipo() === 'USUARIOS' ? 'TIPO ACTOR' : 'TIPO PUBLICACIÓN' }}
+        </label>
+        <div class="filter-form__select-wrapper">
+          <select class="filter-form__select" formControlName="tipo">
+            @for (option of tipoActorOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+          <svg class="filter-form__select-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="filter-form__group filter-form__group--action">
+        <button class="filter-form__btn" type="submit">
+          FILTRAR
+        </button>
+      </div>
+
+    </div>
+  </form>
+</div>

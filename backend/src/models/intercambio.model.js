@@ -13,11 +13,13 @@ const Intercambio = sequelize.define('Intercambio', {
     },
     confirmadoSolicitante: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: false,
+        defaultValue: false,
     },
     confirmadoPublicador: {
         type: DataTypes.BOOLEAN,
-        allowNull: true
+        allowNull: false,
+        defaultValue: false,
     },
     fechaCierre: {
         type: DataTypes.DATE,

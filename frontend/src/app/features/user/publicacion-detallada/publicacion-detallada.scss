@@ -83,23 +83,40 @@
     }
 }
 
+// ─── Información General ─────
+
+.detalle-info-general {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+}
+
 // ─── Tags ─────
 
 .detalle-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
 }
 
 .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     font-family: var(--font-sans);
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0.3rem 0.75rem;
-    border-radius: 3px;
+    padding: 0.45rem 1rem;
+    border-radius: 50px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
 
     &--tipo {
         background: var(--color-brand);
@@ -108,66 +125,129 @@
 
     &--categoria {
         background: var(--color-surface);
-        color: var(--color-accent);
+        color: var(--color-text-primary);
         border: 1px solid var(--color-border);
     }
 
     &--verificada {
-        background: transparent;
-        color: var(--color-accent);
-        border: 1px solid var(--color-accent);
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+
+        svg {
+            margin-right: -0.1rem;
+        }
+    }
+
+    &--no-verificada {
+        background: var(--color-surface);
+        color: var(--color-text-muted);
+        border: 1px solid var(--color-border);
     }
 }
+
+    .reportada {
+        background: #5e0101;
+        border: 1px solid #5e0101;
+        color: #fff;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.75rem;
+        border-radius: 3px;
+    }
 
 // ─── Título ────
 
 .detalle-titulo {
     font-family: var(--font-serif);
-    font-size: clamp(1.75rem, 4vw, 2.6rem);
-    font-weight: 700;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 800;
     color: var(--color-text-primary);
     line-height: 1.15;
-    margin: 0 0 1.25rem;
-}
-
-// ─── Meta row ────
-
-.detalle-meta {
-    display: flex;
-    gap: 2.5rem;
-    padding: 1rem 0;
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-    margin-bottom: 1.5rem;
-
-    &__item {
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-    }
-
-    &__label {
-        font-size: 0.68rem;
-        text-transform: uppercase;
-        letter-spacing: 0.07em;
-        color: var(--color-text-muted);
-    }
-
-    &__value {
-        font-size: 0.95rem;
-        font-weight: 600;
-        color: var(--color-text-primary);
-    }
+    letter-spacing: -0.015em;
+    margin: 0 0 1.5rem;
 }
 
 // ─── Descripción ──────
 
 .detalle-desc {
-    font-size: 0.92rem;
-    line-height: 1.75;
+    font-size: 1.05rem;
+    line-height: 1.8;
     color: var(--color-text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 2.5rem;
     white-space: pre-line;
+    padding-left: 1.25rem;
+    border-left: 4px solid var(--color-accent);
+    opacity: 0.9;
+}
+
+// ─── Detalles Específicos Título ────
+
+.detalle-detalle {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+
+    &__titulo {
+        font-family: var(--font-serif);
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--color-text-primary);
+        margin: 0;
+    }
+}
+
+// ─── Meta Row / Grid ────
+
+.detalle-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        flex: 1;
+        min-width: 140px;
+    }
+
+    &__label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        font-weight: 600;
+    }
+
+    &__value {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--color-text-primary);
+    }
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-text-muted);
+
+    &--publicada {
+        background: #10b981;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
 }
 
 // ─── Sidebar ──────
@@ -350,3 +430,4 @@
         }
     }
 }
+

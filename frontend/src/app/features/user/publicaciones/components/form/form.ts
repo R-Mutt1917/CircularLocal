@@ -17,7 +17,7 @@ export class Form implements OnInit {
 
   private fb = inject(FormBuilder);
 
-  filtradorDeProductos = output<SearchFilters>();
+  filtrar = output<SearchFilters>();
 
   form = this.fb.group({
     searchQuery: [''],
@@ -32,7 +32,7 @@ export class Form implements OnInit {
   ];
 
   //DEFINIR BIEN CON EL EQUIPO CUALES VAN A SER TODOS LOS TAGS
-  tags = ['todos', 'Madera Recup.', 'Textiles Orgánicos', 'Cerámica', 'Herramientas', 'Metalurgia'];
+  tags = ['Madera Recup.', 'Textiles Orgánicos', 'Cerámica', 'Herramientas', 'Metalurgia'];
 
   seleccionarTipo(value: string): void {
     this.form.patchValue({ tipo: value });
@@ -48,7 +48,7 @@ export class Form implements OnInit {
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((value) => {
-      this.filtradorDeProductos.emit({
+      this.filtrar.emit({
         searchQuery: value.searchQuery ?? '',
         tipoSeleccionado: value.tipo ?? '',
         tagSeleccionado: value.tag ?? '',
