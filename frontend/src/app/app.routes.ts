@@ -5,7 +5,6 @@ import { Register } from './features/public/register/register';
 import { AuthGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard';
 import { GuestGuard } from './core/guards/guest.guard';
-import { AdminDashboard } from './features/admin/dashboard/dashboard';
 import { Publicaciones } from './features/user/publicaciones/publicaciones';
 import { UserDashboard } from './features/user/dashboard/dashboard';
 import { PublicacionDetallada } from './features/user/publicacion-detallada/publicacion-detallada';
@@ -41,9 +40,8 @@ export const routes: Routes = [
         path: 'admin',
         canActivate: [AuthGuard, AdminGuard],
         children: [
-            { path: '', component: AdminDashboard },
+            { path: '', component: Metricas },
             { path: 'moderacion', component: Moderacion },
-            { path: 'metricas', component: Metricas },
             { path: 'usuarios', component: Usuarios },
         ]
     },

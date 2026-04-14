@@ -3,6 +3,7 @@
     height: auto;
     display: flex;
     flex-direction: row;
+    background-color: var(--color-surface);
 }
 
 .contenedor_principal {
@@ -12,7 +13,6 @@
     width: 100%;
     height: auto;
     margin: 4rem 6rem 0 6rem;
-    background-color: #fff;
 }
 
 .contenedor_titulo {
@@ -44,4 +44,10 @@
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
+}
+
+@media (max-width: 768px) {
+    .contenedor_principal {
+        margin: 1rem;
+    }
 }
