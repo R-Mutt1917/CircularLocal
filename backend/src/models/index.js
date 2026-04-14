@@ -7,6 +7,8 @@ const Material = require('./material.model');
 const Producto = require('./producto.model');
 const Servicio = require('./servicio.model');
 const Intercambio = require('./intercambio.model');
+const Conversacion = require('./conversacion.model');
+const Mensaje = require('./mensaje.model');
 
 // Relacion User - Perfil
 User.hasOne(Perfil, {
@@ -99,6 +101,10 @@ Intercambio.belongsTo(Solicitud, {
     as: 'solicitud'
 });
 
+// Define relaciones
+Conversacion.hasMany(Mensaje, { foreignKey: 'conversacion_id' });
+Mensaje.belongsTo(Conversacion, { foreignKey: 'conversacion_id' });
+
 module.exports = {
     User,
     Perfil,
@@ -106,4 +112,6 @@ module.exports = {
     Tag,
     Solicitud,
     Intercambio,
+    Conversacion,
+    Mensaje
 };
