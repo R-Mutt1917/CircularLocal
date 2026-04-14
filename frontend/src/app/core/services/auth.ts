@@ -59,10 +59,13 @@ export class AuthServices {
     return localStorage.getItem('role');
   }
 
-  getId(): number | null {
+  getId(): number {
     return Number(localStorage.getItem('id'));
   }
 
+  getUsername(): string | null {
+    return localStorage.getItem('name');
+  }
 
   register(username: string, password: string): Observable<any> {
     return this.httpClient.post<any>(`${this.apiUrl}/auth/register`, { username, password });
