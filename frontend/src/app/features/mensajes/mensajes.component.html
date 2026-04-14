@@ -1,0 +1,18 @@
+<app-nav-user></app-nav-user>
+
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>Mensajes</h2>
+  </div>
+  <div class="chat-messages">
+    @for (mensaje of mensajes; track mensaje) {
+      <div class="chat-message">
+        {{ mensaje.content }}
+      </div>
+    }
+  </div>
+  <div class="chat-input">
+    <input #mensajeInput type="text" placeholder="Escribe un mensaje..." />
+    <button (click)="enviarMensaje(mensajeInput.value); mensajeInput.value = ''">Enviar</button>
+  </div>
+</div>

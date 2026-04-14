@@ -6,7 +6,9 @@
     "outDir": "./out-tsc/spec",
     "types": [
       "jasmine"
-    ]
+    ],
+    "rootDir": "./src",
+    "ignoreDeprecations": "6.0" // Agregado para silenciar la advertencia de baseUrl
   },
   "include": [
     "src/**/*.ts"
