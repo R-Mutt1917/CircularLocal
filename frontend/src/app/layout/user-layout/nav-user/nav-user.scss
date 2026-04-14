@@ -10,9 +10,20 @@
     top: 0;
     left: 0;
     z-index: 100;
-
-    // Sutil separador derecho
     border-right: 1px solid var(--color-border);
+    transition: transform var(--transition-speed) ease;
+
+    @media (max-width: 768px) {
+        transform: translateX(-100%);
+        z-index: 103;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    }
+
+    &--open {
+        @media (max-width: 768px) {
+            transform: translateX(0);
+        }
+    }
 }
 
 // ─── Brand ────────────────────────────────────────────────────────────────────

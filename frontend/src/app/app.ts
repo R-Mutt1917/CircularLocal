@@ -6,6 +6,7 @@ import { NavAdmin } from './layout/admin-layout/nav-admin/nav-admin';
 import { AuthServices } from './core/services/auth';
 import { NavUser } from './layout/user-layout/nav-user/nav-user';
 import { NavPublic } from './layout/public-layout/nav-public/nav-public';
+import { SidebarService } from './core/services/sidebar.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ import { NavPublic } from './layout/public-layout/nav-public/nav-public';
 export class App {
   protected readonly title = signal('Circular Local');
 
+  sidebarService = inject(SidebarService);
   auth = inject(AuthServices)
   role = this.auth.role;
 
