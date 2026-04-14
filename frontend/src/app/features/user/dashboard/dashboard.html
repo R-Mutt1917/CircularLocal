@@ -1,1 +1,73 @@
-<section>ACA ES EL INICIO DEL USER LOGUEADO</section>
+<main class="dashboard-page">
+    <div class="container">
+        <!-- Header -->
+        <section class="dashboard-header">
+            <h1 class="serif">
+                Hola, {{ username }}.<br>
+                <span class="accent">Tu actividad de hoy.</span>
+            </h1>
+        </section>
+
+        <!-- Stats -->
+        <section class="dashboard-stats">
+            <article class="stat-card">
+                <span class="stat-label">ACTIVAS</span>
+                <div class="stat-value"> {{ cantidadPublicaciones }} <span>publicaciones</span></div>
+            </article>
+
+            <article class="stat-card">
+                <span class="stat-label">PENDIENTES</span>
+                <div class="stat-value"> {{ cantidadSolicitudesPendientes }} <span>solicitudes</span></div>
+            </article>
+
+            <article class="stat-card completed">
+                <span class="stat-label">COMPLETADOS</span>
+                <div class="stat-value"> {{ cantidadIntercambiosCompletados }} <span>intercambios</span></div>
+            </article>
+        </section>
+
+        <!-- Recent Posts -->
+        <div class="section-header">
+            <h2>Publicaciones recientes</h2>
+        </div>
+        <div class="posts-grid">
+            @for (publicacion of ultimasPublicaciones; track publicacion.id; let first = $first) {
+            <!-- al seleccionar la app redirije al detalle de la publicacion en /app/publicacion/:id -->
+            <article class="post-card" [class.featured]="first" [class.small]="!first" [routerLink]="['/app/publicacion', publicacion.id]">
+                <img [src]="publicacion.imagen || '/img/default-post.png'" />
+
+                <div class="content">
+                    <span class="tag">
+                        {{ publicacion.estado }}
+                    </span>
+
+                    <small>
+                        {{ publicacion.tipo }} · {{ publicacion.tag }}
+                    </small>
+
+                    <h3 class="serif">{{ publicacion.titulo }}</h3>
+
+                    <p>
+                        {{ publicacion.descripcion }}
+                    </p>
+
+                    <!--
+                    <div class="footer">
+                        <span>{{ publicacion.ubicacion || 'Sin ubicación' }}</span>
+                        <button [routerLink]="['/publicaciones', publicacion.id]">
+                            →
+                        </button>
+                    </div>
+                    -->
+                </div>
+            </article>
+            }
+        </div>
+
+        @if (publicaciones.length === 0) {
+        <div class="empty-state">
+            <p>No tenés publicaciones recientes.</p>
+        </div>
+        }
+    </div>
+</main>
