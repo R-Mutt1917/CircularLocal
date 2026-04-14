@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
 const { User, Perfil } = require('../models');
 const { createProfile, putPerfil } = require('./perfil.service');
-const { parse } = require('dotenv');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
