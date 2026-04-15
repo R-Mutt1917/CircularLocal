@@ -1,7 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavUser } from '../../layout/user-layout/nav-user/nav-user';
-import { ChatService } from 'src/app/core/services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -11,12 +11,18 @@ import { Subscription } from 'rxjs';
   templateUrl: './mensajes.component.html',
   styleUrls: ['./mensajes.component.scss']
 })
-export class MensajesComponent implements OnDestroy {
+export class MensajesComponent implements OnInit, OnDestroy {
   mensajes: any[] = [];
   private sub!: Subscription;
 
-  constructor(private chatService: ChatService) {
-    this.sub = this.chatService.getMessages().subscribe((mensaje) => {
+  // Por ahora hardcodeado — después vendrá de la ruta o del estado
+  conversacionId = 1;
+  destinatarioId = 2;
+
+  constructor(private chatService: ChatService) {}
+
+  ngOnInit(): void {
+    this.sub = this.chatService.getMessages().subscribe((mensaje: any) => {
       if (mensaje) {
         this.mensajes.push(mensaje);
       }
@@ -24,8 +30,12 @@ export class MensajesComponent implements OnDestroy {
   }
 
   enviarMensaje(contenido: string): void {
-    const conversationId = 1;
-    this.chatService.sendMessage(conversationId, contenido);
+    if (!contenido.trim()) return;
+    this.chatService.sendMessage(
+      this.conversacionId,
+      contenido,
+      this.destinatarioId
+    );
   }
 
   ngOnDestroy(): void {

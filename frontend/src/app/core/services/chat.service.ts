@@ -8,9 +8,8 @@ import { Observable } from 'rxjs';
 export class ChatService {
   constructor(private webSocketService: WebSocketService) {}
 
-  sendMessage(conversationId: number, content: string): void {
-    const message = { conversationId, content };
-    this.webSocketService.sendMessage(message);
+  sendMessage(conversacionId: number, contenido: string, destinatarioId: number): void {
+    this.webSocketService.sendMessage({ conversacionId, contenido, destinatarioId });
   }
 
   getMessages(): Observable<any> {
