@@ -31,8 +31,40 @@ export class Form implements OnInit {
     { label: 'Servicio', value: 'servicio' },
   ];
 
-  //DEFINIR BIEN CON EL EQUIPO CUALES VAN A SER TODOS LOS TAGS
-  tags = ['Madera Recup.', 'Textiles Orgánicos', 'Cerámica', 'Herramientas', 'Metalurgia'];
+  tags = [
+    // MATERIAL
+    'Madera',
+    'Metal',
+    'Plástico',
+    'Vidrio',
+    'Papel y Cartón',
+    'Textil',
+    'Electrónico',
+    'Construcción',
+    'Orgánico',
+
+    // PRODUCTO
+    'Muebles',
+    'Decoración',
+    'Ropa',
+    'Accesorios',
+    'Tecnología',
+    'Herramientas',
+    'Juguetes',
+    'Libros',
+    'Hogar',
+
+    // SERVICIO
+    'Reparación',
+    'Diseño',
+    'Transporte',
+    'Capacitación',
+    'Reciclaje',
+    'Mantenimiento',
+    'Jardinería',
+    'Limpieza',
+    'Logística'
+  ];
 
   seleccionarTipo(value: string): void {
     this.form.patchValue({ tipo: value });

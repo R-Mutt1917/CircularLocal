@@ -52,7 +52,7 @@
                         </div>
                         <div class="detalle-meta__item">
                             <span class="detalle-meta__label">Fecha de Creación</span>
-                            <span class="detalle-meta__value">{{ Publicacion.createdAt || 'Cargando...' }}</span>
+                            <span class="detalle-meta__value">{{ Publicacion.createdAt | date:'dd/MM/yyyy':'UTC' }}</span>
                         </div>
                     </div>
                 </div>
