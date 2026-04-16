@@ -167,19 +167,19 @@
     }
   }
 
-  .btn-edit-link {
-    background: transparent;
+  .btn-edit {
+    flex: 1;
+    background-color: #0e4a11; 
+    color: #fff;
     border: none;
-    color: var(--color-text-secundary);
-    font-weight: 600;
-    font-size: 13px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    padding: 0;
 
     &:hover {
-      text-decoration: underline;
+      background-color: #d7f8dc;
+      color: #0e4a11;
     }
   }
 
