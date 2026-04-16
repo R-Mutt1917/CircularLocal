@@ -1,4 +1,4 @@
-<section class="search-section" [formGroup]="form">
+ <section class="search-section" [formGroup]="form">
 
     <!-- Barra de búsqueda -->
     <div class="search-bar">
@@ -30,12 +30,15 @@
 
     <!-- Tags -->
     <div class="search-tags">
-        @for (tag of tags; track tag) {
-        <button class="tag-btn" [class.tag-btn--active]="form.value.tag === tag" (click)="seleccionarTag(tag)"
-            type="button">
-            {{ tag }}
+        <span class="filter-group__label">CATEGORIAS</span>
+        <div class="search-tags__options">
+            @for (tag of tags; track tag) {
+            <button class="tag-btn" [class.tag-btn--active]="form.value.tag === tag" (click)="seleccionarTag(tag)"
+                type="button">
+                {{ tag }}
         </button>
         }
+        </div>
     </div>
 
 </section>

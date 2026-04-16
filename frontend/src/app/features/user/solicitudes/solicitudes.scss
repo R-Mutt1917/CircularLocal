@@ -97,26 +97,3 @@
   text-align: center;
   padding: 3rem 0;
 }
-
-// ── Footer ────────────────────────────────────────────
-.solicitudes__footer {
-  margin-top: 2rem;
-  text-align: center;
-}
-
-.link-btn {
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: var(--color-text-secundary);
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  transition: opacity 0.15s ease;
-
-  &:hover {
-    opacity: 0.7;
-  }
-}

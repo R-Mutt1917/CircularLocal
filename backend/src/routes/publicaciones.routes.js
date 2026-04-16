@@ -7,13 +7,13 @@ const { verifyToken } = require('../middlewares/auth.middleware');
 router.post('/', verifyToken, publicacionesController.crearPublicacion);
 
 // Ruta para publicar una publicación (cambiar estado a 'publicada') (protegida)
-router.put('/:id/publicar', verifyToken, publicacionesController.publicarPublicacion);
+router.patch('/:id/activar', verifyToken, publicacionesController.activarPublicacion);
 
 // Ruta para finalizar una publicación (cambiar estado a 'finalizada') (protegida)
-router.put('/:id/finalizar', verifyToken, publicacionesController.finalizarPublicacion);
+router.patch('/:id/finalizar', verifyToken, publicacionesController.finalizarPublicacion);
 
 // Ruta para cancelar una publicación (cambiar estado a 'cancelada') (protegida)
-router.put('/:id/cancelar', verifyToken, publicacionesController.cancelarPublicacion);
+router.patch('/:id/cancelar', verifyToken, publicacionesController.cancelarPublicacion);
 
 // Ruta para editar una publicación existente (actualizar detalles sin cambiar estado) (protegida)
 router.put('/:id', verifyToken, publicacionesController.editarPublicacion);
@@ -43,5 +43,8 @@ router.get('/perfil/:id', publicacionesController.getPublicacionDetalle);
 
 // RUTA PARA REPORTAR UNA PUBLICACION 
 router.patch('/:id/reportar', verifyToken, publicacionesController.reportarPublicacion);
+
+// RUTA PARA ELIMINAR UNA PUBLICACION 
+router.delete('/:id', verifyToken, publicacionesController.eliminarPublicacion);
 
 module.exports = router;
