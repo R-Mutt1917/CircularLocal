@@ -1,28 +1,40 @@
-const { Conversacion, Mensaje, User } = require('../models');
+const { Conversacion, Mensaje } = require('../models');
+const { Op } = require('sequelize');
 
-exports.startConversation = async ({ user1_id, user2_id }) => {
-  // Buscar si ya existe una conversación entre estos dos usuarios
-  let conversacion = await Conversacion.findOne({
-    where: { user1_id, user2_id }
-  });
-  if (!conversacion) {
-    conversacion = await Conversacion.create({ user1_id, user2_id });
-  }
-  return conversacion;
+exports.startConversation = async (participante1_id, participante2_id) => {
+    // Buscar en ambas direcciones
+    let conversacion = await Conversacion.findOne({
+        where: { participante1_id, participante2_id }
+    });
+    if (!conversacion) {
+        conversacion = await Conversacion.findOne({
+            where: {
+                participante1_id: participante2_id,
+                participante2_id: participante1_id
+            }
+        });
+    }
+    if (!conversacion) {
+        conversacion = await Conversacion.create({ participante1_id, participante2_id });
+    }
+    return conversacion;
 };
 
-exports.getMessages = async (conversationId) => {
-  return await Mensaje.findAll({
-    where: { conversacion_id: conversationId },
-    include: [{ model: User, as: 'remitente', attributes: ['id', 'username'] }],
-    order: [['createdAt', 'ASC']]
-  });
+exports.getMessages = async (conversacionId) => {
+    return await Mensaje.findAll({
+        where: { conversacion_id: conversacionId },
+        order: [['createdAt', 'ASC']]
+    });
 };
 
-exports.sendMessage = async (conversationId, { remitente_id, contenido }) => {
-  return await Mensaje.create({
-    conversacion_id: conversationId,
-    remitente_id,
-    contenido
-  });
+exports.getConversaciones = async (userId) => {
+    return await Conversacion.findAll({
+        where: {
+            [Op.or]: [
+                { participante1_id: userId },
+                { participante2_id: userId }
+            ]
+        },
+        order: [['updatedAt', 'DESC']]
+    });
 };

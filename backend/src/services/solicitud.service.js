@@ -72,19 +72,28 @@ const aceptarSolicitud = async (solicitudId) => {
     const solicitud = await Solicitud.findByPk(solicitudId);
     if (!solicitud) return null;
 
-    // Solo las solicitudes Pendientes se puede aceptar
     if (solicitud.estadoSolicitud !== 'PENDIENTE') {
-        throw new Error("No se puede aceptar esta solicitud");
+        throw new Error('No se puede aceptar esta solicitud');
     }
 
-    // Actualiza es estado de la Solicitud
+    // Buscar la publicación para obtener el dueño
+    const publicacion = await Publicacion.findByPk(solicitud.publicacionId);
+
+    // Actualizar estado
     await solicitud.update({ estadoSolicitud: 'ACEPTADA' });
 
-    // Crea el Intercambio
+    // Crear el intercambio
     await intercambioService.crearIntercambio(solicitudId);
 
-    return solicitud;
-}
+    // Crear la conversación entre dueño y solicitante
+    const chatService = require('./chat.service');
+    const conversacion = await chatService.startConversation(
+        publicacion.user_id,       // dueño de la publicación
+        solicitud.solicitanteId    // quien solicitó
+    );
+
+    return { solicitud, conversacionId: conversacion.id };
+};
 
 module.exports = {
     crearSolicitud,

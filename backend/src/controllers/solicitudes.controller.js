@@ -69,22 +69,19 @@ const cancelarSolicitud = async (req, res) => {
 const aceptarSolicitud = async (req, res) => {
     const solicitudId = parseInt(req.params.id);
     if (isNaN(solicitudId)) {
-        return res.status(400).json({ message: "ID inválido" });
+        return res.status(400).json({ message: 'ID inválido' });
     }
-
     try {
-        const solicitud = await solicitudService.aceptarSolicitud(solicitudId);
-        if (!solicitud) {
-            return res.status(404).json({
-                error: "Solicitud no encontrada"
-            });
+        const resultado = await solicitudService.aceptarSolicitud(solicitudId);
+        if (!resultado) {
+            return res.status(404).json({ error: 'Solicitud no encontrada' });
         }
-
-        res.status(204).send();
+        // Devolvemos el conversacionId para que el frontend redirija al chat
+        res.status(200).json({ conversacionId: resultado.conversacionId });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-}
+};
 
 module.exports = {
     crearSolicitud,
