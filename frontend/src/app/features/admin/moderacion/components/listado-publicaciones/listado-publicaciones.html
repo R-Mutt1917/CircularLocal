@@ -6,8 +6,8 @@
         <tr>
           <th class="pub-table__th">PUBLICACIÓN</th>
           <th class="pub-table__th">TIPO</th>
-          <th class="pub-table__th">FECHA</th>
-          <th class="pub-table__th">AUTOR</th>
+          <th class="pub-table__th pub-table__th--hide-mobile">FECHA</th>
+          <th class="pub-table__th pub-table__th--hide-mobile">AUTOR</th>
           <th class="pub-table__th pub-table__th--right">ACCIONES</th>
         </tr>
       </thead>
@@ -25,11 +25,11 @@
               </span>
             </td>
 
-            <td class="pub-table__td pub-table__td--date">
+            <td class="pub-table__td pub-table__td--date pub-table__td--hide-mobile">
               {{ formatDate(pub.createdAt) }}
             </td>
 
-            <td class="pub-table__td">
+            <td class="pub-table__td pub-table__td--hide-mobile">
               <div class="pub-table__user-cell">
                 @if (pub.imagenPerfil) {
                   <img class="pub-table__avatar" [src]="pub.imagenPerfil" [alt]="pub.nombrePerfil" />

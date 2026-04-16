@@ -1,5 +1,5 @@
 const solicitudService = require('../services/solicitud.service');
-const { toSolicitudDTO, toListSolicitudesPendientesDTO } = require('../dto/solicitud.dto');
+const { toSolicitudDTO, toListSolicitudesPendientesDTO, toListSolicitudesEnviadasDTO } = require('../dto/solicitud.dto');
 
 const crearSolicitud = async (req, res) => {
     try {
@@ -83,10 +83,23 @@ const aceptarSolicitud = async (req, res) => {
     }
 };
 
+const obtenerSolicitudesEnviadas = async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const solicitudes = await solicitudService.obtenerSolicitudesEnviadas(userId);
+
+        res.status(200).json(toListSolicitudesEnviadasDTO(solicitudes));
+    } catch (error) {
+        res.status(400).json({ error: "No se pudo obtener las solicitudes enviadas" + error.message });
+    }
+}
+
 module.exports = {
     crearSolicitud,
     rechazarSolicitud,
     cancelarSolicitud,
     aceptarSolicitud,
     obtenerSolicitudesPendientes,
+    obtenerSolicitudesEnviadas,
 };

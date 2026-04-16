@@ -5,9 +5,25 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
 
     const publicacion = await Publicacion.findByPk(publicacionId);
 
+    if (!publicacion) {
+        throw new Error('La publicación no existe');
+    }
+
     // Valida que el usuario que hizo la Solicitud no sea el mismo que hizo la Publicacion
     if (solicitanteId == publicacion.user_id) {
         throw new Error('No se pudo crear la Solicitud');
+    }
+
+    const solicitudPendiente = await Solicitud.findOne({
+        where: {
+            publicacionId,
+            solicitanteId,
+            estadoSolicitud: 'PENDIENTE'
+        }
+    });
+
+    if (solicitudPendiente) {
+        throw new Error('Ya tenés una solicitud pendiente para esta publicación');
     }
 
     // Crea la Solicitud
@@ -95,10 +111,36 @@ const aceptarSolicitud = async (solicitudId) => {
     return { solicitud, conversacionId: conversacion.id };
 };
 
+const obtenerSolicitudesEnviadas = async (userId) => {
+    if (!userId) {
+        throw new Error("No se pudo obtener el ID del usuario");
+    }
+    const solicitudes = await Solicitud.findAll({
+        where: { solicitanteId: userId },
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion',
+                attributes: ['id', 'titulo', 'imagen'],
+                include: [{
+                    model: User,
+                    as: 'user', // dueño de la publicación
+                    attributes: ['username']
+                }]
+            }
+        ],
+        order: [['createdAt', 'DESC']]
+    });
+
+    return solicitudes;
+};
+
+
 module.exports = {
     crearSolicitud,
     rechazarSolicitud,
     cancelarSolicitud,
     aceptarSolicitud,
     obtenerSolicitudesPendientes,
+    obtenerSolicitudesEnviadas,
 }

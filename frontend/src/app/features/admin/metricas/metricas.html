@@ -1,1 +1,57 @@
-<p>metricas works!</p>
+<section class="metricas">
+
+  <header class="metricas__header">
+    <div class="metricas__header-left">
+      <span class="metricas__eyebrow">Panel Administrativo</span>
+      <h2 class="metricas__title">Métricas de Impacto</h2>
+    </div>
+  </header>
+
+  <div class="metricas__cards">
+    @for (card of statCards(); track card.label) {
+      <div class="stat-card">
+        <div class="stat-card__top">
+          <span class="stat-card__label">{{ card.label }}</span>
+          <span class="stat-card__icon">{{ card.icon }}</span>
+        </div>
+        <div class="stat-card__value">
+          {{ card.value }}
+        </div>
+        <p class="stat-card__subtitle">{{ card.subtitle }}</p>
+      </div>
+    }
+  </div>
+
+  <div class="metricas__charts">
+
+    <div class="chart-card">
+      <div class="chart-card__header">
+        <h2 class="chart-card__title">Intercambios y Materiales Reutilizados por Año</h2>
+         <div class="metricas__header-right">
+      <select class="metricas__select" [value]="anioSeleccionado()" (change)="onYearChange($event)">
+        @for (year of years(); track year) {
+          <option [value]="year">{{ year }}</option>
+        }
+      </select>
+    </div>
+      </div>
+      <div class="chart-card__placeholder">
+        <app-grafico
+           [datasets]="datasets()"
+           [labels]="chartLabels()"
+        ></app-grafico>
+      </div>
+    </div>
+  </div>
+
+  <div class="metricas__cta">
+    <div class="metricas__cta-text">
+      <p class="metricas__cta-headline">Potencia el impacto local de tu comunidad.</p>
+      <p class="metricas__cta-body">
+        Las métricas actuales sugieren un crecimiento orgánico del 15% para el próximo
+        trimestre si se incrementan los puntos de recolección en la zona norte.
+      </p>
+    </div>
+  </div>
+
+</section>

@@ -1,0 +1,47 @@
+<article class="solicitud-card" [class]="'estado-' + solicitud().estado.toLowerCase()">
+
+  <div class="card__image-wrapper">
+    <img
+      [src]="solicitud().imagen"
+      [alt]="solicitud().titulo"
+      class="card__image"
+    />
+  </div>
+
+  <div class="card__content">
+    <div class="card__meta">
+      <span class="card__badge" [class]="'badge--' + solicitud().estado.toLowerCase()">
+        {{ solicitud().estado }}
+      </span>
+      <span class="card__fecha">{{ solicitud().fecha }}</span>
+    </div>
+
+    <h3 class="card__titulo">{{ solicitud().titulo }}</h3>
+
+    @if (tipo() === 'recibidas') {
+      <p class="card__solicitante">
+        Solicitado por: <a class="card__solicitante-link">{{ solicitud().solicitante }}</a>
+      </p>
+    } @else {
+      <p class="card__solicitante">
+        Enviado a: <a class="card__solicitante-link">{{ solicitud().receptor }}</a>
+      </p>
+    }
+
+    <blockquote class="card__mensaje">
+      "{{ solicitud().mensaje }}"
+    </blockquote>
+  </div>
+
+  @if (esPendiente && tipo() === 'recibidas') {
+    <div class="card__actions">
+      <button class="btn btn--aceptar" (click)="onAceptar()">Aceptar</button>
+      <button class="btn btn--rechazar" (click)="onRechazar()">Rechazar</button>
+    </div>
+  } @else if (esPendiente && tipo() === 'enviadas') {
+    <div class="card__actions">
+      <button class="btn btn--rechazar" (click)="onCancelar()">Cancelar</button>
+    </div>
+  }
+
+</article>

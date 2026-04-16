@@ -31,4 +31,8 @@ export class adminService {
     return this.httpClient.patch<any>(`${this.apiUrl}/admin/publicaciones/${publicacionId}/cancelar`, {});
   }
 
+  obtenerMetricas(){
+    return this.httpClient.get<any>(`${this.apiUrl}/admin/metricas`);
+  }
+
 }

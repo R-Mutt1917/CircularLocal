@@ -9,6 +9,7 @@ const Servicio = require('./servicio.model');
 const Intercambio = require('./intercambio.model');
 const Conversacion = require('./conversacion.model');
 const Mensaje = require('./mensaje.model');
+const MetricaImpacto = require('./metricaImpacto.model');
 
 // Relacion User - Perfil
 User.hasOne(Perfil, {
@@ -110,8 +111,12 @@ module.exports = {
     Perfil,
     Publicacion,
     Tag,
+    Material,
+    Producto,
+    Servicio,
     Solicitud,
     Intercambio,
     Conversacion,
-    Mensaje
+    Mensaje,
+    MetricaImpacto,
 };

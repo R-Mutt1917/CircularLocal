@@ -4,9 +4,9 @@
       <thead class="user-table__head">
         <tr>
           <th class="user-table__th">USUARIO</th>
-          <th class="user-table__th">USERNAME</th>
+          <th class="user-table__th user-table__th--hide-mobile">USERNAME</th>
           <th class="user-table__th">TIPO ACTOR</th>
-          <th class="user-table__th">FECHA REGISTRO</th>
+          <th class="user-table__th user-table__th--hide-mobile">FECHA REGISTRO</th>
           <th class="user-table__th user-table__th--right">ACCIONES</th>
         </tr>
       </thead>
@@ -32,7 +32,7 @@
               </div>
             </td>
 
-            <td class="user-table__td">
+            <td class="user-table__td user-table__td--hide-mobile">
               <span class="user-table__username">&#64;{{ user.username }}</span>
             </td>
 
@@ -42,7 +42,7 @@
               </span>
             </td>
 
-            <td class="user-table__td user-table__td--date">
+            <td class="user-table__td user-table__td--date user-table__td--hide-mobile">
               {{ formatDate(user.fecha_registro) }}
             </td>
 

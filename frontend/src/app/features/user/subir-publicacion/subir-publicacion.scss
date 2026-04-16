@@ -62,4 +62,13 @@
         line-height: 1;
         z-index: 0;
     }
+
+    @media (max-width: 768px) {
+        margin: 2rem 1.25rem;
+        gap: 1.5rem;
+
+        &__header {
+            max-width: none;
+        }
+    }
 }

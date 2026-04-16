@@ -6,6 +6,7 @@ const { seedAdmin } = require('./src/seeds/admin.seed');
 const http = require('http');
 const { configureSocketIO } = require('./src/utils/socket'); // Módulo separado para WebSocket
 const logger = require('./src/utils/logger'); // Logger personalizado
+const { inicializarMetricas } = require('./src/seeds/metricaImpacto.seed');
 
 const PORT = process.env.PORT || 3000;
 
@@ -20,6 +21,7 @@ async function startServer() {
         logger.info('Tags inicializados correctamente.');
         await seedAdmin();
         logger.info('Administrador inicializado correctamente.');
+        await inicializarMetricas();
 
         // Crear servidor HTTP
         const server = http.createServer(app);

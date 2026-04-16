@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <app-nav-user></app-nav-user>
 
 <section class="solicitudes-container">
@@ -23,4 +24,55 @@
   } @empty {
     <p>No tenés solicitudes pendientes.</p>
   }
+=======
+<section class="solicitudes">
+
+  <header class="solicitudes__header">
+    <h2 class="solicitudes__titulo">Solicitudes</h2>
+    <p class="solicitudes__subtitulo">
+      Gestioná tus intercambios locales y conectá con otros artesanos de la comunidad.
+    </p>
+  </header>
+
+  <nav class="solicitudes__tabs">
+    <button
+      class="tab-btn"
+      [class.tab-btn--active]="tabActiva() === 'recibidas'"
+      (click)="cambiarTab('recibidas')"
+    >
+      Recibidas
+      @if (cantidadPendientesRecibidas > 0) {
+        <span class="tab-btn__badge">{{ cantidadPendientesRecibidas }}</span>
+      }
+    </button>
+    <button
+      class="tab-btn"
+      [class.tab-btn--active]="tabActiva() === 'enviadas'"
+      (click)="cambiarTab('enviadas')"
+    >
+      Enviadas
+    </button>
+  </nav>
+
+  <div class="solicitudes__divider"></div>
+
+  <div class="solicitudes__lista">
+    @for (solicitud of solicitudesActivas; track solicitud.solicitudId) {
+      <app-card-solicitud
+        [solicitud]="solicitud"
+        [tipo]="tabActiva()"
+        (aceptar)="onAceptar($event)"
+        (rechazar)="onRechazar($event)"
+        (cancelar)="onCancelar($event)"
+      />
+    } @empty {
+      <p class="solicitudes__empty">No hay solicitudes.</p>
+    }
+  </div>
+
+  <footer class="solicitudes__footer">
+    <button class="link-btn">VER SOLICITUDES PASADAS</button>
+  </footer>
+
+>>>>>>> origin/develop
 </section>

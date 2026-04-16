@@ -1,5 +1,5 @@
-<header class="sidebar">
-    <div class="sidebar__brand">
+<header class="sidebar" [class.sidebar--open]="sidebarService.isOpen()">
+    <div class="sidebar__brand" (click)="sidebarService.close()">
         <span class="sidebar__brand-name">Circular Local</span>
         <span class="sidebar__brand-tagline">MODERN ARTISAN</span>
     </div>
@@ -17,7 +17,7 @@
         <ul class="sidebar__nav-list">
             <li class="sidebar__nav-item">
                 <a routerLink="/admin" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <rect width="7" height="9" x="3" y="3" rx="1" />
@@ -30,7 +30,7 @@
             </li>
             <li class="sidebar__nav-item">
                 <a routerLink="/admin/moderacion" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
@@ -40,21 +40,8 @@
                 </a>
             </li>
             <li class="sidebar__nav-item">
-                <a routerLink="/admin/metricas" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
-                    <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 3v18h18" />
-                        <path d="M7 16v-4" />
-                        <path d="M11 16V9" />
-                        <path d="M15 16V5" />
-                    </svg>
-                    <span class="sidebar__nav-label">Metricas</span>
-                </a>
-            </li>
-            <li class="sidebar__nav-item">
                 <a routerLink="/admin/usuarios" routerLinkActive="sidebar__nav-link--active"
-                    [routerLinkActiveOptions]="{ exact: true }" class="sidebar__nav-link">
+                    [routerLinkActiveOptions]="{ exact: true }" (click)="sidebarService.close()" class="sidebar__nav-link">
                     <svg class="sidebar__nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />

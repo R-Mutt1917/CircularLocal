@@ -1,0 +1,264 @@
+
+.metricas {
+  padding: 2rem;
+  background-color: #fff;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 6rem 0 6rem;
+}
+
+// ─── Header ────
+
+.metricas__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.metricas__header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.metricas__eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-secundary);
+}
+
+.metricas__title {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  margin: 0;
+  line-height: 1.15;
+}
+
+.metricas__header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+.metricas__btn-icon {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  padding: 0.45rem 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-active-bg);
+  }
+}
+
+// ─── Stat Cards ───
+
+.metricas__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  background: var(--color-surface);
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-card__label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.stat-card__icon {
+  font-size: 1.1rem;
+  color: var(--color-accent);
+}
+
+.stat-card__value {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  line-height: 1;
+}
+
+.stat-card__change {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+
+  &.positive {
+    color: var(--color-accent);
+  }
+
+  &.negative {
+    color: var(--color-text-secundary);
+  }
+}
+
+.stat-card__subtitle {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+// ─── Charts Row ────
+
+.metricas__charts {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.chart-card {
+  background: var(--color-surface);
+  padding: 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.chart-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chart-card__title {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-brand);
+  margin: 0;
+}
+
+.metricas__select {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  padding: .9rem 1.9rem;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    background: var(--color-active-bg);
+  }
+
+}
+
+.chart-card__placeholder {
+  flex: 1;
+  min-height: 240px;
+  background: var(--color-active-bg);
+  border: 2px dashed var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-card__placeholder-text {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+
+// ─── CTA Banner ────
+
+.metricas__cta {
+  background: var(--color-brand);
+  border-radius: 10px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.metricas__cta-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metricas__cta-headline {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--color-bg);
+  margin: 0;
+}
+
+.metricas__cta-body {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: rgba(245, 240, 232, 0.7);
+  margin: 0;
+  max-width: 460px;
+  line-height: 1.55;
+}
+
+.metricas__cta-btn {
+  background: var(--color-text-secundary);
+  color: #fff;
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.88;
+  }
+}
+
+@media (max-width: 768px) {
+  .metricas {
+    margin: 0;
+  }
+}
