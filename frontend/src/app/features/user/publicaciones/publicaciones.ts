@@ -19,6 +19,7 @@ export class Publicaciones implements OnInit {
   ngOnInit() {
     this.publicacionesService.consultarPublicacionesPreview().subscribe({
       next: (publicaciones) => {
+        console.log("Publicaciones obtenidas:", publicaciones);
         this.allPublicaciones = publicaciones;
         this.publicaciones = [...publicaciones];
       },
