@@ -79,7 +79,7 @@
                     <button class="btn btn--primary" (click)="abrirModal()">Solicitar intercambio</button>
 
                     @if(mostrarModal){
-                    <app-solicitar-intercambio-modal [publicacionId]="1" (cerrar)="cerrarModal()">
+                    <app-solicitar-intercambio-modal [publicacionId]="Publicacion.id" (cerrar)="cerrarModal()">
                     </app-solicitar-intercambio-modal>
                     }
                 </div>
