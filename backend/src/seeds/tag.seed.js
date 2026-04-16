@@ -2,11 +2,38 @@ const Tag = require('../models/tags.model');
 
 const seedTags = async () => {
     const initialTags = [
-        'Madera Recup.',
-        'Textiles Orgánicos',
-        'Cerámica',
+        // MATERIAL
+        'Madera',
+        'Metal',
+        'Plástico',
+        'Vidrio',
+        'Papel y Cartón',
+        'Textil',
+        'Electrónico',
+        'Construcción',
+        'Orgánico',
+
+        // PRODUCTO
+        'Muebles',
+        'Decoración',
+        'Ropa',
+        'Accesorios',
+        'Tecnología',
         'Herramientas',
-        'Metalurgia'
+        'Juguetes',
+        'Libros',
+        'Hogar',
+
+        // SERVICIO
+        'Reparación',
+        'Diseño',
+        'Transporte',
+        'Capacitación',
+        'Reciclaje',
+        'Mantenimiento',
+        'Jardinería',
+        'Limpieza',
+        'Logística'
     ];
 
     for (const name of initialTags) {
