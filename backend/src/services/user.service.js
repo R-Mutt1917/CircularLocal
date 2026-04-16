@@ -51,13 +51,11 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
     const transaction = await sequelize.transaction();
     try {
         if (userData.username) {
-            const userIdNum = parseInt(userId);
-
             const exists = await User.findOne({
                 where: { username: userData.username },
                 transaction
             });
-            if (exists && exists.id !== userIdNum) {
+            if (exists && exists.id !== userId) {
                 throw new Error('El nombre de usuario ya está en uso');
             }
             await User.update({ ...userData }, {
