@@ -1,9 +1,14 @@
 export interface SolicitudModel {
+    id: number;
     solicitanteId: number;
+    solicitante?: {
+        id: number;
+        username: string;
+    };
     publicacionId: number;
     mensajeInicial: string;
     fechaCreacion: string;
-    estadoSolicitud: string; // 'pendiente', 'aceptada', 'rechazada', 'cancelada'
+    estadoSolicitud: 'pendiente' | 'aceptada' | 'rechazada' | 'cancelada';
 }
 
 export interface CrearSolicitudModel {
