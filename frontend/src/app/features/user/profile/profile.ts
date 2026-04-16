@@ -39,7 +39,6 @@ export class Profile implements OnInit {
       telefono: [''],
       email: ['', [Validators.required, Validators.email]],
       tipo_actor: ['', Validators.required],
-      imagen: [''],
     });
   }
 
@@ -72,8 +71,7 @@ export class Profile implements OnInit {
           direccion: perfil.direccion,
           email: perfil.email,
           telefono: perfil.telefono,
-          tipo_actor: perfil.tipo_actor,
-          imagen: perfil.imagen
+          tipo_actor: perfil.tipo_actor
         });
 
       });
@@ -108,7 +106,6 @@ export class Profile implements OnInit {
       direccion: formValue.direccion,
       tipo_actor: formValue.tipo_actor,
       descripcion: formValue.descripcion,
-      imagen: formValue.imagen,
     };
 
     this.userServices.updateUserProfile(this.user.id,userData,perfilData).subscribe({
