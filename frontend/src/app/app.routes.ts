@@ -17,6 +17,7 @@ import { Moderacion } from './features/admin/moderacion/moderacion';
 import { Metricas } from './features/admin/metricas/metricas';
 import { Usuarios } from './features/admin/usuarios/usuarios';
 import { MensajesComponent } from './features/mensajes/mensajes.component';
+import { Solicitudes } from './features/user/solicitudes/solicitudes';
 
 export const routes: Routes = [
     { path: '', component: Landing, canActivate: [GuestGuard] },
@@ -35,6 +36,7 @@ export const routes: Routes = [
             { path: 'editar-publicacion/:id', component: EditarPublicacion },
             { path: 'mi-perfil', component: Profile},
             { path: 'mensajes', component: MensajesComponent },
+            { path: 'solicitudes', component: Solicitudes },
         ]
     },
     {
