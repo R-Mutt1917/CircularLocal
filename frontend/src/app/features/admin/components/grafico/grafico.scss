@@ -1,0 +1,15 @@
+div{
+  width: 100%;
+  height: auto;
+  canvas{
+    height: 640px;
+  }
+}
+
+@media (max-width: 768px) {
+  div{
+    canvas{
+      height: 200px;
+    }
+  }
+}
