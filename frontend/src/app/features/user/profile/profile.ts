@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthServices } from '../../../core/services/auth';
 import { Perfil } from '../../../core/services/perfilServices/perfil';
@@ -11,28 +11,26 @@ import { UserServices } from '../../../core/services/userServices/user';
   styleUrl: './profile.scss',
 })
 export class Profile implements OnInit {
-  
-  user: any;
-  form!: FormGroup;
-  isEditMode = false;
-  loading = false;
-  showDeleteConfirm = false;
+  private fb = inject(FormBuilder);
+  private perfilService = inject(Perfil);
+  private authServices = inject(AuthServices);
+  private userServices = inject(UserServices);
 
-  constructor(private fb: FormBuilder, private perfilService: Perfil , private authServices: AuthServices, private userServices: UserServices){}
+  user = signal<any>(null);
+  profile = signal<any>(null);
+  isEditMode = signal(false);
+  loading = signal(false);
+  
+  form!: FormGroup;
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if(!token){
-      alert('Debes iniciar sesion');
-      return;
-    }
     this.createForm();
     this.loadUser();
   }
 
   createForm(){
     this.form = this.fb.group({
-      username: ['',Validators.required],
+      username: [{value: '', disabled: true}, Validators.required],
       nombre_perfil: ['', Validators.required],
       descripcion: [''],
       direccion: [''],
@@ -43,59 +41,50 @@ export class Profile implements OnInit {
     });
   }
 
-  confirmDelete(){
-    this.showDeleteConfirm = false;
-  
-    this.userServices.deleteUser(this.user.id).subscribe({
-      next: () => {
-        alert('Usuario eliminado correctamente');
-        localStorage.removeItem('token');
-        location.href = '/login';
-      },
-      error: () => alert('Error al eliminar usuario')
+  loadUser() {
+    this.authServices.getUser().subscribe(res => {
+      this.user.set(res.user);
+      this.perfilService.getProfile(res.user.id).subscribe(perfil => {
+        this.profile.set(perfil);
+        this.updateForm(perfil);
+      });
     });
   }
 
-  loadUser() {
-    this.authServices.getUser().subscribe(res => {
-
-      this.user = res.user;
-      this.form.patchValue({
-        username: this.user.username,
-      });
-
-      this.perfilService.getProfile(this.user.id).subscribe(perfil => {
-
-        this.form.patchValue({
-          nombre_perfil: perfil.nombre_perfil,
-          descripcion: perfil.descripcion,
-          direccion: perfil.direccion,
-          email: perfil.email,
-          telefono: perfil.telefono,
-          tipo_actor: perfil.tipo_actor,
-          imagen: perfil.imagen
-        });
-
-      });
-
+  updateForm(perfil: any) {
+    this.form.patchValue({
+      username: this.user().username,
+      nombre_perfil: perfil.nombre_perfil,
+      descripcion: perfil.descripcion,
+      direccion: perfil.direccion,
+      email: perfil.email,
+      telefono: perfil.telefono,
+      tipo_actor: perfil.tipo_actor,
+      imagen: perfil.imagen
     });
+    this.form.disable();
   }
 
   enableEdit() {
-    this.isEditMode = true;
+    this.isEditMode.set(true);
+    this.form.enable();
   }
 
   cancelEdit() {
-    this.isEditMode = false;
-    this.form.patchValue(this.user);
+    this.isEditMode.set(false);
+    const currentProfile = this.profile();
+    if (currentProfile) {
+      this.updateForm(currentProfile);
+    }
+    this.form.disable();
   }
 
   save() {
     if (this.form.invalid) return;
 
-    this.loading = true;
-
-    const formValue = this.form.value;
+    this.loading.set(true);
+    const formValue = this.form.getRawValue();
+    const currentUser = this.user();
 
     const userData = {
       username: formValue.username,
@@ -111,15 +100,42 @@ export class Profile implements OnInit {
       imagen: formValue.imagen,
     };
 
-    this.userServices.updateUserProfile(this.user.id,userData,perfilData).subscribe({
+    this.userServices.updateUserProfile(currentUser.id, userData, perfilData).subscribe({
       next: (res) => {
-        this.user = res.user;
-        this.isEditMode = false;
-        this.loading = false;
+        this.user.set(res.user);
+        this.profile.set(perfilData);
+        this.isEditMode.set(false);
+        this.loading.set(false);
+        this.form.disable();
+
+        // Sincroniza el signal y el localStorage para que nav-user refleje el cambio
+        const newUsername = formValue.username;
+        localStorage.setItem('name', newUsername);
+        this.authServices.userName.set(newUsername);
+
+        alert('Perfil actualizado con éxito');
       },
-      error: () => this.loading = false
-    })
+      error: (err) => {
+        this.loading.set(false);
+        alert('Error al actualizar el perfil');
+        console.error(err);
+      }
+    });
   }
 
+  confirmDelete(){
+    const currentUser = this.user();
+    if (!currentUser) return;
 
+    if (confirm('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+      this.userServices.deleteUser(currentUser.id).subscribe({
+        next: () => {
+          alert('Usuario eliminado correctamente');
+          localStorage.removeItem('token');
+          window.location.href = '/login';
+        },
+        error: () => alert('Error al eliminar usuario')
+      });
+    }
+  }
 }

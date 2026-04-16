@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, } from '@angular/core';
+import { Component, computed, inject, input, signal, } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -35,6 +35,21 @@ export class FormPublicacion {
   isLoading = signal(false);
   tags = signal<any[]>([]);
 
+  private readonly tagsMap: Record<string, string[]> = {
+    MATERIAL: ['Madera', 'Metal', 'Plástico', 'Vidrio', 'Papel y Cartón', 'Textil', 'Electrónico', 'Construcción', 'Orgánico'],
+    PRODUCTO: ['Muebles', 'Decoración', 'Ropa', 'Accesorios', 'Tecnología', 'Herramientas', 'Juguetes', 'Libros', 'Hogar'],
+    SERVICIO: ['Reparación', 'Diseño', 'Transporte', 'Capacitación', 'Reciclaje', 'Mantenimiento', 'Jardinería', 'Limpieza', 'Logística'],
+  };
+
+  tipoActual = signal<string>('');
+
+  tagsFiltrados = computed(() => {
+    const tipo = this.tipoActual();
+    if (!tipo || !this.tagsMap[tipo]) return [];
+    const nombresValidos = this.tagsMap[tipo];
+    return this.tags().filter(tag => nombresValidos.includes(tag.name));
+  });
+
   formPublicacion: FormGroup<ContenidoPublicacion> = this.fb.group({
     titulo: ['', [Validators.required, Validators.minLength(5)]],
     descripcion: ['', Validators.required],
@@ -51,6 +66,8 @@ export class FormPublicacion {
     this.cargarTags();
 
     this.formPublicacion.controls.tipo.valueChanges.subscribe((tipo) => {
+      this.tipoActual.set(tipo ?? '');
+      this.formPublicacion.controls.tagId.reset(null);
       this.buildDetalleForm(tipo);
     });
 
@@ -59,8 +76,8 @@ export class FormPublicacion {
     });
 
     const data = this.initialData();
-    console.log("Publicacion a editar:", data);
     if (data) {
+      this.tipoActual.set(data.tipo ?? '');
       this.buildDetalleForm(data.tipo);
       this.formPublicacion.patchValue({
         titulo: data.titulo,

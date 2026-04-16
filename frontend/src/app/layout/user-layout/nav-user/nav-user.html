@@ -6,7 +6,11 @@
 
     <div class="sidebar__user">
         <div class="sidebar__user-avatar">
-            <span class="sidebar__user-avatar-initials">{{ user()?.charAt(0) }}</span>
+            @if (profileImage()) {
+                <img class="sidebar__user-avatar-img" [src]="profileImage()!" [alt]="user() ?? 'Avatar'" />
+            } @else {
+                <span class="sidebar__user-avatar-initials">{{ user()?.charAt(0)?.toUpperCase() }}</span>
+            }
         </div>
         <div class="sidebar__user-info">
             <span class="sidebar__user-name">{{ user() }}</span>
