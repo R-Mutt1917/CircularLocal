@@ -21,7 +21,7 @@ export class UserDashboard implements OnInit {
   publicaciones: PublicacionPreviewModel[] = [];
   cantidadPublicaciones: number = 0;
   ultimasPublicaciones: PublicacionPreviewModel[] = [];
-  username: string | null = this.authService.getUsername();
+  username: string | null = this.authService.userName();
   cantidadSolicitudesPendientes: number = 0;
   cantidadIntercambiosCompletados: number = 0;
 
@@ -32,9 +32,9 @@ export class UserDashboard implements OnInit {
   }
 
   private cargarPublicaciones() {
-    const userId: number = this.authService.getId();
+    const getId: number = this.authService.getId() ?? 0;
 
-    this.publicacionesService.consultarPublicacionesPorUsuario(userId).subscribe({
+    this.publicacionesService.consultarPublicacionesPorUsuario(getId).subscribe({
       next: (publicaciones) => {
         this.publicaciones = [...publicaciones];
         this.ultimasPublicaciones = [...publicaciones]
@@ -53,7 +53,7 @@ export class UserDashboard implements OnInit {
   }
 
   private cargarSolicitudesPendientes() {
-    this.solicitudesService.solicitudesPendientes().subscribe({
+    this.solicitudesService.obtenerSolicitudesPendientes().subscribe({
       next: (res) => {
         this.cantidadSolicitudesPendientes = res.length;
       },

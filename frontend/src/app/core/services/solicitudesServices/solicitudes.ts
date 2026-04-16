@@ -15,9 +15,9 @@ export class SolicitudesService {
     return this.http.post<SolicitudModel>(`${this.apiUrl}/solicitudes`, solicitud);
   }
 
-  obtenerSolicitudesPendientes(): Observable<SolicitudModel[]> {
-    return this.http.get<SolicitudModel[]>(`${this.apiUrl}/solicitudes/pendientes`);
-  }
+  obtenerSolicitudesPendientes(): Observable<SolicitudPendienteModel[]> {
+    return this.http.get<SolicitudPendienteModel[]>(`${this.apiUrl}/solicitudes/pendientes`);
+}
 
   aceptarSolicitud(solicitudId: number): Observable<{ conversacionId: number }> {
     return this.http.patch<{ conversacionId: number }>(
