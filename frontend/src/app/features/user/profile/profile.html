@@ -1,112 +1,123 @@
-<div class="profile-container">
-  
-  <header class="profile-header">
-    <div class="header-content">
-      <h1 class="user-display-name">
-        {{ form.get('nombre_perfil')?.value || 'Cargando...' }}
-      </h1>
-      <p class="user-tagline">
-        {{ form.get('descripcion')?.value || 'Sin descripción de perfil' }}
-      </p>
-    </div>
-  </header>
-
-  <hr class="divider">
-
-  <section class="details-block">
-    <div class="block-header">
-      <h2 class="block-title">Información del Perfil</h2>
-      @if (!isEditMode) {
-        <button class="btn-edit-link" (click)="enableEdit()">Editar información</button>
-      }
-    </div>
-
-    @if (!isEditMode) {
-      <div class="profile-view">
-        <div class="info-grid">
-          <div class="info-item"><b>Usuario:</b> {{ form.get('username')?.value }}</div>
-          <div class="info-item"><b>Email:</b> {{ form.get('email')?.value }}</div>
-          <div class="info-item"><b>Teléfono:</b> {{ form.get('telefono')?.value }}</div>
-          <div class="info-item"><b>Dirección:</b> {{ form.get('direccion')?.value }}</div>
-          <div class="info-item"><b>Tipo de Actor:</b> {{ form.get('tipo_actor')?.value }}</div>
+<section class="section">
+  <div class="contenedor_principal">
+    <header class="profile-header">
+      <div class="avatar-wrapper">
+        <img [src]="form.get('imagen')?.value || 'assets/default-avatar.png'" alt="avatar" class="profile-avatar">
+      </div>
+      <div class="header-info">
+        <div class="name-row">
+          <h1 class="user-display-name">{{ form.get('nombre_perfil')?.value || 'Cargando...' }}</h1>
         </div>
       </div>
-    }
+    </header>
 
-    @if (isEditMode) {
-      <form [formGroup]="form" (ngSubmit)="save()" class="profile-form">
-        <div class="form-grid">
+    <main class="profile-content">
+      <form [formGroup]="form" (ngSubmit)="save()" class="profile-layout-grid">
+        
+        <section class="content-card info-usuario">
+          <h2 class="section-title">Información de Usuario</h2>
+          
           <div class="field">
-            <label>Usuario</label>
+            <label>Nombre de Usuario (ID)</label>
             <input formControlName="username">
+            @if (form.get('username')?.invalid && form.get('username')?.dirty) {
+              <span class="field-error">El nombre de usuario es obligatorio.</span>
+            }
           </div>
+
           <div class="field">
-            <label>Nombre de Perfil</label>
+            <label>Nombre Real / Perfil</label>
             <input formControlName="nombre_perfil">
+            @if (form.get('nombre_perfil')?.invalid && form.get('nombre_perfil')?.dirty) {
+              <span class="field-error">El nombre de perfil es obligatorio.</span>
+            }
           </div>
+
           <div class="field">
-            <label>Email</label>
+            <label>Correo Electrónico</label>
             <input formControlName="email">
+            @if (form.get('email')?.dirty) {
+              @if (form.get('email')?.hasError('required')) {
+                <span class="field-error">El correo electrónico es obligatorio.</span>
+              } @else if (form.get('email')?.hasError('email')) {
+                <span class="field-error">El formato del correo no es válido.</span>
+              }
+            }
           </div>
-          <div class="field">
-            <label>Teléfono</label>
-            <input formControlName="telefono">
-          </div>
-          <div class="field">
-            <label>Dirección</label>
-            <input formControlName="direccion">
-          </div>
-          <div class="field">
-            <label>TIPO DE ACTOR</label>
-            <select formControlName="tipo_actor">
-            <option value="COOPERATIVA">COOPERATIVA</option>
-            <option value="RECICLADOR">RECICLADOR</option>
-            <option value="EMPRENDEDOR">EMPRENDEDOR</option>
-          </select>
-          </div>
-        </div>
-        
-        <div class="field full-width">
-          <label>Descripción de actividad</label>
-          <textarea formControlName="descripcion"></textarea>
-        </div>
 
-        <div class="form-actions">
-          <button type="button" class="btn-cancel" (click)="cancelEdit()">CANCELAR</button>
-          <button type="submit" class="btn-save" [disabled]="form.invalid || loading">
-            {{ loading ? 'GUARDANDO...' : 'GUARDAR CAMBIOS' }}
-          </button>
+          <div class="info-notice">
+            <p>Su perfil es visible para otros actores de la red local. Mantenga su información actualizada para facilitar la colaboración.</p>
+          </div>
+        </section>
+
+        <section class="content-card detalles-perfil">
+          <h2 class="section-title">Detalles del Perfil</h2>
+
+          <div class="field">
+            <label>Tipo de Actor</label>
+            <div class="select-wrapper">
+              <select formControlName="tipo_actor">
+                <option value="" disabled hidden>Seleccione un tipo...</option>
+                <option value="EMPRENDEDOR">Emprendedor</option>
+                <option value="COOPERATIVA">Cooperativa</option>
+                <option value="RECICLADOR">Reciclador</option>
+              </select>
+            </div>
+            @if (form.get('tipo_actor')?.invalid && form.get('tipo_actor')?.dirty) {
+              <span class="field-error">El tipo de actor es obligatorio.</span>
+            }
+          </div>
+
+          <div class="field">
+            <label>Descripción de Actividad</label>
+            <textarea formControlName="descripcion" placeholder="Cuéntanos sobre tu actividad..."></textarea>
+          </div>
+
+          <div class="row-fields">
+            <div class="field">
+              <label>Ubicación (Ciudad/Prov)</label>
+              <input formControlName="direccion">
+            </div>
+            <div class="field">
+              <label>Teléfono de Contacto</label>
+              <input formControlName="telefono">
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Imagen de Perfil (URL)</label>
+            <input formControlName="imagen" placeholder="https://...">
+          </div>
+          <div class="form-actions-container">
+          <div class="actions-left">
+            <button type="button" class="btn-delete-account" (click)="confirmDelete()">ELIMINAR CUENTA</button>
+          </div>
+          
+          <div class="actions-right">
+            @if (!isEditMode()) {
+              <button type="button" class="btn-edit-main" (click)="enableEdit()">EDITAR PERFIL</button>
+            } @else {
+              <button type="button" class="btn-cancel" (click)="cancelEdit()">CANCELAR</button>
+              <button type="submit" class="btn-save" [disabled]="form.invalid || loading()">
+                {{ loading() ? 'GUARDANDO...' : 'GUARDAR CAMBIOS' }}
+              </button>
+            }
+          </div>
         </div>
+        </section>
+
+        
       </form>
-    }
-    
-    <div class="danger-zone">
-    
-      <div class="danger-info">
-        <h3>Eliminar cuenta</h3>
-        <p>¿Estás seguro de que deseas eliminar tu cuenta?</p>
-        <span>Esta acción no se puede deshacer.</span>
-      </div>
-    
-      @if (!showDeleteConfirm) {
-        <button class="btn-delete" (click)="showDeleteConfirm = true">
-          Eliminar Usuario
-        </button>
-      }
-    
-      @if (showDeleteConfirm) {
-        <div class="danger-actions">
-          <button class="btn-cancel-delete" (click)="showDeleteConfirm = false">
-            Cancelar
-          </button>
-        
-          <button class="btn-confirm-delete" (click)="confirmDelete()">
-            Sí, eliminar
-          </button>
-        </div>
-      }
-    
-    </div>
+    </main>
 
-  </section>
-</div>
+    <footer class="profile-footer-stats">
+      <div class="quote-card">
+        <p>"La circularidad no es una tendencia, es un compromiso con el origen."</p>
+      </div>
+      <div class="stats-card">
+        <span class="stats-label">Huella Circular</span>
+        <span class="stats-value">1.2 TN</span>
+      </div>
+    </footer>
+  </div>
+</section>

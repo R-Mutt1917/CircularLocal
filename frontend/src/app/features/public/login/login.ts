@@ -11,10 +11,11 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './login.scss',
 })
 export class Login {
-  loginForm: FormGroup
+  loginForm: FormGroup;
   authServices = inject(AuthServices);
   router = inject(Router);
   fb = inject(FormBuilder);
+  errorMessage: string = '';
 
   constructor() {
     this.loginForm = this.fb.group({
@@ -25,12 +26,12 @@ export class Login {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      this.errorMessage = '';
       const { username, password } = this.loginForm.value;
 
       this.authServices.login(username, password).subscribe({
         next: (res) => {
           console.log('Login exitoso', res.role);
-          alert('Inicio de sesión correcto');
           this.loginForm.reset();
           if (this.authServices.role() === 'ADMIN') {
             this.router.navigate(['/admin']);
@@ -40,7 +41,7 @@ export class Login {
         },
         error: (err) => {
           console.error('Error al iniciar sesion:', err);
-          alert('Credenciales invalidas');
+          this.errorMessage = err.error?.error || 'Credenciales invalidas';
         }
       });
     }

@@ -67,7 +67,6 @@
             <select formControlName="estado" class="pub-form__select">
                 <option  [value]="'Borrador'">Borrador</option>
                 <option [value]="'Publicada'">Publicada</option>
-                <option [value]="'Finalizada'">Finalizada</option>
             </select>
             @if (backendErrors['estado']) {
             <p class="pub-form__error">{{ backendErrors['estado'] }}</p>
@@ -78,27 +77,6 @@
         </div>
 
         <div class="pub-form__row">
-            <div class="pub-form__field">
-                <label class="pub-form__label">Categoría</label>
-                <div class="pub-form__select-wrapper">
-                    <select formControlName="tagId" class="pub-form__select">
-                        <option [ngValue]="null">Seleccioná una categoría</option>
-                        @for (tag of tags(); track tag.id) {
-                        <option [ngValue]="tag.id">{{ tag.name }}</option>
-                        }
-                    </select>
-                    <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </div>
-                @if (backendErrors['tagId']) {
-                <p class="pub-form__error">{{ backendErrors['tagId'] }}</p>
-                } @else if (formPublicacion.controls.tagId.invalid && formPublicacion.controls.tagId.touched) {
-                <p class="pub-form__error">La categoría es requerida</p>
-                }
-            </div>
-
             <div class="pub-form__field">
                 <label class="pub-form__label">Tipo de recurso</label>
                 <div class="pub-form__radio-group">
@@ -119,6 +97,39 @@
                 <p class="pub-form__error">{{ backendErrors['tipo'] }}</p>
                 } @else if (formPublicacion.controls.tipo.invalid && formPublicacion.controls.tipo.touched) {
                 <p class="pub-form__error">El tipo de recurso es requerido</p>
+                }
+            </div>
+            <div class="pub-form__field">
+                <label class="pub-form__label">Categoría</label>
+                @if (!tipoActual()) {
+                <div class="pub-form__select-wrapper pub-form__select-wrapper--disabled">
+                    <select class="pub-form__select" disabled>
+                        <option>Seleccioná una categoría</option>
+                    </select>
+                    <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                <p class="pub-form__hint">Primero elegí un tipo de recurso</p>
+                } @else {
+                <div class="pub-form__select-wrapper">
+                    <select formControlName="tagId" class="pub-form__select">
+                        <option [ngValue]="null">Seleccioná una categoría</option>
+                        @for (tag of tagsFiltrados(); track tag.id) {
+                        <option [ngValue]="tag.id">{{ tag.name }}</option>
+                        }
+                    </select>
+                    <svg class="pub-form__select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9" />
+                    </svg>
+                </div>
+                @if (backendErrors['tagId']) {
+                <p class="pub-form__error">{{ backendErrors['tagId'] }}</p>
+                } @else if (formPublicacion.controls.tagId.invalid && formPublicacion.controls.tagId.touched) {
+                <p class="pub-form__error">La categoría es requerida</p>
+                }
                 }
             </div>
         </div>

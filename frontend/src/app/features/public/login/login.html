@@ -21,6 +21,12 @@
         <input formControlName="password" type="password" placeholder="••••••••" />
       </div>
 
+      @if(errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+
       <button type="submit" class="login-button" [disabled]="loginForm.invalid">
         Ingresar →
       </button>

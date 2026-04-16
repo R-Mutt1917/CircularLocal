@@ -33,6 +33,10 @@ const login = async (username, password) => {
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) throw new Error('Contraseña incorrecta');
 
+    if (user.activo == 0) {
+        throw new Error('El usuario está baneado');
+    }
+
     const token = jwt.sign(
         { id: user.id, username: user.username, role: user.rol, name: user.username },
         process.env.JWT_SECRET,

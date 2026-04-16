@@ -11,8 +11,8 @@ const verifyToken = async (req, res, next) => {
 
         // Valida que el usuario este activo
         const user = await User.findByPk(decoded.id);
-        if (!user || !user.activo) {
-            return res.status(401).json({ error: 'Usuario inválido' });
+        if (!user || user.activo == 0) {
+            return res.status(401).json({ error: 'El usuario está baneado' });
         }
 
         req.user = decoded;

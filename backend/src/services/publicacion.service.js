@@ -174,6 +174,15 @@ const reportar = async (id) => {
     return { message: 'Publicación reportada correctamente' };
 }
 
+const eliminar = async (id) => {
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) throw new Error('Publicación no encontrada');
+
+    await publicacion.destroy();
+
+    return { message: 'Publicación eliminada correctamente' };
+}
+
 
 module.exports = {
     getByUser,
@@ -181,5 +190,6 @@ module.exports = {
     editarPublicacion,
     getPublicacionDetalle,
     getPreviewPublicaciones,
-    reportar
+    reportar,
+    eliminar
 };

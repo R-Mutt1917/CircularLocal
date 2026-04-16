@@ -31,11 +31,41 @@ export class Form implements OnInit {
     { label: 'Servicio', value: 'servicio' },
   ];
 
-  //DEFINIR BIEN CON EL EQUIPO CUALES VAN A SER TODOS LOS TAGS
-  tags = ['Madera Recup.', 'Textiles Orgánicos', 'Cerámica', 'Herramientas', 'Metalurgia'];
+  tagsMap: Record<string, string[]> = {
+    material: [
+      'Madera', 'Metal', 'Plástico', 'Vidrio', 'Papel y Cartón', 'Textil', 'Electrónico', 'Construcción', 'Orgánico'
+    ],
+    producto: [
+      'Muebles', 'Decoración', 'Ropa', 'Accesorios', 'Tecnología', 'Herramientas', 'Juguetes', 'Libros', 'Hogar'
+    ],
+    servicio: [
+      'Reparación', 'Diseño', 'Transporte', 'Capacitación', 'Reciclaje', 'Mantenimiento', 'Jardinería', 'Limpieza', 'Logística'
+    ]
+  };
+
+  get tags(): string[] {
+    const tipo = this.form.value.tipo;
+    if (tipo && this.tagsMap[tipo]) {
+      return this.tagsMap[tipo];
+    }
+    return Object.values(this.tagsMap).flat();
+  }
 
   seleccionarTipo(value: string): void {
-    this.form.patchValue({ tipo: value });
+    const current = this.form.value.tipo;
+    const nuevoTipo = current === value ? '' : value;
+    
+    const validTags = nuevoTipo && this.tagsMap[nuevoTipo] 
+      ? this.tagsMap[nuevoTipo] 
+      : Object.values(this.tagsMap).flat();
+
+    const currentTag = this.form.value.tag;
+    const tagAActualizar = (currentTag && !validTags.includes(currentTag)) ? '' : currentTag;
+
+    this.form.patchValue({ 
+      tipo: nuevoTipo,
+      tag: tagAActualizar
+    });
   }
 
   seleccionarTag(tag: string): void {

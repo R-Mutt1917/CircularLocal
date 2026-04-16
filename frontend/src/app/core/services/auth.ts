@@ -17,7 +17,6 @@ export class AuthServices {
   readonly userName = signal<string | null>(localStorage.getItem('name'));
 
   constructor() {
-    this.validateStoredToken();
   }
 
   login(username: string, password: string): Observable<any> {
