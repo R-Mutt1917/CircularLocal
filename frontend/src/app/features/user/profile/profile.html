@@ -2,24 +2,12 @@
   
   <header class="profile-header">
     <div class="header-content">
-
-      <div class="profile-title">
-        <img 
-          class="profile-avatar"
-          [src]="form.get('imagen')?.value"
-          alt="avatar"
-        >
-
-        <div>
-          <h1 class="user-display-name">
-            {{ form.get('nombre_perfil')?.value || 'Cargando...' }}
-          </h1>
-          <p class="user-tagline">
-            {{ form.get('descripcion')?.value || 'Sin descripción de perfil' }}
-          </p>
-        </div>
-      </div>
-
+      <h1 class="user-display-name">
+        {{ form.get('nombre_perfil')?.value || 'Cargando...' }}
+      </h1>
+      <p class="user-tagline">
+        {{ form.get('descripcion')?.value || 'Sin descripción de perfil' }}
+      </p>
     </div>
   </header>
 
@@ -55,10 +43,6 @@
           <div class="field">
             <label>Nombre de Perfil</label>
             <input formControlName="nombre_perfil">
-          </div>
-          <div class="field">
-            <label>Imagen de perfil</label>
-            <input formControlName="imagen" placeholder="https://...">
           </div>
           <div class="field">
             <label>Email</label>
