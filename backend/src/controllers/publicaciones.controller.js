@@ -31,8 +31,8 @@ exports.crearPublicacion = async (req, res) => {
   }
 };
 
-// Publicar una publicación (cambiar estado a 'publicada')
-exports.publicarPublicacion = async (req, res) => {
+// Activar una publicación (cambiar estado a 'publicada')
+exports.activarPublicacion = async (req, res) => {
   try {
     const { id } = req.params;
     const publicacion = await Publicacion.findByPk(id);
@@ -41,13 +41,13 @@ exports.publicarPublicacion = async (req, res) => {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
-    publicacion.publicar();
+    publicacion.estado = 'Publicada';
     await publicacion.save();
 
     res.status(200).json(publicacion);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ mensaje: 'Error al publicar la publicación.' });
+    res.status(500).json({ mensaje: 'Error al activar la publicación.' });
   }
 };
 
@@ -61,7 +61,7 @@ exports.finalizarPublicacion = async (req, res) => {
       return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
     }
 
-    publicacion.finalizar();
+    publicacion.estado = 'Finalizada';
     await publicacion.save();
 
     res.status(200).json(publicacion);
@@ -84,7 +84,7 @@ exports.cancelarPublicacion = async (req, res) => {
     }
 
     // Cambiar el estado a cancelada y registrar la fecha de eliminación lógica
-    publicacion.cancelar();
+    publicacion.estado = 'Cancelada';
     await publicacion.save();
 
     res.status(200).json({ mensaje: 'Publicación cancelada exitosamente.', publicacion });
@@ -320,5 +320,15 @@ exports.reportarPublicacion = async (req, res) => {
     res.status(200).json(resultado);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al reportar la publicación.', error });
+  }
+}
+
+exports.eliminarPublicacion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const resultado = await publicacionService.eliminar(id);
+    res.status(200).json(resultado);
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al eliminar la publicación.', error });
   }
 }

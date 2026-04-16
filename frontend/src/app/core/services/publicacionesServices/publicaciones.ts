@@ -47,5 +47,17 @@ export class PublicacionesService {
     return this.http.patch<any>(`${this.apiUrl}/publicaciones/${id}/reportar`, {});
   }
 
+  eliminarPublicacion(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/publicaciones/${id}`,{});
+  }
+
+  finalizarPublicacion(id: number): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/publicaciones/${id}/finalizar`, {});
+  }
+
+ activarPublicacion(id: number): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/publicaciones/${id}/activar`, {});
+  }
+
 }
 

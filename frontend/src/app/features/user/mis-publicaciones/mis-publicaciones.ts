@@ -43,11 +43,48 @@ export class MisPublicaciones implements OnInit {
 
   onToggleEstadoPublicacion(publicacion: PublicacionPreviewModel) {
     console.log('Cambiar estado:', publicacion);
-    // TODO: Llamar al servicio para cambiar el estado (Pausar/Activar)
+    if (!confirm('¿Está seguro de que desea cambiar el estado de esta publicación?')) {
+      return;
+    }
+    if(publicacion.estado === 'Publicada'){
+      this.publicacionesService.finalizarPublicacion(publicacion.id).subscribe({
+        next: () => {
+          this.publicaciones = this.publicaciones.map(p => 
+            p.id === publicacion.id ? { ...p, estado: 'Finalizada' } : p
+          );
+        },
+        error: (error) => {
+        console.error('Error al finalizar la publicación:', error);
+        this.errorMessage = 'Ocurrió un error al finalizar la publicación. Por favor, intenta de nuevo más tarde.';
+      }
+    });
+  }else{
+    this.publicacionesService.activarPublicacion(publicacion.id).subscribe({
+      next: () => {
+        this.publicaciones = this.publicaciones.map(p => 
+          p.id === publicacion.id ? { ...p, estado: 'Publicada' } : p
+        );
+      },
+      error: (error) => {
+        console.error('Error al activar la publicación:', error);
+        this.errorMessage = 'Ocurrió un error al activar la publicación. Por favor, intenta de nuevo más tarde.';
+      }
+    });
   }
+ }
 
   onEliminarPublicacion(publicacion: PublicacionPreviewModel) {
     console.log('Eliminar:', publicacion);
-    // TODO: Mostrar diálogo de confirmación y llamar al servicio
+    if(confirm('¿Está seguro de que desea eliminar esta publicación?')){
+    this.publicacionesService.eliminarPublicacion(publicacion.id).subscribe({
+      next: () => {
+        this.publicaciones = this.publicaciones.filter(p => p.id !== publicacion.id);
+      },
+      error: (error) => {
+        console.error('Error al eliminar la publicación:', error);
+        this.errorMessage = 'Ocurrió un error al eliminar la publicación. Por favor, intenta de nuevo más tarde.';
+      }
+    });
+    }
   }
 }
