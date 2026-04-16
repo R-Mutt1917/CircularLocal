@@ -1,0 +1,11 @@
+<div class="mensajes">
+  <div *ngFor="let mensaje of mensajes" class="mensaje" [ngClass]="{ 'mio': mensaje.autor === 'yo' }">
+    <p>{{ mensaje.texto }}</p>
+    <span>{{ mensaje.hora | date: 'shortTime' }}</span>
+  </div>
+</div>
+
+<div class="input-mensaje">
+  <input [(ngModel)]="nuevoMensaje" placeholder="Escribe un mensaje..." />
+  <button (click)="enviarMensaje()">Enviar</button>
+</div>

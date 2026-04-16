@@ -9,7 +9,7 @@ export class ChatService {
   constructor(private webSocketService: WebSocketService) {}
 
   sendMessage(conversacionId: number, contenido: string): void {
-    this.webSocketService.sendMessage({ conversacionId, contenido });
+    this.webSocketService.sendMessage(conversacionId, contenido);
   }
 
   getMessages(): Observable<any> {

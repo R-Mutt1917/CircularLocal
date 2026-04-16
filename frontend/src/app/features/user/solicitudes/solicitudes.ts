@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CardSolicitud } from './components/card-solicitud/card-solicitud';
 import { SolicitudEnviadaModel, SolicitudPendienteModel } from '../../../shared/models/solicitudes.model';
 import { SolicitudesService } from '../../../core/services/solicitudesServices/solicitudes';
+import { Router } from '@angular/router';
 
 type Tab = 'recibidas' | 'enviadas';
 
@@ -14,6 +15,7 @@ type Tab = 'recibidas' | 'enviadas';
 export class Solicitudes implements OnInit {
 
   private solicitudesService = inject(SolicitudesService);
+  private router = inject(Router);
 
   tabActiva = signal<Tab>('recibidas');
   solicitudesRecibidas = signal<SolicitudPendienteModel[]>([]);
@@ -55,8 +57,9 @@ export class Solicitudes implements OnInit {
 
   onAceptar(id: number) {
     this.solicitudesService.aceptarSolicitud(id).subscribe({
-      next: () => {
+      next: (response) => {
         alert('Solicitud aceptada');
+        this.router.navigate([`/app/mensajes`], { queryParams: { conversacion: response.conversacionId } });
         this.solicitudesRecibidas.update(solicitudes => solicitudes.filter(s => s.solicitudId !== id));
       },
       error: (error) => {

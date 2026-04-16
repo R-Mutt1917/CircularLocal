@@ -3,7 +3,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -18,7 +17,8 @@
     "baseUrl": "./", // Agregado para resolver rutas relativas
     "paths": {
       "src/*": ["src/*"] // Agregado para resolver rutas de módulos
-    }
+    },
+     "ignoreDeprecations": "5.0" // Silencia la advertencia temporalmente
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

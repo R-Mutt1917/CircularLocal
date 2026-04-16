@@ -1,0 +1,43 @@
+.mensajes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mensaje {
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 70%;
+}
+
+.mio {
+  align-self: flex-end;
+  background-color: #d1f7c4;
+}
+
+.otro {
+  align-self: flex-start;
+  background-color: #f1f1f1;
+}
+
+.input-mensaje {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+
+  input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+}

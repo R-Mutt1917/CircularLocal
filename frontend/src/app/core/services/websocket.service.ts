@@ -25,8 +25,9 @@ export class WebSocketService {
     this.socket.on('disconnect', () => console.warn('WebSocket desconectado'));
 
     this.socket.on('receive-message', (mensaje: any) => {
-      this.messageSubject.next(mensaje);
-    });
+    console.log('Mensaje recibido del servidor:', mensaje); // Log para depuración
+    this.messageSubject.next(mensaje);
+  });
   }
 
   joinConversacion(conversacionId: number): void {
@@ -37,9 +38,9 @@ export class WebSocketService {
     this.socket?.emit('leave-conversacion', conversacionId);
   }
 
-  sendMessage(message: any): void {
+  sendMessage(conversacionId: number, message: string): void {
     if (this.socket?.connected) {
-      this.socket.emit('send-message', message);
+      this.socket.emit('send-message', { conversacionId, mensaje: message });
     } else {
       console.error('WebSocket: no conectado');
     }
