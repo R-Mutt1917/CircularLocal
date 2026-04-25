@@ -2,6 +2,7 @@ const { Publicacion, User, Perfil, Tag } = require('../models');
 const Material = require('../models/material.model');
 const Producto = require('../models/producto.model');
 const Servicio = require('../models/servicio.model');
+const { NotFoundError, ConflictError } = require('../errors/app.errors');
 
 const crearPublicacion = async (data) => {
     const { tipo, detalle, ...pubData } = data;
@@ -58,7 +59,7 @@ const editarPublicacion = async (id, data) => {
 
         if (!publicacion) {
             await t.rollback();
-            return null;
+            throw new NotFoundError("Publicacion no encontrada");
         }
 
         // Actualiza la base
@@ -126,7 +127,7 @@ const getPublicacionDetalle = async (publicacionId) => {
     });
 
     if (!publicacion) {
-        throw new Error('Publicacion no encontrada');
+        throw new NotFoundError('Publicacion no encontrada');
     }
 
     return publicacion;
@@ -162,10 +163,10 @@ const getPreviewPublicaciones = async () => {
 
 const reportar = async (id) => {
     const publicacion = await Publicacion.findByPk(id);
-    if (!publicacion) throw new Error('Publicación no encontrada');
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
 
     if (publicacion.verificada) {
-        throw new Error('La publicacion esta verificada, no puede ser reportada');
+        throw new ConflictError('La publicacion esta verificada, no puede ser reportada');
     }
 
     publicacion.reportada = true;
@@ -176,7 +177,7 @@ const reportar = async (id) => {
 
 const eliminar = async (id) => {
     const publicacion = await Publicacion.findByPk(id);
-    if (!publicacion) throw new Error('Publicación no encontrada');
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
 
     await publicacion.destroy();
 

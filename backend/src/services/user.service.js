@@ -4,10 +4,11 @@ const jwt = require('jsonwebtoken');
 const { sequelize } = require('../config/database');
 const { User, Perfil } = require('../models');
 const { createProfile, putPerfil } = require('./perfil.service');
+const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 
 const register = async (username, password) => {
     const exists = await User.findOne({ where: { username } });
-    if (exists) throw new Error('El nombre de usuario ya está registrado');
+    if (exists) throw new ConflictError('El nombre de usuario ya está registrado');
 
     const hash = await bcrypt.hash(password, 10);
 
@@ -28,13 +29,13 @@ const register = async (username, password) => {
 
 const login = async (username, password) => {
     const user = await User.findOne({ where: { username } });
-    if (!user) throw new Error('Usuario no encontrado');
+    if (!user) throw new NotFoundError('Usuario no encontrado');
 
     const isValid = await bcrypt.compare(password, user.password);
-    if (!isValid) throw new Error('Contraseña incorrecta');
+    if (!isValid) throw new BadRequestError('Contraseña incorrecta');
 
     if (user.activo == 0) {
-        throw new Error('El usuario está baneado');
+        throw new ConflictError('El usuario está baneado');
     }
 
     const token = jwt.sign(
@@ -59,7 +60,7 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
                 transaction
             });
             if (exists && exists.id !== userIdNum) {
-                throw new Error('El nombre de usuario ya está en uso');
+                throw new ConflictError('El nombre de usuario ya está en uso');
             }
             await User.update({ ...userData }, {
                 where: { id: userId },
@@ -85,10 +86,10 @@ const updateUserWithProfile = async (userId, userData, profileData) => {
 // Baja logica del usuario
 const deleteUser = async (id) => {
     const user = await User.findByPk(id);
-    if (!user) return null;
+    if (!user) throw new NotFoundError("Usuario no encontrado");
 
     if (!user.activo) {
-        throw new Error("El usuario ya está dado de baja");
+        throw new ConflictError("El usuario ya está dado de baja");
     }
 
     user.activo = false;

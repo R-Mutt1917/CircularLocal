@@ -1,4 +1,5 @@
 const { Perfil } = require('../models');
+const { NotFoundError, BadRequestError } = require('../errors/app.errors');
 
 const createProfile = async (userId) => {
   return Perfil.create({
@@ -15,7 +16,7 @@ const putPerfil = async (userId, perfilRequestDTO) => {
   // Valida el campo tipo_actor
   const tiposValidos = ['COOPERATIVA', 'RECICLADOR', 'EMPRENDEDOR'];
   if (perfilRequestDTO.tipo_actor && !tiposValidos.includes(perfilRequestDTO.tipo_actor)) {
-    throw new Error('tipo_actor inválido');
+    throw new BadRequestError('tipo_actor inválido');
   }
 
   // Busca el perfil asociado al usuario en la BD
@@ -23,7 +24,7 @@ const putPerfil = async (userId, perfilRequestDTO) => {
     where: { user_id: userId }
   });
 
-  if (!perfil) return null;
+  if (!perfil) throw new NotFoundError("Perfil no encontrado");
 
   // Actualiza el perfil
   await perfil.update(perfilRequestDTO);
