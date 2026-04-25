@@ -96,6 +96,7 @@ shared/
 config/
 controllers/
 dto/
+errors/
 middlewares/
 models/
 routes/
