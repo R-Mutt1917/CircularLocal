@@ -27,14 +27,8 @@ router.get('/tags', verifyToken, publicacionesController.listarTags);
 // RUTA PARA OBTENER PREVISUALIZACION DE PUBLICACIONES
 router.get('/preview', verifyToken, publicacionesController.getPreviewPublicaciones);
 
-// Ruta para consultar el detalle de una publicación
-router.get('/:id', verifyToken, publicacionesController.consultarDetallePublicacion);
-
-// Ruta para asociar un tag a una publicación (protegida)
-router.post('/:id/tags', verifyToken, publicacionesController.asociarTags);
-
-// Ruta para eliminar un tag de una publicación (protegida)
-router.delete('/:id/tags', verifyToken, publicacionesController.eliminarTag);
+// Ruta para consultar una publicación
+router.get('/:id', verifyToken, publicacionesController.consultarPublicacion);
 
 router.get('/user/:id', verifyToken, publicacionesController.getPublicacionesByUser)
 
