@@ -1,4 +1,5 @@
 const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio } = require('../models');
+const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 const metricaImpactoService = require('../services/metricaImpacto.service');
 
 const crearIntercambio = async (solicitudId) => {
@@ -31,10 +32,10 @@ const confirmarIntercambio = async (intercambioId, userId) => {
         ]
     });
 
-    if (!intercambio) return null;
+    if (!intercambio) throw new NotFoundError("Intercambio no encontrado");
 
     if (intercambio.estadoIntercambio !== 'EN_PROCESO') {
-        throw new Error("No se puede confirmar este intercambio");
+        throw new ConflictError("No se puede confirmar este intercambio");
     };
 
     // Verifica quien esta confirmando el intercambio
@@ -44,7 +45,7 @@ const confirmarIntercambio = async (intercambioId, userId) => {
         if (userId == intercambio.solicitud.publicacion.user_id) {
             await intercambio.update({ confirmadoPublicador: true }); // confirma el publicador
         } else {
-            throw new Error("No puedes confirmar este intercambio");
+            throw new BadRequestError("No puedes confirmar este intercambio");
         }
     };
 
@@ -96,17 +97,17 @@ const cancelarIntercambio = async (intercambioId, userId) => {
         ]
     });
 
-    if (!intercambio) return null;
+    if (!intercambio) throw new NotFoundError("Intercambio no encontrado");
 
     if (intercambio.estadoIntercambio !== 'EN_PROCESO') {
-        throw new Error("No se puede cancelar este intercambio");
+        throw new ConflictError("No se puede cancelar este intercambio");
     };
 
     // Valida quien esta cancelando el intercambio
     if (userId == intercambio.solicitud.solicitanteId || userId == intercambio.solicitud.publicacion.user_id) {
         await intercambio.update({ estadoIntercambio: 'CANCELADO' });
     } else {
-        throw new Error("No puedes cancelar este intercambio");
+        throw new BadRequestError("No puedes cancelar este intercambio");
     };
 
     return intercambio;

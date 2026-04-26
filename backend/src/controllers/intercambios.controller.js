@@ -1,6 +1,6 @@
 const intercambioService = require('../services/intercambio.service');
 
-const confirmarIntercambio = async (req, res) => {
+const confirmarIntercambio = async (req, res, next) => {
     try {
         const intercambioId = req.params.id;
         const userId = req.user.id;
@@ -11,17 +11,13 @@ const confirmarIntercambio = async (req, res) => {
 
         const intercambio = await intercambioService.confirmarIntercambio(intercambioId, userId);
 
-        if (!intercambio) {
-            return res.status(404).json({ message: "Intercambio no encontrado" });
-        }
-
         res.status(204).send();
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 };
 
-const cancelarIntercambio = async (req, res) => {
+const cancelarIntercambio = async (req, res, next) => {
     try {
         const intercambioId = req.params.id;
         const userId = req.user.id;
@@ -32,17 +28,13 @@ const cancelarIntercambio = async (req, res) => {
 
         const intercambio = await intercambioService.cancelarIntercambio(intercambioId, userId);
 
-        if (!intercambio) {
-            return res.status(404).json({ message: "Intercambio no encontrado" });
-        }
-
         res.status(204).send();
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 }
 
-const obtenerIntercambiosCompletados = async (req, res) => {
+const obtenerIntercambiosCompletados = async (req, res, next) => {
     try {
         const userId = req.user.id;
 
@@ -50,7 +42,7 @@ const obtenerIntercambiosCompletados = async (req, res) => {
 
         res.status(200).json(cantidadIntercambios);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 }
 

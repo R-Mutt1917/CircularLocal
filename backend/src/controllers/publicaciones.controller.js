@@ -1,22 +1,10 @@
-const { Publicacion, Tag } = require('../models');
 const { toPublicacionDTO, toPublicacionListDTO, toPublicacionDetalleDTO, toPublicacionPreviewDTO, toPublicacionPreviewListDTO } = require('../dto/publicacion.dto');
-const { getByUser, getPublicacionDetalle, getPreviewPublicaciones } = require('../services/publicacion.service');
 const publicacionService = require('../services/publicacion.service');
-const Material = require('../models/material.model');
-const Producto = require('../models/producto.model');
-const Servicio = require('../models/servicio.model');
 
 // Crear una nueva publicación
-exports.crearPublicacion = async (req, res) => {
+const crearPublicacion = async (req, res, next) => {
   try {
-    const { tagId } = req.body;
     const userId = req.user.id; // Asignamos el ID del usuario autenticado
-
-    // Verificar que el tag exista
-    const tag = await Tag.findByPk(tagId);
-    if (!tag) {
-      return res.status(400).json({ mensaje: 'El tipo de material (tag) no existe.' });
-    }
 
     // Crear la publicación inyectando el userId
     const nuevaPublicacion = await publicacionService.crearPublicacion({
@@ -26,132 +14,80 @@ exports.crearPublicacion = async (req, res) => {
 
     res.status(201).json(toPublicacionDTO(nuevaPublicacion));
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al crear la publicación.', error });
+    next(error);
   }
 };
 
 // Activar una publicación (cambiar estado a 'publicada')
-exports.activarPublicacion = async (req, res) => {
+const activarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const publicacion = await Publicacion.findByPk(id);
-
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
     }
 
-    publicacion.estado = 'Publicada';
-    await publicacion.save();
+    const publicacion = await publicacionService.activarPublicacion(id);
 
-    res.status(200).json(publicacion);
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al activar la publicación.' });
+    next(error);
   }
 };
 
 // Finalizar una publicación (cambiar estado a 'finalizada')
-exports.finalizarPublicacion = async (req, res) => {
+const finalizarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const publicacion = await Publicacion.findByPk(id);
-
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
     }
 
-    publicacion.estado = 'Finalizada';
-    await publicacion.save();
+    const publicacion = await publicacionService.finalizarPublicacion(id);
 
-    res.status(200).json(publicacion);
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al finalizar la publicación.' });
+    next(error);
   }
 };
 
 // Cacelar una publicación (cambiar estado a 'cancelada')
-exports.cancelarPublicacion = async (req, res) => {
+const cancelarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
-
-    // Buscar la publicación por ID
-    const publicacion = await Publicacion.findByPk(id);
-
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
     }
 
-    // Cambiar el estado a cancelada y registrar la fecha de eliminación lógica
-    publicacion.estado = 'Cancelada';
-    await publicacion.save();
+    // Buscar la publicación por ID
+    const publicacion = await publicacionService.cancelarPublicacion(id);
 
-    res.status(200).json({ mensaje: 'Publicación cancelada exitosamente.', publicacion });
+    res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al cancelar la publicación.' });
+    next(error);
   }
 };
 
 // Modificar una publicación existente (actualizar título, descripción o imagen principal)
-exports.editarPublicacion = async (req, res) => {
+const editarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
 
     const publicacionActualizada = await publicacionService.editarPublicacion(
       id,
       req.body
     );
 
-    if (!publicacionActualizada) {
-      return res.status(404).json({
-        mensaje: 'Publicación no encontrada.'
-      });
-    }
-
     res.status(200).json(toPublicacionDTO(publicacionActualizada));
-
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      mensaje: 'Error al editar la publicación.'
-    });
+    next(error);
   }
 };
-  /*
-  try {
-    const { id } = req.params;
-    const { titulo, descripcion, imagenPrincipal, estadoPublicacion } = req.body;
-
-    // Buscar la publicación por ID
-    const publicacion = await Publicacion.findByPk(id);
-
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
-    }
-
-    // Actualizar los campos permitidos
-    if (titulo) publicacion.titulo = titulo;
-    if (descripcion) publicacion.descripcion = descripcion;
-    if (imagenPrincipal) publicacion.imagenPrincipal = imagenPrincipal;
-    if (estadoPublicacion) publicacion.estadoPublicacion = estadoPublicacion;
-
-    publicacion.fechaActualizacion = new Date();
-
-    // Guardar los cambios
-    await publicacion.save();
-
-    res.status(200).json(toPublicacionDTO(publicacion));
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al editar la publicación.' });
-  }
-};
-*/
 
 // Consultar publicaciones con paginación
-exports.consultarPublicaciones = async (req, res) => {
+const consultarPublicaciones = async (req, res, next) => {
   try {
     const { page = 1, limit = 10 } = req.query; // Parámetros de paginación
 
@@ -160,15 +96,7 @@ exports.consultarPublicaciones = async (req, res) => {
       return res.status(400).json({ mensaje: 'Los parámetros de paginación deben ser números positivos.' });
     }
 
-    // Calcular el offset y el límite
-    const offset = (page - 1) * limit;
-
-    const publicaciones = await Publicacion.findAndCountAll({
-      offset,
-      limit: parseInt(limit),
-      order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
-      include: [ Material, Producto, Servicio, { model: Tag, as: 'tag' } ]
-    });
+    const publicaciones = await publicacionService.obtenerPublicacionesPaginadas(page, limit);
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones.rows);
 
@@ -178,157 +106,121 @@ exports.consultarPublicaciones = async (req, res) => {
       publicaciones: publicacionesDTO,
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al consultar las publicaciones.' });
+    next(error);
   }
 };
 
-// Consultar detalle de una publicación
-exports.consultarDetallePublicacion = async (req, res) => {
+// Consultar una publicación
+const consultarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
 
     // Buscar la publicación por ID
-    const publicacion = await Publicacion.findByPk(id, {
-      include: [ Material, Producto, Servicio, { model: Tag, as: 'tag' } ]
-    });
-
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
-    }
+    const publicacion = await publicacionService.obtenerPublicacion(id);
 
     res.status(200).json(toPublicacionDTO(publicacion));
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al consultar el detalle de la publicación.' });
-  }
-};
-
-// Obtener todas las publicaciones con tag
-exports.getPublicaciones = async (req, res) => {
-  try {
-    const publicaciones = await Publicacion.findAll({
-      include: [{ model: Tag, as: 'tag' }],
-    });
-
-    const publicacionesDTO = toPublicacionListDTO(publicaciones);
-
-    res.status(200).json(publicacionesDTO);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error al obtener las publicaciones.' });
+    next(error);
   }
 };
 
 // Listar todos los tags
-exports.listarTags = async (req, res) => {
+const listarTags = async (req, res, next) => {
   try {
-    const tags = await Tag.findAll();
+    const tags = await publicacionService.obtenerTags();
     res.status(200).json(tags);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al listar los tags.' });
+    next(error);
   }
 };
 
-// Asociar tags a una publicación
-exports.asociarTags = async (req, res) => {
+const getPublicacionesByUser = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { tags } = req.body; // Array de IDs de tags
-
-    const publicacion = await Publicacion.findByPk(id);
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
     }
 
-    const tagsAsociados = await Tag.findAll({ where: { id: tags } });
-    await publicacion.addTags(tagsAsociados);
-
-    res.status(200).json({ mensaje: 'Tags asociados correctamente.' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al asociar tags a la publicación.' });
-  }
-};
-
-// Eliminar un tag de una publicación
-exports.eliminarTag = async (req, res) => {
-  try {
-    const { id, tagId } = req.params;
-
-    const publicacion = await Publicacion.findByPk(id);
-    if (!publicacion) {
-      return res.status(404).json({ mensaje: 'Publicación no encontrada.' });
-    }
-
-    const tag = await Tag.findByPk(tagId);
-    if (!tag) {
-      return res.status(404).json({ mensaje: 'Tag no encontrado.' });
-    }
-
-    await publicacion.removeTag(tag);
-    res.status(200).json({ mensaje: 'Tag eliminado correctamente.' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ mensaje: 'Error al eliminar el tag de la publicación.' });
-  }
-};
-
-
-exports.getPublicacionesByUser = async (req, res) => {
-  try {
-    const { id } = req.params;
     const { limit } = req.query;
+
     const publicaciones = await publicacionService.getByUser(id, limit)
 
     const publicacionesDTO = toPublicacionListDTO(publicaciones);
     res.status(200).json(publicacionesDTO);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener las publicaciones del usuario.', error });
+    next(error);
   }
 }
 
 
-exports.getPublicacionDetalle = async (req, res) => {
+const getPublicacionDetalle = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const publicacion = await getPublicacionDetalle(id);
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
+
+    const publicacion = await publicacionService.getPublicacionDetalle(id);
     const publicacionDTO = toPublicacionDetalleDTO(publicacion);
     res.status(200).json(publicacionDTO);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener la publicación.', error });
-
+    next(error);
   }
 }
 
-exports.getPreviewPublicaciones = async (req, res) => {
+const getPreviewPublicaciones = async (req, res, next) => {
   try {
-    
-    const publicaciones = await getPreviewPublicaciones();
+    const publicaciones = await publicacionService.getPreviewPublicaciones();
     const publicacionesDTO = toPublicacionPreviewListDTO(publicaciones);
     res.status(200).json(publicacionesDTO);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al obtener las publicaciones.', error });
+    next(error);
   }
 }
 
-exports.reportarPublicacion = async (req, res) => {
+const reportarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
+
     const resultado = await publicacionService.reportar(id);
     res.status(200).json(resultado);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al reportar la publicación.', error });
+    next(error);
   }
 }
 
-exports.eliminarPublicacion = async (req, res) => {
+const eliminarPublicacion = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
+
     const resultado = await publicacionService.eliminar(id);
     res.status(200).json(resultado);
   } catch (error) {
-    res.status(500).json({ mensaje: 'Error al eliminar la publicación.', error });
+    next(error);
   }
 }
+
+module.exports = {
+  crearPublicacion,
+  activarPublicacion,
+  finalizarPublicacion,
+  cancelarPublicacion,
+  editarPublicacion,
+  consultarPublicacion,
+  consultarPublicaciones,
+  getPublicacionDetalle,
+  getPreviewPublicaciones,
+  reportarPublicacion,
+  eliminarPublicacion,
+  listarTags,
+  getPublicacionesByUser,
+};

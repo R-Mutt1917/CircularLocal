@@ -1,21 +1,25 @@
-const { Publicacion, User, Perfil, Tag } = require('../models');
-const Material = require('../models/material.model');
-const Producto = require('../models/producto.model');
-const Servicio = require('../models/servicio.model');
+const { Publicacion, User, Perfil, Tag, Material, Producto, Servicio } = require('../models');
+const { NotFoundError, ConflictError } = require('../errors/app.errors');
 
 const crearPublicacion = async (data) => {
-    const { tipo, detalle, ...pubData } = data;
+    const { tipo, detalle, tagId, ...pubData } = data;
 
     const t = await Publicacion.sequelize.transaction();
 
     try {
-        // 1. Crear publicación base
+        // Verificar que el tag exista
+        const tag = await Tag.findByPk(tagId);
+        if (!tag) {
+            throw new NotFoundError('El tipo de material (tag) no existe.');
+        }
+
+        // Crear publicación base
         const publicacion = await Publicacion.create(
-            { ...pubData, tipo },
+            { ...pubData, tipo, tagId },
             { transaction: t }
         );
 
-        // 2. Crear subtipo
+        // Crear subtipo
         if (tipo === 'MATERIAL') {
             await Material.create({
                 ...detalle,
@@ -45,6 +49,27 @@ const crearPublicacion = async (data) => {
     }
 }
 
+const activarPublicacion = async (id) => {
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
+    publicacion.estado = 'Publicada';
+    return await publicacion.save();
+};
+
+const finalizarPublicacion = async (id) => {
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
+    publicacion.estado = 'Finalizada';
+    return await publicacion.save();
+}
+
+const cancelarPublicacion = async (id) => {
+    const publicacion = await Publicacion.findByPk(id);
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
+    publicacion.estado = 'Cancelada';
+    return await publicacion.save();
+}
+
 const editarPublicacion = async (id, data) => {
     const { detalle, tipo, ...pubData } = data;
 
@@ -58,7 +83,7 @@ const editarPublicacion = async (id, data) => {
 
         if (!publicacion) {
             await t.rollback();
-            return null;
+            throw new NotFoundError("Publicacion no encontrada");
         }
 
         // Actualiza la base
@@ -97,6 +122,35 @@ const editarPublicacion = async (id, data) => {
     }
 };
 
+const obtenerPublicacionesPaginadas = async (page, limit) => {
+    // Calcular el offset y el límite
+    const offset = (page - 1) * limit;
+
+    const publicaciones = await Publicacion.findAndCountAll({
+      offset,
+      limit: parseInt(limit),
+      order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
+      include: [Material, Producto, Servicio, { model: Tag, as: 'tag' }]
+    });
+
+    return publicaciones;
+}
+
+const obtenerPublicacion = async (id) => {
+    const publicacion = await Publicacion.findByPk(id, {
+        include: [Material, Producto, Servicio, { model: Tag, as: 'tag' }]
+    });
+    if (!publicacion) {
+        throw new NotFoundError('Publicación no encontrada');
+    }
+    return publicacion;
+};
+
+const obtenerTags = async () => {
+    const tags = await Tag.findAll();
+    return tags;
+}
+
 const getByUser = async (userId, limit) => {
     const publicaciones = await Publicacion.findAll({
         where: { user_id: userId },
@@ -126,7 +180,7 @@ const getPublicacionDetalle = async (publicacionId) => {
     });
 
     if (!publicacion) {
-        throw new Error('Publicacion no encontrada');
+        throw new NotFoundError('Publicacion no encontrada');
     }
 
     return publicacion;
@@ -162,10 +216,10 @@ const getPreviewPublicaciones = async () => {
 
 const reportar = async (id) => {
     const publicacion = await Publicacion.findByPk(id);
-    if (!publicacion) throw new Error('Publicación no encontrada');
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
 
     if (publicacion.verificada) {
-        throw new Error('La publicacion esta verificada, no puede ser reportada');
+        throw new ConflictError('La publicacion esta verificada, no puede ser reportada');
     }
 
     publicacion.reportada = true;
@@ -176,7 +230,7 @@ const reportar = async (id) => {
 
 const eliminar = async (id) => {
     const publicacion = await Publicacion.findByPk(id);
-    if (!publicacion) throw new Error('Publicación no encontrada');
+    if (!publicacion) throw new NotFoundError('Publicación no encontrada');
 
     await publicacion.destroy();
 
@@ -185,9 +239,15 @@ const eliminar = async (id) => {
 
 
 module.exports = {
-    getByUser,
     crearPublicacion,
+    activarPublicacion,
+    finalizarPublicacion,
+    cancelarPublicacion,
     editarPublicacion,
+    obtenerPublicacionesPaginadas,
+    obtenerPublicacion,
+    obtenerTags,
+    getByUser,
     getPublicacionDetalle,
     getPreviewPublicaciones,
     reportar,

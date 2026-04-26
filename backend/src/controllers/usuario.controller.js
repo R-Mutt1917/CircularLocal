@@ -1,6 +1,6 @@
 const userService = require('../services/user.service');
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { username, ...profileData } = req.body;
@@ -10,11 +10,11 @@ const updateUser = async (req, res) => {
 
         res.status(200).json({ message: 'Perfil de usuario actualizado correctamente', user: updatedUser });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     // Valida el id recibido
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
@@ -24,15 +24,9 @@ const deleteUser = async (req, res) => {
     try {
         const user = await userService.deleteUser(id);
 
-        if (!user) {
-            return res.status(404).json({
-                error: "Usuario no encontrado"
-            });
-        }
-
         return res.status(204).send();
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
 

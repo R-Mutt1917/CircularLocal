@@ -1,15 +1,16 @@
 const { User, Publicacion, Perfil, MetricaImpacto } = require('../models');
+const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 
 const banUser = async (userId, adminId) => {
     if (adminId === userId) {
-        throw new Error("No puedes banearte a ti mismo");
+        throw new BadRequestError("No puedes banearte a ti mismo");
     }
 
     const user = await User.findByPk(userId);
-    if (!user) return null;
+    if (!user) throw new NotFoundError("Usuario no encontrado");
 
     if (!user.activo) {
-        throw new Error("El usuario ya está dado de baja");
+        throw new ConflictError("El usuario ya está dado de baja");
     }
 
     user.activo = false;
@@ -70,7 +71,7 @@ const getUsers = async (page, limit) => {
 
 const cancelar = async (publicacionId) => {
     const publicacion = await Publicacion.findByPk(publicacionId);
-    if (!publicacion) return null;
+    if (!publicacion) throw new NotFoundError("Publicacion no encontrada");
 
     publicacion.estado = 'Cancelada';
     publicacion.reportada = 0;
@@ -81,7 +82,7 @@ const cancelar = async (publicacionId) => {
 
 const getMetricas = async () => {
     const metricas = await MetricaImpacto.findAll();
-    if (!metricas) return null;
+    if (!metricas) throw new NotFoundError("Metricas no encontradas");;
     return metricas;
 }
 

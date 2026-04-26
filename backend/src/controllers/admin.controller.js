@@ -2,7 +2,7 @@ const adminService = require('../services/admin.service');
 const { toPublicacionReportadaListDTO } = require('../dto/publicacion.dto');
 const { toListUserDTO } = require('../dto/usuario.dto');
 
-const banearUsuario = async (req, res) => {
+const banearUsuario = async (req, res, next) => {
     const userId = parseInt(req.params.id);
     if (isNaN(userId)) {
         return res.status(400).json({ message: "ID inválido" });
@@ -12,19 +12,13 @@ const banearUsuario = async (req, res) => {
         const adminId = req.user.id
         const user = await adminService.banUser(userId, adminId);
 
-        if (!user) {
-            return res.status(404).json({
-                error: "Usuario no encontrado"
-            });
-        }
-
         return res.status(200).json({ message: 'Usuario baneado' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
 
-const getPublicacionReportadas = async (req, res) => {
+const getPublicacionReportadas = async (req, res, next) => {
   try {
     const { page = 1, limit = 5 } = req.query; // Parámetros de paginación
 
@@ -44,11 +38,11 @@ const getPublicacionReportadas = async (req, res) => {
     });
     
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    next(error);
   }
 }
 
-const obtenerUsuarios = async (req, res) => {
+const obtenerUsuarios = async (req, res, next) => {
     try {
         const { page = 1, limit = 5 } = req.query; // Parámetros de paginación
 
@@ -67,11 +61,11 @@ const obtenerUsuarios = async (req, res) => {
             users: usersDto,
         });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
 
-const cancelarPublicacion = async (req, res) => {
+const cancelarPublicacion = async (req, res, next) => {
     const publicacionId = parseInt(req.params.id);
     if (isNaN(publicacionId)) {
         return res.status(400).json({ message: "ID inválido" });
@@ -80,31 +74,19 @@ const cancelarPublicacion = async (req, res) => {
     try {
         const publicacion = await adminService.cancelar(publicacionId);
 
-        if (!publicacion) {
-            return res.status(404).json({
-                error: "Publicación no encontrada"
-            });
-        }
-
         return res.status(200).json({ message: 'Publicación cancelada' });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
-const obtenerMetricas = async (req, res) => {
+const obtenerMetricas = async (req, res, next) => {
     try {
         const metricas = await adminService.getMetricas();
 
-        if (!metricas) {
-            return res.status(404).json({
-                error: "Metricas no encontradas"
-            });
-        }
-
         return res.status(200).json(metricas);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 }
 
