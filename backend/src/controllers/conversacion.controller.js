@@ -26,14 +26,18 @@ const createOrGetConversation = async (req, res) => {
   }
 };
 
-const getMessages = async (req, res) => {
+const getMessages = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { limit = 50, offset = 0 } = req.query;
-    const messages = await mensajeService.findByConversation(id, limit, offset);
-    res.json(messages);
+    const coversacionId = parseInt(req.params.id);
+
+    if (isNaN(coversacionId)) {
+      return res.status(400).json({ message: "ID inválido" });
+    }
+
+    const mensajes = await mensajeService.findByConversation(coversacionId);
+    res.status(200).json(mensajes);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 

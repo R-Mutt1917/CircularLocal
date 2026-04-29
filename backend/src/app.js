@@ -11,7 +11,10 @@ const app = express();
 const httpServer = http.createServer(app);   // socket.io se monta sobre http, no sobre express
 
 const io = new Server(httpServer, {
-    cors: { origin: '*' }                      // en producción, limitar al dominio del front
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
 
 app.use(cors());
@@ -23,4 +26,4 @@ chatHandler(io);
 
 app.use(errorHandler);
 
-module.exports = app;
+module.exports = { app, httpServer };

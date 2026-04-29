@@ -3,12 +3,10 @@ const { Mensajes, Conversacion, ConversacionesUsuarios } = require('../models');
 // ─────────────────────────────────────────────
 // Obtener mensajes de una conversación (paginado)
 // ─────────────────────────────────────────────
-const findByConversation = async (conversationId, limit = 50, offset = 0) => {
+const findByConversation = async (conversationId) => {
     const mensajes = await Mensajes.findAll({
         where: { conversationId },
-        order: [['fechaEnvio', 'ASC']],
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        order: [['fechaEnvio', 'ASC']]
     });
 
     return mensajes;
