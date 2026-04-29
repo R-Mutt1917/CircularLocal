@@ -7,13 +7,9 @@ const getUserConversations = async (userId) => {
     const conversaciones = await Conversacion.findAll({
         include: [
             {
-                model: User,
-                through: {
-                    model: ConversacionesUsuarios,
-                    where: { userId },           // que incluya al usuario pedido
-                    attributes: ['cantidadNoLeidos', 'fechaUltimoLeido'],
-                },
-                attributes: ['id', 'username'],  // los campos del User que quieras mostrar
+                model: ConversacionesUsuarios,
+                where: { userId },
+                attributes: ['cantidadNoLeidos', 'fechaUltimoLeido'],
             },
         ],
         order: [['fechaActualizacion', 'DESC']],

@@ -104,22 +104,38 @@ Intercambio.belongsTo(Solicitud, {
 });
 
 // Relaciones Conversacion - User a través de ConversacionesUsuarios
-Conversacion.belongsToMany(User, {
-  through: ConversacionesUsuarios,
-  foreignKey: "conversation_id",
+ConversacionesUsuarios.belongsTo(User, {
+    foreignKey: "userId"
 });
 
-User.belongsToMany(Conversacion, {
-  through: ConversacionesUsuarios,
-  foreignKey: "user_id",
+ConversacionesUsuarios.belongsTo(Conversacion, {
+    foreignKey: "conversationId"
 });
 
+User.hasMany(ConversacionesUsuarios, {
+    foreignKey: "userId"
+});
+
+Conversacion.hasMany(ConversacionesUsuarios, {
+    foreignKey: "conversationId"
+});
+
+// Relacion Conversacion - Mensajes
 Conversacion.hasMany(Mensajes, {
-  foreignKey: "conversationId",
+    foreignKey: "conversationId",
 });
 
 Mensajes.belongsTo(Conversacion, {
-  foreignKey: "conversationId",
+    foreignKey: "conversationId",
+});
+
+// Relacion User - Mensajes
+User.hasMany(Mensajes, {
+    foreignKey: "userId"
+});
+
+Mensajes.belongsTo(User, {
+    foreignKey: "userId"
 });
 
 module.exports = {

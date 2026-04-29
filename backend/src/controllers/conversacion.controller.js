@@ -1,13 +1,13 @@
 const conversacionService = require('../services/conversacion.service');
 const mensajeService = require('../services/mensaje.service');
 
-const getUserConversations = async (req, res) => {
+const getUserConversations = async (req, res, next) => {
   try {
-    const { userId } = req.query;
+    const userId = req.user.id;
     const conversations = await conversacionService.getUserConversations(userId);
-    res.json(conversations);
+    res.status(200).json(conversations);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
