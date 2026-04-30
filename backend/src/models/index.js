@@ -103,6 +103,17 @@ Intercambio.belongsTo(Solicitud, {
     as: 'solicitud'
 });
 
+// Relacion Intercambio - Conversacion
+Intercambio.hasOne(Conversacion, {
+    foreignKey: 'intercambioId',
+    as: 'conversacion'
+});
+
+Conversacion.belongsTo(Intercambio, {
+    foreignKey: 'intercambioId',
+    as: 'intercambio'
+});
+
 // Relaciones Conversacion - User a través de ConversacionesUsuarios
 ConversacionesUsuarios.belongsTo(User, {
     foreignKey: "userId"

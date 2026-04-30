@@ -7,6 +7,11 @@ const Conversacion = sequelize.define('Conversacion', {
         autoIncrement: true,
         primaryKey: true,
     },
+    intercambioId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        unique: true
+    },
     ultimoMensaje: {
         type: DataTypes.STRING,
         allowNull: false

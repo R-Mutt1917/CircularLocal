@@ -1,13 +1,49 @@
-const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio } = require('../models');
+const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio, Conversacion, ConversacionesUsuarios } = require('../models');
 const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 const metricaImpactoService = require('../services/metricaImpacto.service');
+const conversacionService = require('./conversacion.service');
 
-const crearIntercambio = async (solicitudId) => {
-    return await Intercambio.create({
-        solicitudId: solicitudId,
-        estadoIntercambio: 'EN_PROCESO',
-    });
-}
+const crearIntercambio = async (solicitudId, solicitanteId, publicadorId) => {
+    const t = await Intercambio.sequelize.transaction();
+
+    try {
+        // Crea el Intercambio
+        const intercambio = await Intercambio.create(
+            {
+                solicitudId,
+                estadoIntercambio: 'EN_PROCESO'
+            },
+            { transaction: t }
+        );
+
+        // Crea la Conversación asociada
+        const conversacion = await Conversacion.create(
+            {
+                intercambioId: intercambio.id,
+                ultimoMensaje: '',
+                fechaActualizacion: new Date()
+            },
+            { transaction: t }
+        );
+
+        // Asocia los usuarios usuarios
+        await ConversacionesUsuarios.bulkCreate(
+            [
+                { conversationId: conversacion.id, userId: solicitanteId },
+                { conversationId: conversacion.id, userId: publicadorId }
+            ],
+            { transaction: t }
+        );
+
+        await t.commit();
+
+        return intercambio;
+
+    } catch (error) {
+        await t.rollback();
+        throw error;
+    }
+};
 
 const confirmarIntercambio = async (intercambioId, userId) => {
     const intercambio = await Intercambio.findByPk(intercambioId, {

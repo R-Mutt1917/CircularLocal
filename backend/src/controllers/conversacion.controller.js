@@ -11,21 +11,6 @@ const getUserConversations = async (req, res, next) => {
   }
 };
 
-const createOrGetConversation = async (req, res) => {
-  try {
-    const { userIdA, userIdB } = req.body;
-
-    let conversation = await conversacionService.findBetweenUsers(userIdA, userIdB);
-    if (!conversation) {
-      conversation = await conversacionService.createConversacion(userIdA, userIdB);
-    }
-
-    res.json(conversation);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
 const getMessages = async (req, res, next) => {
   try {
     const coversacionId = parseInt(req.params.id);
@@ -41,4 +26,4 @@ const getMessages = async (req, res, next) => {
   }
 };
 
-module.exports = { getUserConversations, createOrGetConversation, getMessages };
+module.exports = { getUserConversations, getMessages };
