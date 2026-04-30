@@ -86,7 +86,15 @@ const cancelarSolicitud = async (solicitudId) => {
 }
 
 const aceptarSolicitud = async (solicitudId) => {
-    const solicitud = await Solicitud.findByPk(solicitudId);
+    const solicitud = await Solicitud.findByPk(solicitudId, {
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion'
+            }
+        ]
+    });
+
     if (!solicitud) throw new NotFoundError("Solicitud no encontrada");
 
     // Solo las solicitudes Pendientes se puede aceptar
@@ -98,7 +106,10 @@ const aceptarSolicitud = async (solicitudId) => {
     await solicitud.update({ estadoSolicitud: 'ACEPTADA' });
 
     // Crea el Intercambio
-    await intercambioService.crearIntercambio(solicitudId);
+    const solicitanteId = solicitud.solicitanteId;
+    const publicadorId = solicitud.publicacion.user_id;
+
+    await intercambioService.crearIntercambio(solicitudId, solicitanteId, publicadorId);
 
     return solicitud;
 }

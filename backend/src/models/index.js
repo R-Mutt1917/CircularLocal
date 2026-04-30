@@ -8,6 +8,9 @@ const Producto = require('./producto.model');
 const Servicio = require('./servicio.model');
 const Intercambio = require('./intercambio.model');
 const MetricaImpacto = require('./metricaImpacto.model');
+const Conversacion = require('./conversaciones.model');
+const ConversacionesUsuarios = require('./conversacionesUsuarios.model');
+const Mensajes = require('./mensajes.model');
 
 // Relacion User - Perfil
 User.hasOne(Perfil, {
@@ -100,6 +103,52 @@ Intercambio.belongsTo(Solicitud, {
     as: 'solicitud'
 });
 
+// Relacion Intercambio - Conversacion
+Intercambio.hasOne(Conversacion, {
+    foreignKey: 'intercambioId',
+    as: 'conversacion'
+});
+
+Conversacion.belongsTo(Intercambio, {
+    foreignKey: 'intercambioId',
+    as: 'intercambio'
+});
+
+// Relaciones Conversacion - User a través de ConversacionesUsuarios
+ConversacionesUsuarios.belongsTo(User, {
+    foreignKey: "userId"
+});
+
+ConversacionesUsuarios.belongsTo(Conversacion, {
+    foreignKey: "conversationId"
+});
+
+User.hasMany(ConversacionesUsuarios, {
+    foreignKey: "userId"
+});
+
+Conversacion.hasMany(ConversacionesUsuarios, {
+    foreignKey: "conversationId"
+});
+
+// Relacion Conversacion - Mensajes
+Conversacion.hasMany(Mensajes, {
+    foreignKey: "conversationId",
+});
+
+Mensajes.belongsTo(Conversacion, {
+    foreignKey: "conversationId",
+});
+
+// Relacion User - Mensajes
+User.hasMany(Mensajes, {
+    foreignKey: "userId"
+});
+
+Mensajes.belongsTo(User, {
+    foreignKey: "userId"
+});
+
 module.exports = {
     User,
     Perfil,
@@ -111,4 +160,7 @@ module.exports = {
     Solicitud,
     Intercambio,
     MetricaImpacto,
+    Conversacion,
+    ConversacionesUsuarios,
+    Mensajes,
 };
