@@ -21,7 +21,8 @@ const crearIntercambio = async (solicitudId, solicitanteId, publicadorId) => {
             {
                 intercambioId: intercambio.id,
                 ultimoMensaje: '',
-                fechaActualizacion: new Date()
+                fechaActualizacion: new Date(),
+                solicitanteId: solicitanteId,
             },
             { transaction: t }
         );

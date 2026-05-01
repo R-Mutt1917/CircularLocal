@@ -8,6 +8,7 @@ const getUserConversations = async (userId) => {
                 where: { userId },
                 attributes: ['cantidadNoLeidos', 'fechaUltimoLeido'],
             },
+            
         ],
         order: [['fechaActualizacion', 'DESC']],
     });

@@ -14,3 +14,4 @@ export class IntercambiosServices {
     return this.http.get<number>(`${this.apiUrl}/intercambios/completados`);
   }
 }
+  

@@ -19,6 +19,14 @@ const Conversacion = sequelize.define('Conversacion', {
     fechaActualizacion: {
         type: DataTypes.DATE,
         allowNull: true
+    },
+    solicitanteId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    publicadorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     }
 }, {
     tableName: 'Conversacion',
