@@ -127,8 +127,16 @@ User.hasMany(ConversacionesUsuarios, {
     foreignKey: "userId"
 });
 
+// Relación para "mi relación"
 Conversacion.hasMany(ConversacionesUsuarios, {
-    foreignKey: "conversationId"
+    foreignKey: "conversationId",
+    as: "miRelacion"
+});
+
+// Relación para "todos los participantes"
+Conversacion.hasMany(ConversacionesUsuarios, {
+    foreignKey: "conversationId",
+    as: "participantes"
 });
 
 // Relacion Conversacion - Mensajes
