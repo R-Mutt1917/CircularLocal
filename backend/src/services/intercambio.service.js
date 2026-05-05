@@ -176,9 +176,37 @@ const obtenerIntercambiosCompletados = async (userId) => {
     return cantidad;
 };
 
+const IntermcabioEnProceso = async (userId) => {
+    const cantidad = await Intercambio.count({
+        where: {
+            estadoIntercambio: 'EN_PROCESO'
+        },
+        include: [
+            {
+                model: Solicitud,
+                as: 'solicitud',
+                attributes: [],
+                required: true,
+                include: [
+                    {
+                        model: Publicacion,
+                        as: 'publicacion',
+                        attributes: ['titulo', 'imagen'],
+                        where: { user_id: userId },
+                        required: true
+                    }
+                ]
+            }
+        ]
+    });
+
+    return cantidad;
+};
+
 module.exports = {
     crearIntercambio,
     confirmarIntercambio,
     cancelarIntercambio,
     obtenerIntercambiosCompletados,
+    IntermcabioEnProceso
 };

@@ -1,0 +1,108 @@
+<div class="chat-wrapper">
+  <!-- Header del chat -->
+  <div class="chat-header">
+    <div class="chat-header-avatar">
+      @if (conversacion().imagen) {
+        <img [src]="conversacion().imagen" [alt]="conversacion().nombrePerfil" />
+      } @else {
+        <div class="avatar-initials">
+          {{ conversacion().nombrePerfil?.slice(0, 1) }}
+        </div>
+      }
+    </div>
+    <div class="chat-header-info">
+      <span class="chat-header-name">{{ conversacion().nombrePerfil }}</span>
+    </div>
+  </div>
+  
+  <!-- Banner de Intercambio -->
+  @if (intercambio(); as int) {
+    <div class="exchange-banner" [class]="int.estadoIntercambio.toLowerCase()">
+      <div class="exchange-banner-content">
+        <div class="exchange-info">
+          @if (int.estadoIntercambio === 'EN_PROCESO') {
+            <span class="status-badge">Intercambio en proceso</span>
+            <p>Confirmá la entrega una vez que se haya realizado el intercambio.</p>
+          } @else if (int.estadoIntercambio === 'COMPLETADO') {
+            <span class="status-badge success">¡Intercambio Completado!</span>
+            <p>Este intercambio ya fue finalizado con éxito.</p>
+          } @else {
+            <span class="status-badge error">Intercambio Cancelado</span>
+          }
+        </div>
+        
+        @if (int.estadoIntercambio === 'EN_PROCESO') {
+          <div class="exchange-actions">
+            <button class="btn-confirm" (click)="confirmarIntercambio()">
+              Confirmar Entrega
+            </button>
+            <button class="btn-cancel" (click)="cancelarIntercambio()" title="Cancelar intercambio">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Mensajes -->
+  <div class="chat-messages" #messagesContainer>
+    @if (cargando()) {
+      <div class="chat-loading">
+        <span class="loading-dots">Cargando mensajes</span>
+      </div>
+    } @else {
+      @if (mensajes().length === 0) {
+        <div class="no-messages">
+          <p>¡Empezá la conversación!</p>
+          <span>Mandá el primer mensaje 👋</span>
+        </div>
+      } @else {
+        @for (msg of mensajes(); track msg.id) {
+          <div class="message-row" [class.own-message]="esMensajePropio(msg)">
+            <div class="message-bubble">
+              <p class="message-text">{{ msg.mensaje }}</p>
+              <span class="message-time">{{ formatHora(msg.fechaEnvio) }}</span>
+            </div>
+          </div>
+        }
+      }
+
+      @if (isTyping()) {
+        <div class="message-row">
+          <div class="message-bubble typing">
+            <span class="typing-indicator">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </span>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Input -->
+  <div class="chat-input-area">
+    <input
+      type="text"
+      class="chat-input"
+      placeholder="Escribí un mensaje..."
+      [(ngModel)]="nuevoMensaje"
+      (keydown)="onKeyDown($event)"
+      autocomplete="off"
+    />
+    <button
+      class="chat-send-btn"
+      [disabled]="!nuevoMensaje.trim()"
+      (click)="enviarMensaje()"
+      title="Enviar"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+</div>

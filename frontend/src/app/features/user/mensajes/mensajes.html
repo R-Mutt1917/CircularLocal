@@ -1,11 +1,58 @@
-<section>
-     <div>
-       <h2>Mensajes</h2>
-       <div>
-        
-       </div>
-     </div>
-     <div>
+<section class="mensajes-container">
+  <div class="mensajes-panel">
+    <h2 class="mensajes-titulo">Mensajes</h2>
 
-     </div>
+    <div class="buscador-wrapper">
+      <span class="buscador-icono"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z" fill="#494949"/>
+</svg></span>
+      <input type="text" [formControl]="searchControl" placeholder="Buscar conversaciones..." class="buscador-input" />
+    </div>
+
+    <div class="contenedor_mensajes">
+      @for (conversacion of conversacionesFiltradas(); track conversacion.id) {
+        <div class="conversacion-item" 
+             [class.activa]="conversacionSeleccionada()?.id === conversacion.id" 
+             (click)="seleccionarConversacion(conversacion)">
+          <div class="conversacion-avatar-wrapper">
+            @if (conversacion.imagen) {
+              <img [src]="conversacion.imagen" [alt]="conversacion.nombrePerfil" class="conversacion-avatar" />
+            } @else {
+              <div class="conversacion-avatar-initials">
+                {{ conversacion.nombrePerfil?.slice(0,1) }}
+              </div>
+            }
+            @if (conversacion.cantidadNoLeidos > 0) {
+              <span class="badge-no-leidos">{{ conversacion.cantidadNoLeidos }}</span>
+            }
+          </div>
+
+          <div class="conversacion-info">
+            <div class="conversacion-header">
+              <span class="conversacion-nombre">{{ conversacion.nombrePerfil }}</span>
+              <span class="conversacion-fecha" [class.fecha-urgente]="conversacion.cantidadNoLeidos > 0">
+                {{ convertirFecha(conversacion.fechaActualizacion) }}
+              </span>
+            </div>
+            <p class="conversacion-preview">
+              {{ conversacion.ultimoMensaje || 'Sin mensajes aún' }}
+            </p>
+          </div>
+        </div>
+      } @empty {
+        <p class="no-conversaciones">No se encontraron conversaciones</p>
+      }
+    </div>
+  </div>
+  
+  <div class="mensajes">
+    @if (conversacionSeleccionada(); as seleccionada) {
+      <app-chat [conversacion]="seleccionada" />
+    } @else {
+      <div class="placeholder-chat">
+        <p>Seleccioná una conversación para empezar a chatear</p>
+        <img src="img/imagen_conversacion.jpg" alt="" />
+      </div>
+    }
+  </div>
 </section>

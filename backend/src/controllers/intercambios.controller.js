@@ -46,8 +46,21 @@ const obtenerIntercambiosCompletados = async (req, res, next) => {
     }
 }
 
+const IntercambioPendiente = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+
+        const cantidadIntercambios = await intercambioService.IntermcabioEnProceso(userId);
+
+        res.status(200).json(cantidadIntercambios);
+    } catch (error) {
+        next(error);
+    }
+}
+
 module.exports = {
     confirmarIntercambio,
     cancelarIntercambio,
     obtenerIntercambiosCompletados,
+    IntercambioPendiente
 };

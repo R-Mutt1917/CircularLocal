@@ -6,17 +6,23 @@ export interface Mensaje{
   fechaEnvio:Date
 }
 
-export interface Conversacion{
-    id:number
-    ultimoMensaje:string
-    fechaActualizacion:Date
-    conversacionesUsuarios:ConversacionUsuarios[] 
-    solicitanteId: number
+export interface Intercambio {
+  id: number;
+  estadoIntercambio: 'EN_PROCESO' | 'COMPLETADO' | 'CANCELADO';
+  confirmadoSolicitante: boolean;
+  confirmadoPublicador: boolean;
 }
 
-export interface ConversacionUsuarios{
-    cantidadNoLeidos:number
-    fechaUltimoLeido:Date | null
-    
+export interface Conversacion {
+  cantidadNoLeidos: number;
+  fechaActualizacion: Date;
+  fechaUltimoLeido: Date | null;
+  id: number;
+  imagen: string | null;
+  nombrePerfil: string | null;
+  ultimoMensaje: string | null;
+  userId: number;
+  intercambio?: Intercambio;
 }
+
 

@@ -157,6 +157,8 @@ Mensajes.belongsTo(User, {
     foreignKey: "userId"
 });
 
+
+
 module.exports = {
     User,
     Perfil,

@@ -14,6 +14,7 @@
         {{ solicitud().estado }}
       </span>
       <span class="card__fecha">{{ solicitud().fecha }}</span>
+      
     </div>
 
     <h3 class="card__titulo">{{ solicitud().titulo }}</h3>
@@ -31,7 +32,11 @@
     <blockquote class="card__mensaje">
       "{{ solicitud().mensaje }}"
     </blockquote>
+
+      
+    
   </div>
+
 
   @if (esPendiente && tipo() === 'recibidas') {
     <div class="card__actions">

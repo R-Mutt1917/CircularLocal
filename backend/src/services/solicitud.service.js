@@ -58,6 +58,8 @@ const obtenerSolicitudesPendientes = async (userId) => {
     });
 };
 
+
+
 const rechazarSolicitud = async (solicitudId) => {
     const solicitud = await Solicitud.findByPk(solicitudId);
     if (!solicitud) throw new NotFoundError("Solicitud no encontrada");
