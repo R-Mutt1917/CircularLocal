@@ -16,14 +16,14 @@
   </div>
   
   <!-- Banner de Intercambio -->
-  @if (intercambio(); as int) {
-    <div class="exchange-banner" [class]="int.estadoIntercambio.toLowerCase()">
+  @if (intercambio()) {
+    <div class="exchange-banner" [class]="intercambio()?.estadoIntercambio?.toLowerCase()">
       <div class="exchange-banner-content">
         <div class="exchange-info">
-          @if (int.estadoIntercambio === 'EN_PROCESO') {
+          @if (intercambio()?.estadoIntercambio === 'EN_PROCESO') {
             <span class="status-badge">Intercambio en proceso</span>
             <p>Confirmá la entrega una vez que se haya realizado el intercambio.</p>
-          } @else if (int.estadoIntercambio === 'COMPLETADO') {
+          } @else if (intercambio()?.estadoIntercambio === 'COMPLETADO') {
             <span class="status-badge success">¡Intercambio Completado!</span>
             <p>Este intercambio ya fue finalizado con éxito.</p>
           } @else {
@@ -31,21 +31,27 @@
           }
         </div>
         
-        @if (int.estadoIntercambio === 'EN_PROCESO') {
-          <div class="exchange-actions">
+        <div class="exchange-actions">
+          <!-- muetra aca la imagen y el titulo de la publicacion-->
+           <div class="exchange">
+            <img  [src]="publicacion()?.imagen" [alt]="publicacion()?.titulo" class="exchange-image"/>
+           <p>{{publicacion()?.titulo}}</p>
+           </div>
+           
+          
+          @if (intercambio()?.estadoIntercambio === 'EN_PROCESO') {
             <button class="btn-confirm" (click)="confirmarIntercambio()">
-              Confirmar Entrega
+              Confirmar Intercambio
             </button>
             <button class="btn-cancel" (click)="cancelarIntercambio()" title="Cancelar intercambio">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M18 6L6 18M6 6l12 12"/>
-              </svg>
+              Cancelar Intercambio
             </button>
-          </div>
-        }
+          }
+        </div>
       </div>
     </div>
   }
+  
 
   <!-- Mensajes -->
   <div class="chat-messages" #messagesContainer>
@@ -86,7 +92,8 @@
 
   <!-- Input -->
   <div class="chat-input-area">
-    <input
+     @if (intercambio()?.estadoIntercambio === 'EN_PROCESO') {
+<input
       type="text"
       class="chat-input"
       placeholder="Escribí un mensaje..."
@@ -104,5 +111,9 @@
         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
       </svg>
     </button>
+     }@else{
+      <p>chat finalizado</p>
+     }
+    
   </div>
 </div>

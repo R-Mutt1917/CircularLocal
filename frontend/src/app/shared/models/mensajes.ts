@@ -26,3 +26,9 @@ export interface Conversacion {
 }
 
 
+export interface PublicacionIntercambio{
+  id: number
+  imagen: string
+  tipo: "PRODUCTO" | "SERVICIO" | "MATERIAL"
+  titulo: string  
+}

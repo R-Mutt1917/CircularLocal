@@ -38,4 +38,8 @@ export class CardSolicitud implements OnInit {
   get esPendiente(): boolean {
     return this.solicitud().estado === 'PENDIENTE';
   }
+
+  fechaFormateada(fecha: Date) {
+    return new Date(fecha).toLocaleDateString('es-AR');
+  }
 }

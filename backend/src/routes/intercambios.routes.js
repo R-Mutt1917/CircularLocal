@@ -12,7 +12,7 @@ router.patch('/:id/confirmar', verifyToken, intercambioController.confirmarInter
 // Ruta para cancelar un intercambio
 router.patch('/:id/cancelar', verifyToken, intercambioController.cancelarIntercambio);
 
-// Ruta para obtener intercambio pendiente
-router.get('/:id/pendiente', verifyToken, intercambioController.IntercambioPendiente);
+// Ruta para obtener intercambio
+router.get('/:id', verifyToken, intercambioController.ObtenerIntercambio);
 
 module.exports = router;

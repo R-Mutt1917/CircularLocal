@@ -176,31 +176,27 @@ const obtenerIntercambiosCompletados = async (userId) => {
     return cantidad;
 };
 
-const IntermcabioEnProceso = async (userId) => {
-    const cantidad = await Intercambio.count({
-        where: {
-            estadoIntercambio: 'EN_PROCESO'
-        },
+const ObtenerIntercambio = async (intercambioId) => {
+    const intercambio = await Intercambio.findByPk(intercambioId, {
         include: [
             {
                 model: Solicitud,
                 as: 'solicitud',
-                attributes: [],
-                required: true,
+                attributes: ['id', 'solicitanteId'],
                 include: [
                     {
                         model: Publicacion,
                         as: 'publicacion',
-                        attributes: ['titulo', 'imagen'],
-                        where: { user_id: userId },
-                        required: true
+                        attributes: ['id', 'titulo', 'descripcion', 'tipo', 'imagen', 'user_id']
                     }
                 ]
             }
         ]
     });
 
-    return cantidad;
+    if (!intercambio) throw new NotFoundError("Intercambio no encontrado");
+
+    return intercambio;
 };
 
 module.exports = {
@@ -208,5 +204,5 @@ module.exports = {
     confirmarIntercambio,
     cancelarIntercambio,
     obtenerIntercambiosCompletados,
-    IntermcabioEnProceso
+    ObtenerIntercambio
 };

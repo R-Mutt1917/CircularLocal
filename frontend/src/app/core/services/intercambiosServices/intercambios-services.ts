@@ -14,8 +14,8 @@ export class IntercambiosServices {
     return this.http.get<number>(`${this.apiUrl}/intercambios/completados`);
   }
 
-  intercambioPendiente(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/intercambios/${id}/pendiente`);
+  intercambio(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/intercambios/${id}`);
   }
 
   confirmarIntercambio(id: number): Observable<any> {

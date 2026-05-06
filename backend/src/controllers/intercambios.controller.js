@@ -11,7 +11,7 @@ const confirmarIntercambio = async (req, res, next) => {
 
         const intercambio = await intercambioService.confirmarIntercambio(intercambioId, userId);
 
-        res.status(204).send();
+        res.status(200).json(intercambio);
     } catch (error) {
         next(error);
     }
@@ -28,7 +28,7 @@ const cancelarIntercambio = async (req, res, next) => {
 
         const intercambio = await intercambioService.cancelarIntercambio(intercambioId, userId);
 
-        res.status(204).send();
+        res.status(200).json(intercambio);
     } catch (error) {
         next(error);
     }
@@ -46,13 +46,13 @@ const obtenerIntercambiosCompletados = async (req, res, next) => {
     }
 }
 
-const IntercambioPendiente = async (req, res, next) => {
+const ObtenerIntercambio = async (req, res, next) => {
     try {
-        const userId = req.user.id;
+        const intercambioId = req.params.id;
 
-        const cantidadIntercambios = await intercambioService.IntermcabioEnProceso(userId);
+        const intercambio = await intercambioService.ObtenerIntercambio(intercambioId);
 
-        res.status(200).json(cantidadIntercambios);
+        res.status(200).json(intercambio);
     } catch (error) {
         next(error);
     }
@@ -62,5 +62,5 @@ module.exports = {
     confirmarIntercambio,
     cancelarIntercambio,
     obtenerIntercambiosCompletados,
-    IntercambioPendiente
+    ObtenerIntercambio
 };

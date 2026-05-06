@@ -14,7 +14,8 @@ function toUserConversationsDTO(conversaciones) {
 
             userId: otroUsuario?.id,
             nombrePerfil: perfil?.nombre_perfil ?? null,
-            imagen: perfil?.imagen ?? null
+            imagen: perfil?.imagen ?? null,
+            intercambio: conversacion.intercambio
         };
     });
 }
