@@ -2,6 +2,7 @@ const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio, Conve
 const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 const metricaImpactoService = require('../services/metricaImpacto.service');
 const conversacionService = require('./conversacion.service');
+const publicacionService = require('./publicacion.service');
 
 const crearIntercambio = async (solicitudId, solicitanteId, publicadorId) => {
     const t = await Intercambio.sequelize.transaction();
@@ -110,6 +111,9 @@ const confirmarIntercambio = async (intercambioId, userId) => {
             metricaImpactoService.actualizarMetricaPorPeriodo('global', cantidadReutilizada, fecha),
             metricaImpactoService.actualizarMetricaPorPeriodo(periodoActual, cantidadReutilizada, fecha)
         ]);
+
+        // Actualiza el estado de la publicacion
+        await publicacionService.finalizarPublicacion(publicacion.id);
     }
 
     return intercambio;
