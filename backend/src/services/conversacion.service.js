@@ -1,13 +1,52 @@
-const { Conversacion, ConversacionesUsuarios } = require('../models');
+const { Conversacion, ConversacionesUsuarios, User, Perfil, Intercambio, Solicitud, Publicacion } = require('../models');
+const { Op } = require('sequelize');
 
 const getUserConversations = async (userId) => {
     const conversaciones = await Conversacion.findAll({
         include: [
             {
+                model: Intercambio,
+                as: 'intercambio',
+                include: [
+                    {
+                        model: Solicitud,
+                        as: 'solicitud',
+                        include: [
+                            {
+                                model: Publicacion,
+                                as: 'publicacion',
+                                attributes: ['id', 'titulo', 'imagen', 'tipo', 'user_id']
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 model: ConversacionesUsuarios,
+                as: 'miRelacion',
                 where: { userId },
                 attributes: ['cantidadNoLeidos', 'fechaUltimoLeido'],
             },
+            {
+                model: ConversacionesUsuarios,
+                as: 'participantes',
+                include: [
+                    {
+                        model: User,
+                        attributes: ['id'],
+                        where: {
+                            id: { [Op.ne]: userId } // excluye al usuario actual
+                        },
+                        include: [
+                            {
+                                model: Perfil,
+                                as: 'perfil',
+                                attributes: ['nombre_perfil', 'imagen']
+                            }
+                        ]
+                    }
+                ],
+            }
         ],
         order: [['fechaActualizacion', 'DESC']],
     });

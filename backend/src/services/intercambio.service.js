@@ -2,6 +2,7 @@ const { Intercambio, Solicitud, Publicacion, Material, Producto, Servicio, Conve
 const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 const metricaImpactoService = require('../services/metricaImpacto.service');
 const conversacionService = require('./conversacion.service');
+const publicacionService = require('./publicacion.service');
 
 const crearIntercambio = async (solicitudId, solicitanteId, publicadorId) => {
     const t = await Intercambio.sequelize.transaction();
@@ -21,7 +22,7 @@ const crearIntercambio = async (solicitudId, solicitanteId, publicadorId) => {
             {
                 intercambioId: intercambio.id,
                 ultimoMensaje: '',
-                fechaActualizacion: new Date()
+                fechaActualizacion: new Date(),
             },
             { transaction: t }
         );
@@ -110,6 +111,9 @@ const confirmarIntercambio = async (intercambioId, userId) => {
             metricaImpactoService.actualizarMetricaPorPeriodo('global', cantidadReutilizada, fecha),
             metricaImpactoService.actualizarMetricaPorPeriodo(periodoActual, cantidadReutilizada, fecha)
         ]);
+
+        // Actualiza el estado de la publicacion
+        await publicacionService.finalizarPublicacion(publicacion.id);
     }
 
     return intercambio;
@@ -176,9 +180,33 @@ const obtenerIntercambiosCompletados = async (userId) => {
     return cantidad;
 };
 
+const ObtenerIntercambio = async (intercambioId) => {
+    const intercambio = await Intercambio.findByPk(intercambioId, {
+        include: [
+            {
+                model: Solicitud,
+                as: 'solicitud',
+                attributes: ['id', 'solicitanteId'],
+                include: [
+                    {
+                        model: Publicacion,
+                        as: 'publicacion',
+                        attributes: ['id', 'titulo', 'descripcion', 'tipo', 'imagen', 'user_id']
+                    }
+                ]
+            }
+        ]
+    });
+
+    if (!intercambio) throw new NotFoundError("Intercambio no encontrado");
+
+    return intercambio;
+};
+
 module.exports = {
     crearIntercambio,
     confirmarIntercambio,
     cancelarIntercambio,
     obtenerIntercambiosCompletados,
+    ObtenerIntercambio
 };

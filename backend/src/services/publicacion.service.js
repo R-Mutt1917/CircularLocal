@@ -129,6 +129,7 @@ const obtenerPublicacionesPaginadas = async (page, limit) => {
     const publicaciones = await Publicacion.findAndCountAll({
       offset,
       limit: parseInt(limit),
+      where: { estado: 'Publicada' },
       order: [['createdAt', 'DESC']], // Ordenar por fecha de creación descendente
       include: [Material, Producto, Servicio, { model: Tag, as: 'tag' }]
     });

@@ -1,11 +1,12 @@
 const conversacionService = require('../services/conversacion.service');
 const mensajeService = require('../services/mensaje.service');
+const { toUserConversationsDTO } = require('../dto/conversacion.dto');
 
 const getUserConversations = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const conversations = await conversacionService.getUserConversations(userId);
-    res.status(200).json(conversations);
+    res.status(200).json(toUserConversationsDTO(conversations));
   } catch (error) {
     next(error);
   }

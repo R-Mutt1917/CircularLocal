@@ -1,9 +1,10 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component, input, OnInit, output} from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-card-solicitud',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './card-solicitud.html',
   styleUrl: './card-solicitud.scss',
 })
@@ -36,5 +37,9 @@ export class CardSolicitud implements OnInit {
  
   get esPendiente(): boolean {
     return this.solicitud().estado === 'PENDIENTE';
+  }
+
+  fechaFormateada(fecha: Date) {
+    return new Date(fecha).toLocaleDateString('es-AR');
   }
 }
