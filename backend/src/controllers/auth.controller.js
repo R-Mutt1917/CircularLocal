@@ -2,7 +2,7 @@
 const authService = require('../services/user.service');
 const { toUserCreateDTO } = require('../dto/usuario.dto');
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     try {
         const { username, password } = req.body;
         const user = await authService.register(username, password);
@@ -12,25 +12,25 @@ const register = async (req, res) => {
 
         res.status(201).json({ message: 'Usuario creado', userDto });
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
         const token = await authService.login(username, password);
         res.json({ token });
     } catch (error) {
-        res.status(401).json({ error: error.message });
+        next(error);
     }
 };
 
-const getProfile = async (req, res) => {
+const getProfile = async (req, res, next) => {
     try {
         res.json({ user: req.user });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        next(error);
     }
 };
 

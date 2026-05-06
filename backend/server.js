@@ -1,5 +1,5 @@
 //Punto de entrada
-const app = require('./src/app');
+const { app, httpServer } = require('./src/app');
 const { initDB } = require('./src/config/database');
 const { seedTags } = require('./src/seeds/tag.seed');
 const { seedAdmin } = require('./src/seeds/admin.seed');
@@ -15,8 +15,8 @@ async function startServer() {
         await seedAdmin();
         await inicializarMetricas();
 
-        app.listen(PORT, () => {
-            console.log(`Servidor corriendo en el puerto ${PORT}`);
+        httpServer.listen(PORT, () => {
+            console.log(`🚀 Server corriendo en puerto ${PORT}`);
         });
 
     } catch (error) {

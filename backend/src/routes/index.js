@@ -6,6 +6,7 @@ const publicacionesRoutes = require('./publicaciones.routes');
 const adminRoutes = require('./admin.routes');
 const solicitudesRoutes = require('./solicitudes.routes');
 const intercambiosRoutes = require('./intercambios.routes');
+const conversacionesRoutes = require('./conversaciones.routes');
 
 router.use('/auth', authRoutes);
 router.use('/usuarios', usuarioRoutes);
@@ -14,5 +15,6 @@ router.use('/publicaciones', publicacionesRoutes);
 router.use('/admin', adminRoutes);
 router.use('/solicitudes', solicitudesRoutes);
 router.use('/intercambios', intercambiosRoutes);
+router.use('/conversaciones', conversacionesRoutes);
 
 module.exports = router;

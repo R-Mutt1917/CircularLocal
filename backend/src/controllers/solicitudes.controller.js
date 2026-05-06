@@ -1,7 +1,7 @@
 const solicitudService = require('../services/solicitud.service');
 const { toSolicitudDTO, toListSolicitudesPendientesDTO, toListSolicitudesEnviadasDTO } = require('../dto/solicitud.dto');
 
-const crearSolicitud = async (req, res) => {
+const crearSolicitud = async (req, res, next) => {
     try {
         const { publicacionId, mensajeInicial } = req.body;
         const solicitanteId = req.user.id;
@@ -10,11 +10,11 @@ const crearSolicitud = async (req, res) => {
 
         res.status(201).json(toSolicitudDTO(solicitud));
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 };
 
-const obtenerSolicitudesPendientes = async (req, res) => {
+const obtenerSolicitudesPendientes = async (req, res, next) => {
     try {
         const userId = req.user.id;
 
@@ -22,11 +22,11 @@ const obtenerSolicitudesPendientes = async (req, res) => {
 
         res.status(200).json(toListSolicitudesPendientesDTO(solicitudes));
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 };
 
-const rechazarSolicitud = async (req, res) => {
+const rechazarSolicitud = async (req, res, next) => {
     const solicitudId = parseInt(req.params.id);
     if (isNaN(solicitudId)) {
         return res.status(400).json({ message: "ID inválido" });
@@ -34,19 +34,14 @@ const rechazarSolicitud = async (req, res) => {
 
     try {
         const solicitud = await solicitudService.rechazarSolicitud(solicitudId);
-        if (!solicitud) {
-            return res.status(404).json({
-                error: "Solicitud no encontrada"
-            });
-        }
 
         res.status(204).send();
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 }
 
-const cancelarSolicitud = async (req, res) => {
+const cancelarSolicitud = async (req, res, next) => {
     const solicitudId = parseInt(req.params.id);
     if (isNaN(solicitudId)) {
         return res.status(400).json({ message: "ID inválido" });
@@ -54,19 +49,14 @@ const cancelarSolicitud = async (req, res) => {
 
     try {
         const solicitud = await solicitudService.cancelarSolicitud(solicitudId);
-        if (!solicitud) {
-            return res.status(404).json({
-                error: "Solicitud no encontrada"
-            });
-        }
 
         res.status(204).send();
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 }
 
-const aceptarSolicitud = async (req, res) => {
+const aceptarSolicitud = async (req, res, next) => {
     const solicitudId = parseInt(req.params.id);
     if (isNaN(solicitudId)) {
         return res.status(400).json({ message: "ID inválido" });
@@ -74,19 +64,14 @@ const aceptarSolicitud = async (req, res) => {
 
     try {
         const solicitud = await solicitudService.aceptarSolicitud(solicitudId);
-        if (!solicitud) {
-            return res.status(404).json({
-                error: "Solicitud no encontrada"
-            });
-        }
 
         res.status(204).send();
     } catch (error) {
-        res.status(400).json({ error: error.message });
+        next(error);
     }
 }
 
-const obtenerSolicitudesEnviadas = async (req, res) => {
+const obtenerSolicitudesEnviadas = async (req, res, next) => {
     const userId = req.user.id;
 
     try {
@@ -94,7 +79,7 @@ const obtenerSolicitudesEnviadas = async (req, res) => {
 
         res.status(200).json(toListSolicitudesEnviadasDTO(solicitudes));
     } catch (error) {
-        res.status(400).json({ error: "No se pudo obtener las solicitudes enviadas" + error.message });
+        next(error);
     }
 }
 

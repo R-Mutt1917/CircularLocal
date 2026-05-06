@@ -19,27 +19,21 @@ router.patch('/:id/cancelar', verifyToken, publicacionesController.cancelarPubli
 router.put('/:id', verifyToken, publicacionesController.editarPublicacion);
 
 // Ruta para consultar publicaciones con paginación
-router.get('/', publicacionesController.consultarPublicaciones);
+router.get('/', verifyToken, publicacionesController.consultarPublicaciones);
 
 // Ruta para listar todos los tags
-router.get('/tags', publicacionesController.listarTags);
+router.get('/tags', verifyToken, publicacionesController.listarTags);
 
 // RUTA PARA OBTENER PREVISUALIZACION DE PUBLICACIONES
-router.get('/preview', publicacionesController.getPreviewPublicaciones);
+router.get('/preview', verifyToken, publicacionesController.getPreviewPublicaciones);
 
-// Ruta para consultar el detalle de una publicación
-router.get('/:id', publicacionesController.consultarDetallePublicacion);
+// Ruta para consultar una publicación
+router.get('/:id', verifyToken, publicacionesController.consultarPublicacion);
 
-// Ruta para asociar un tag a una publicación (protegida)
-router.post('/:id/tags', verifyToken, publicacionesController.asociarTags);
-
-// Ruta para eliminar un tag de una publicación (protegida)
-router.delete('/:id/tags', verifyToken, publicacionesController.eliminarTag);
-
-router.get('/user/:id', publicacionesController.getPublicacionesByUser)
+router.get('/user/:id', verifyToken, publicacionesController.getPublicacionesByUser)
 
 // RUTA PARA OBTENER PUBLICACION CON PERFIL
-router.get('/perfil/:id', publicacionesController.getPublicacionDetalle);
+router.get('/perfil/:id', verifyToken, publicacionesController.getPublicacionDetalle);
 
 // RUTA PARA REPORTAR UNA PUBLICACION 
 router.patch('/:id/reportar', verifyToken, publicacionesController.reportarPublicacion);

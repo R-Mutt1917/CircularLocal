@@ -13,7 +13,8 @@
       <span class="card__badge" [class]="'badge--' + solicitud().estado.toLowerCase()">
         {{ solicitud().estado }}
       </span>
-      <span class="card__fecha">{{ solicitud().fecha }}</span>
+      <span class="card__fecha">{{ fechaFormateada(solicitud().fecha) }}</span>
+      
     </div>
 
     <h3 class="card__titulo">{{ solicitud().titulo }}</h3>
@@ -31,7 +32,14 @@
     <blockquote class="card__mensaje">
       "{{ solicitud().mensaje }}"
     </blockquote>
+
+    
   </div>
+
+  @if(solicitud().estado === 'ACEPTADA'){
+    <a routerLink="/app/mensajes" class="btn btn--aceptar" >Conversar</a>
+  }
+
 
   @if (esPendiente && tipo() === 'recibidas') {
     <div class="card__actions">

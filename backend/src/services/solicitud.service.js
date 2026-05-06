@@ -1,4 +1,5 @@
 const { Solicitud, Publicacion, User } = require('../models');
+const { NotFoundError, BadRequestError, ConflictError } = require('../errors/app.errors');
 const intercambioService = require('./intercambio.service');
 
 const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
@@ -6,12 +7,12 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
     const publicacion = await Publicacion.findByPk(publicacionId);
 
     if (!publicacion) {
-        throw new Error('La publicación no existe');
+        throw new NotFoundError('Publicacion no encontrada');
     }
 
     // Valida que el usuario que hizo la Solicitud no sea el mismo que hizo la Publicacion
     if (solicitanteId == publicacion.user_id) {
-        throw new Error('No se pudo crear la Solicitud');
+        throw new BadRequestError('No puedes solicitar tu publicacion');
     }
 
     const solicitudPendiente = await Solicitud.findOne({
@@ -23,7 +24,7 @@ const crearSolicitud = async (publicacionId, solicitanteId, mensajeInicial) => {
     });
 
     if (solicitudPendiente) {
-        throw new Error('Ya tenés una solicitud pendiente para esta publicación');
+        throw new ConflictError('Ya tenés una solicitud pendiente para esta publicación');
     }
 
     // Crea la Solicitud
@@ -57,13 +58,15 @@ const obtenerSolicitudesPendientes = async (userId) => {
     });
 };
 
+
+
 const rechazarSolicitud = async (solicitudId) => {
     const solicitud = await Solicitud.findByPk(solicitudId);
-    if (!solicitud) return null;
+    if (!solicitud) throw new NotFoundError("Solicitud no encontrada");
 
     // Solo las solicitudes Pendientes se puede rechazar
     if (solicitud.estadoSolicitud !== 'PENDIENTE') {
-        throw new Error("No se puede rechazar esta solicitud");
+        throw new ConflictError("No se puede rechazar esta solicitud");
     }
 
     solicitud.update({ estadoSolicitud: 'RECHAZADA' });
@@ -73,10 +76,10 @@ const rechazarSolicitud = async (solicitudId) => {
 
 const cancelarSolicitud = async (solicitudId) => {
     const solicitud = await Solicitud.findByPk(solicitudId);
-    if (!solicitud) return null;
+    if (!solicitud) throw new NotFoundError("Solicitud no encontrada");
 
     if (solicitud.estadoSolicitud === 'CANCELADA') {
-        throw new Error("Esta solicitud ya esta Cancelada");
+        throw new ConflictError("Esta solicitud ya esta Cancelada");
     }
 
     solicitud.update({ estadoSolicitud: 'CANCELADA' });
@@ -85,27 +88,35 @@ const cancelarSolicitud = async (solicitudId) => {
 }
 
 const aceptarSolicitud = async (solicitudId) => {
-    const solicitud = await Solicitud.findByPk(solicitudId);
-    if (!solicitud) return null;
+    const solicitud = await Solicitud.findByPk(solicitudId, {
+        include: [
+            {
+                model: Publicacion,
+                as: 'publicacion'
+            }
+        ]
+    });
+
+    if (!solicitud) throw new NotFoundError("Solicitud no encontrada");
 
     // Solo las solicitudes Pendientes se puede aceptar
     if (solicitud.estadoSolicitud !== 'PENDIENTE') {
-        throw new Error("No se puede aceptar esta solicitud");
+        throw new ConflictError("No se puede aceptar esta solicitud");
     }
 
     // Actualiza es estado de la Solicitud
     await solicitud.update({ estadoSolicitud: 'ACEPTADA' });
 
     // Crea el Intercambio
-    await intercambioService.crearIntercambio(solicitudId);
+    const solicitanteId = solicitud.solicitanteId;
+    const publicadorId = solicitud.publicacion.user_id;
+
+    await intercambioService.crearIntercambio(solicitudId, solicitanteId, publicadorId);
 
     return solicitud;
 }
 
 const obtenerSolicitudesEnviadas = async (userId) => {
-    if (!userId) {
-        throw new Error("No se pudo obtener el ID del usuario");
-    }
     const solicitudes = await Solicitud.findAll({
         where: { solicitanteId: userId },
         include: [

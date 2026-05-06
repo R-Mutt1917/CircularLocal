@@ -37,6 +37,7 @@ export class Profile implements OnInit {
       telefono: [''],
       email: ['', [Validators.required, Validators.email]],
       tipo_actor: ['', Validators.required],
+      imagen: [''],
     });
   }
 
@@ -44,6 +45,7 @@ export class Profile implements OnInit {
     this.authServices.getUser().subscribe(res => {
       this.user.set(res.user);
       this.perfilService.getProfile(res.user.id).subscribe(perfil => {
+        console.log(perfil);
         this.profile.set(perfil);
         this.updateForm(perfil);
       });
@@ -96,6 +98,7 @@ export class Profile implements OnInit {
       direccion: formValue.direccion,
       tipo_actor: formValue.tipo_actor,
       descripcion: formValue.descripcion,
+      imagen: formValue.imagen,
     };
 
     this.userServices.updateUserProfile(currentUser.id, userData, perfilData).subscribe({
